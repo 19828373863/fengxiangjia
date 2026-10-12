@@ -38,6 +38,12 @@ struct TryoutView: View {
         return SimulationInput(home: h, roomId: editor.room.id, environment: environment)
     }
 
+    private var foreignOpenings: [(Vec2, Vec2)] {
+        input.home.openingsAffecting(editor.room.id).compactMap { item in
+            item.host.id == editor.room.id ? nil : item.host.segment(of: item.opening)
+        }
+    }
+
     private var inputHash: String { ScenarioHash.compute(input) }
     private var isStale: Bool { result.map { !$0.isCurrent(for: input) } ?? true }
     private var animate: Bool {
@@ -56,6 +62,7 @@ struct TryoutView: View {
                            onDragEnd: { onChange(editor.room) }) { t in
                 if let viz { FlowOverlayView(viz: viz, transform: t, animated: animate, stale: isStale) }
             }
+            .foreignOpenings(foreignOpenings)
             .overlay(alignment: .topTrailing) {
                 if computing || (result != nil && isStale) {
                     Label(computing ? "计算中…" : "待更新", systemImage: "arrow.triangle.2.circlepath")

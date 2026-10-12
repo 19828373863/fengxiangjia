@@ -3,7 +3,7 @@ name: iOS CI
 on:
   pull_request:
   push:
-    branches: [main, "feat/**", "fix/**"]
+    branches: [main]  # 功能分支只经 PR 触发，避免 push+PR 重复消耗 macOS 分钟
   workflow_dispatch:
     inputs:
       screenshots:

@@ -74,3 +74,11 @@
 - CI：`ios.yml` 新增 workflow_dispatch 输入 `screenshots`，按需在模拟器启动 App（`-FXJSampleOnLaunch -FXJTab home|tryout|plans`）并用 `simctl io screenshot` 截图上传（产物配额满时 continue-on-error）
 - 已测：Linux `swift test` 累计 84 项（新增 6）。UI 未手动运行。
 - 风险：schema v2 为公共契约变更（暂定，见 #26）。
+
+## 2026-10-12 · Issue #12 FXJ-11（Grok）
+- 分支：`feat/12-multi-room`（基于 `feat/11-save-export-feedback`）
+- 新增：FXJCore `Home/HomeEditing.swift`（HomeValidator 房间重叠检测、`addAdjacentRoom` 贴墙建房、`removeRoom`、`openingsAffecting` 含邻室持有的室内门）；AirflowSolver 对外通路改为考虑邻室持有的门，并隔离本房间相关开口后判断邻室是否可达室外
+- App：我家页长按房间按方向添加相邻房间/删除；试摆页房间切换；画布绘制邻室持有的门
+- 顺带：CI push 触发仅限 main（PR 触发保留）；导出 JSON 改为点击时才生成临时文件
+- 已测：Linux `swift test` 累计 90 项（新增 MultiRoomTests 6）。UI 未手动运行。
+- 限制：单层；模拟仍逐房间网格计算（邻室只决定通路），未做跨房间连续流场。
