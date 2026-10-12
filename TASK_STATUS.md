@@ -12,3 +12,6 @@
 | P5 | TestFlight、真机测试、上架 | 待开发 |
 
 任务负责人在 GitHub Issue 认领。完成后补上提交 SHA、测试记录和阻塞。
+## Android Issue #70 — 2026-10-13
+
+原生四页核心流程重建并安装 K30 0.2.0 完整体验版。Android 源码冻结于 9effffb2cca12e8bb141a138b04f727eeab0bc4f；143 个独立 JVM 用例完整执行 207 次通过，标签修正后另执行 debug 64 次通过。K30 核心操作、原有数据保留、最终 APK 原始字节哈希和浅/深色大字体截图已核对；独立视觉审查唯一 P2 修复评分 resolved。详细证据/边界见 docs/ANDROID_STATUS.md 与 HANDOFF.md。物理 AR、真实 Play 交易和上架保持未验证。

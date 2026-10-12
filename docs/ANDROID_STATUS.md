@@ -16,7 +16,7 @@
 
 ## Issue #70：Android 可用产品重建（2026-10-13）
 
-以下是本轮 Android 的当前记录，保留上表既有历史。基线为 `328f22d785e7d5d4b410a3f095d32e12e3765ede`，工作分支为 `fix/70-android-usable-product`；最终源码提交 SHA 与独立视觉审阅结论由实施负责人在冻结后追加。
+以下是本轮 Android 的当前记录，保留上表既有历史。基线为 `328f22d785e7d5d4b410a3f095d32e12e3765ede`，工作分支为 `fix/70-android-usable-product`；Android 源码冻结提交为 `9effffb2cca12e8bb141a138b04f727eeab0bc4f`，最终文档另行冻结。
 
 ### 当前构建与本地检查
 
