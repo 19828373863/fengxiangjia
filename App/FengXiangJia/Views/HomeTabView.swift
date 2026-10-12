@@ -4,6 +4,7 @@ import FXJCore
 struct HomeTabView: View {
     let model: AppModel
     @Binding var selection: AppTab
+    @State private var confirmDelete = false
 
     var body: some View {
         LoadStateView(state: model.state, onSample: model.openSample, onRetry: model.load, onNew: model.createBlankRoom) { doc in
@@ -27,7 +28,14 @@ struct HomeTabView: View {
                         }
                     }
                     Button("去试摆风扇") { selection = .tryout }
-                    Button("重置为空（删除本地数据）", role: .destructive, action: model.resetToEmpty)
+                }
+                Section {
+                    if let url = model.exportFileURL() {
+                        ShareLink("导出数据（JSON，不含位置）", item: url)
+                    }
+                    Button("删除全部本地数据", role: .destructive) { confirmDelete = true }
+                } header: { Text("数据与隐私") } footer: {
+                    Text("所有户型、方案与反馈只保存在本机，无需账户、不上传。")
                 }
                 if let err = model.saveError { Text(err).foregroundStyle(.red) }
             }
@@ -38,6 +46,9 @@ struct HomeTabView: View {
             }
         }
         .navigationTitle(AppTab.home.title)
+        .confirmationDialog("删除全部本地数据？", isPresented: $confirmDelete, titleVisibility: .visible) {
+            Button("删除", role: .destructive, action: model.resetToEmpty)
+        } message: { Text("户型、方案和体感反馈将被永久删除，无法恢复。") }
     }
 }
 
@@ -48,7 +59,9 @@ struct TryoutTabView: View {
     var body: some View {
         LoadStateView(state: model.state, onSample: model.openSample, onRetry: model.load) { doc in
             if let room = doc.home.rooms.first {
-                TryoutView(room: room, home: doc.home, onSaveScenario: { r in _ = model.saveScenario(name: "方案 \(doc.scenarios.count + 1)", room: r) }) { model.updateLayout($0) }
+                TryoutView(room: room, home: doc.home,
+                           onFeedback: { rating, hash in model.addFeedback(roomId: room.id, scenarioHash: hash, rating: rating) },
+                           onSaveScenario: { r in _ = model.saveScenario(name: "方案 \(doc.scenarios.count + 1)", room: r) }) { model.updateLayout($0) }
                     .id(room.id)
             } else {
                 ContentUnavailableView("没有房间", systemImage: "square.dashed",

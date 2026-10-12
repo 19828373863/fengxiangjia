@@ -5,6 +5,11 @@ on:
   push:
     branches: [main, "feat/**", "fix/**"]
   workflow_dispatch:
+    inputs:
+      screenshots:
+        description: "在模拟器中截取三个主页面截图并上传为产物（产物配额紧张，仅按需运行）"
+        type: boolean
+        default: false
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -50,8 +55,35 @@ jobs:
             -project FengXiangJia.xcodeproj \
             -scheme FengXiangJia \
             -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath build/DD \
             -resultBundlePath build/TestResults.xcresult \
             CODE_SIGNING_ALLOWED=NO | tee xcodebuild.log
+      - name: Simulator screenshots (on demand)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.screenshots }}
+        run: |
+          set -euo pipefail
+          UDID=${{ steps.sim.outputs.udid }}
+          APP=$(find build/DD/Build/Products -name 'FengXiangJia.app' -path '*iphonesimulator*' | head -1)
+          echo "App: $APP"
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl install "$UDID" "$APP"
+          BUNDLE=$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "$APP/Info.plist")
+          mkdir -p screenshots
+          for TAB in home tryout plans; do
+            xcrun simctl terminate "$UDID" "$BUNDLE" || true
+            xcrun simctl launch "$UDID" "$BUNDLE" -FXJSampleOnLaunch -FXJTab "$TAB"
+            sleep 8
+            xcrun simctl io "$UDID" screenshot "screenshots/$TAB.png"
+          done
+          ls -la screenshots
+      - uses: actions/upload-artifact@v4
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.screenshots }}
+        continue-on-error: true
+        with:
+          name: simulator-screenshots
+          path: screenshots/
+          retention-days: 3
       - uses: actions/upload-artifact@v4
         if: failure()
         continue-on-error: true  # 存储配额满时不影响结果

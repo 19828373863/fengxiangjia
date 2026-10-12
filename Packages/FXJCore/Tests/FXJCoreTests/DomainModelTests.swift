@@ -25,7 +25,7 @@ final class DomainModelTests: XCTestCase {
 
     func testEncodedContainsSchemaVersion() throws {
         let json = String(decoding: try DocumentCodec.encode(makeDoc()), as: UTF8.self)
-        XCTAssertTrue(json.contains("\"schemaVersion\" : 1"))
+        XCTAssertTrue(json.contains("\"schemaVersion\" : 2"))
     }
 
     func testWallIdsMatchVertices() {

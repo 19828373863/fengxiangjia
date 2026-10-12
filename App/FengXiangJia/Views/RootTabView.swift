@@ -25,7 +25,14 @@ enum AppTab: String, CaseIterable, Identifiable {
 
 struct RootTabView: View {
     let model: AppModel
-    @State private var selection: AppTab = .home
+    @State private var selection: AppTab = Self.launchTab()
+
+    /// 截图/演示：`-FXJTab tryout|plans|home`。
+    static func launchTab() -> AppTab {
+        let args = ProcessInfo.processInfo.arguments
+        guard let i = args.firstIndex(of: "-FXJTab"), i + 1 < args.count else { return .home }
+        return AppTab(rawValue: args[i + 1]) ?? .home
+    }
 
     var body: some View {
         TabView(selection: $selection) {

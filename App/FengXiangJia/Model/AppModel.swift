@@ -28,6 +28,8 @@ final class AppModel {
     func load() {
         state = .loading
         state = repository.load()
+        // UI 截图/演示：-FXJSampleOnLaunch 时空状态自动载入示例
+        if state == .empty, ProcessInfo.processInfo.arguments.contains("-FXJSampleOnLaunch") { openSample() }
     }
 
     func openSample() {
@@ -94,6 +96,20 @@ final class AppModel {
         guard var doc = document else { return }
         doc.scenarios.removeAll { $0.id == id }
         update(doc)
+    }
+
+    /// 体感反馈（仅本地）。
+    func addFeedback(roomId: UUID, scenarioHash: String?, rating: ComfortRating) {
+        guard var doc = document else { return }
+        doc.feedback.append(ComfortFeedback(roomId: roomId, scenarioHash: scenarioHash, rating: rating))
+        update(doc)
+    }
+
+    /// 写出脱敏 JSON 到临时目录，供分享面板导出。
+    func exportFileURL(includeLocation: Bool = false) -> URL? {
+        guard let doc = document, let data = try? DocumentExport.json(doc, options: .init(includeLocation: includeLocation)) else { return nil }
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent(DocumentExport.fileName(for: doc))
+        do { try data.write(to: url, options: .atomic); return url } catch { return nil }
     }
 
     func persistCurrent() { if let d = document { persist(d) } }
