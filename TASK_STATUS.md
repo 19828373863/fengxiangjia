@@ -12,3 +12,4 @@
 | P5 | TestFlight、真机测试、上架 | 待开发 |
 
 任务负责人在 GitHub Issue 认领。完成后补上提交 SHA、测试记录和阻塞。
+- #18：环境联动回归（Staleness + 6 项回归测试）PR 已开

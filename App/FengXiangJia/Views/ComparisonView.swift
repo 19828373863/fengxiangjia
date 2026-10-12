@@ -49,7 +49,8 @@ struct ComparisonView: View {
             }
         }
         .navigationTitle("A/B 比较")
-        .task {
+        .task(id: environment) {  // #18：环境变化时用新的同一环境重新比较
+            comparison = nil
             let (h, a, b, rev, env) = (home, a, b, geometryRevision, environment)
             comparison = await Task.detached {
                 ScenarioComparison.compare(home: h, roomId: a.roomId, a: a, b: b, currentGeometryRevision: rev, environment: env)

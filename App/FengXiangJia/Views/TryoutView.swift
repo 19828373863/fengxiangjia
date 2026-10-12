@@ -7,6 +7,7 @@ struct TryoutView: View {
     @State private var selected: UUID?
     @State private var message: String?
     @State private var result: SimulationResult?
+    @State private var resultInput: SimulationInput?
     @State private var viz: FlowVisualization?
     @State private var computing = false
     @State private var staticArrows = false
@@ -66,7 +67,7 @@ struct TryoutView: View {
             .foreignOpenings(foreignOpenings)
             .overlay(alignment: .topTrailing) {
                 if computing || (result != nil && isStale) {
-                    Label(computing ? "计算中…" : "待更新", systemImage: "arrow.triangle.2.circlepath")
+                    Label(computing ? "计算中…" : "待更新" + staleReasonText, systemImage: "arrow.triangle.2.circlepath")
                         .font(.caption).padding(6).background(.thinMaterial, in: Capsule())
                 }
             }
@@ -192,7 +193,28 @@ struct TryoutView: View {
         }.value
         computing = false
         guard !Task.isCancelled else { return }
-        result = r; viz = v
+        result = r; viz = v; resultInput = inp
+    }
+
+    /// #18：说明结果为何过期（天气/朝向/遮挡/开口…）。
+    private var staleReasonText: String {
+        guard let r = result, let old = resultInput else { return "" }
+        let rs = Staleness.reasons(result: r, oldInput: old, newInput: input)
+        return rs.isEmpty ? "" : "（" + StaleReason.allCases.filter(rs.contains).map(Self.reasonName).joined(separator: "、") + "已变）"
+    }
+
+    static func reasonName(_ r: StaleReason) -> String {
+        switch r {
+        case .weather: return "天气"
+        case .orientation: return "朝向"
+        case .floor: return "楼层"
+        case .obstruction: return "窗外遮挡"
+        case .openings: return "门窗"
+        case .geometry: return "户型"
+        case .layout: return "风扇/目标"
+        case .model: return "模型"
+        case .options: return "计算参数"
+        }
     }
 
     static func ratingName(_ r: ComfortRating) -> String {
