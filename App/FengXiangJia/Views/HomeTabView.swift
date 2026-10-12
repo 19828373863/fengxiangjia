@@ -36,6 +36,11 @@ struct HomeTabView: View {
                     Text("长按房间可在其旁添加相邻房间；在相邻墙上放门即连通两室。").font(.caption2).foregroundStyle(.secondary)
                 }
                 Section {
+                    NavigationLink {
+                        HomeSettingsView(model: model, home: doc.home)
+                    } label: {
+                        LabeledContent("位置与朝向", value: doc.home.location == nil ? "未设置" : "上方朝\(Bearing.name(doc.home.orientationDegrees))")
+                    }
                     if let room = doc.home.rooms.first {
                         NavigationLink("编辑户型（手绘）") {
                             FloorplanEditorView(room: room) { edited in model.replaceRoom(edited) }

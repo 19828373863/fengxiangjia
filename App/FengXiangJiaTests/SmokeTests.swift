@@ -110,4 +110,14 @@ final class SmokeTests: XCTestCase {
         m.removeRoom(newId)
         XCTAssertEqual(m.document?.home.rooms.count, 1)
     }
+
+    func testUpdateHomeInfoCoarsensLocation() {
+        let m = AppModel(repository: tempRepo())
+        m.openSample()
+        m.updateHomeInfo(name: "我的家", location: Location(latitude: 1.352083, longitude: 103.819836), orientation: 370)
+        XCTAssertEqual(m.document?.home.name, "我的家")
+        XCTAssertEqual(m.document!.home.location!.latitude, 1.35, accuracy: 1e-9)
+        XCTAssertEqual(m.document!.home.orientationDegrees, 10, accuracy: 1e-9)
+        XCTAssertEqual(m.document!.geometryRevision, 0)
+    }
 }

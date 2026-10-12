@@ -88,3 +88,8 @@
 - 新增：FXJCore `Recommendation/LayoutSearch.swift`（位置网格 0.5 m × 8 朝向 + 原位转向，上限 320 个候选；粗网格评估后选出“最省事/送风更强/少直吹”，再以标准精度重算，候选结果与其布局 scenarioHash 同源）；App `RecommendationView`（三候选图示 + 定性说明 + 一键采用，可撤销）
 - 已测：Linux `swift test` 新增 6 项（累计 96）。Linux debug 下单次搜索约 0.6 s；真机耗时未测。
 - 限制：只调整一台风扇；不搜索档位与开口状态。
+
+## 2026-10-12 · Issue #14 FXJ-13（Grok）
+- 分支：`feat/14-home-location`（基于 `feat/13-recommendation`）
+- 新增：FXJCore `Home/Orientation.swift`（Bearing：指南针校准求朝向、户型方向→真实方位、圆周平均/离散拒绝、8 方位名；Wall.facingBearing；Location.parse/coarsened/isValid）；App `Services/LocationService.swift`（CoreLocation 按需授权、大致精度、单次读数、指南针真北/磁北）、`HomeSettingsView`（地图点选 / 手动经纬度 / 当前大致位置；朝向滑杆、窗朝向提示、指南针校正）；`AppModel.updateHomeInfo`（位置粗化 0.01°）；Info.plist 定位用途说明
+- 已测：Linux `swift test` 新增 6 项（累计 102）。定位、指南针、地图需真机/模拟器手动验证，**未验证**。

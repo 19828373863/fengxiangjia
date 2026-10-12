@@ -131,6 +131,15 @@ final class AppModel {
         update(doc)
     }
 
+    /// 住宅名称、位置（已粗化）与朝向（#14）。朝向影响模拟输入 hash，但不改变几何版本。
+    func updateHomeInfo(name: String, location: Location?, orientation: Double) {
+        guard var doc = document else { return }
+        doc.home.name = name.isEmpty ? doc.home.name : name
+        doc.home.location = location?.coarsened()
+        doc.home.orientationDegrees = Bearing.normalize(orientation)
+        update(doc)
+    }
+
     func persistCurrent() { if let d = document { persist(d) } }
 
     private func persist(_ doc: HomeDocument) {
