@@ -36,6 +36,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Editor/FanTargetEditing.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Editor/RoomEditor.swift"
         },
         {
@@ -89,6 +93,7 @@
       "objects" : [
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Models.swift.o",
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Vec2.swift.o",
+        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/FanTargetEditing.swift.o",
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/RoomEditor.swift.o",
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/RoomTemplate.swift.o",
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Viewport.swift.o",
@@ -139,6 +144,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/FanTargetEditing.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/RoomEditor.swift.o"
         },
         {
@@ -186,6 +195,7 @@
       "sources" : [
         "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Domain/Models.swift",
         "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Domain/Vec2.swift",
+        "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Editor/FanTargetEditing.swift",
         "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Editor/RoomEditor.swift",
         "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Editor/RoomTemplate.swift",
         "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Editor/Viewport.swift",
@@ -371,6 +381,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/FanTargetTests.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/GeometryTopologyTests.swift"
         },
         {
@@ -396,6 +410,7 @@
       "objects" : [
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/DomainModelTests.swift.o",
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/EditorTests.swift.o",
+        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/FanTargetTests.swift.o",
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/GeometryTopologyTests.swift.o",
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/LibraryTests.swift.o"
       ],
@@ -438,6 +453,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/FanTargetTests.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/GeometryTopologyTests.swift.o"
         },
         {
@@ -453,6 +472,7 @@
       "sources" : [
         "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/DomainModelTests.swift",
         "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/EditorTests.swift",
+        "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/FanTargetTests.swift",
         "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/GeometryTopologyTests.swift",
         "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/LibraryTests.swift"
       ],
@@ -474,6 +494,7 @@
       "-c",
       "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Domain/Models.swift",
       "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Domain/Vec2.swift",
+      "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Editor/FanTargetEditing.swift",
       "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Editor/RoomEditor.swift",
       "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Editor/RoomTemplate.swift",
       "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Editor/Viewport.swift",
@@ -599,6 +620,7 @@
       "-c",
       "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/DomainModelTests.swift",
       "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/EditorTests.swift",
+      "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/FanTargetTests.swift",
       "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/GeometryTopologyTests.swift",
       "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/LibraryTests.swift",
       "-I",
@@ -662,6 +684,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/FanTargetTests.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/GeometryTopologyTests.swift.o"
         },
         {
@@ -712,6 +738,10 @@
         {
           "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Domain/Vec2.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Editor/FanTargetEditing.swift"
         },
         {
           "kind" : "file",
@@ -805,6 +835,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/FanTargetEditing.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/HomeDocument.swift.o"
         },
         {
@@ -881,6 +915,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/FanTargetTests.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/GeometryTopologyTests.swift.o"
         },
         {
@@ -904,6 +942,10 @@
         {
           "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/EditorTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/FanTargetTests.swift"
         },
         {
           "kind" : "file",

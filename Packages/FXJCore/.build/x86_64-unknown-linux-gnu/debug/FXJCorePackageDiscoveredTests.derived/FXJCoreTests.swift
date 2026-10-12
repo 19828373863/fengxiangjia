@@ -38,6 +38,18 @@ fileprivate extension EditorTests {
     ]
 }
 
+fileprivate extension FanTargetTests {
+    @available(*, deprecated, message: "Not actually deprecated. Marked as deprecated to allow inclusion of deprecated tests (which test deprecated functionality) without warnings")
+    static nonisolated(unsafe) let __allTests__FanTargetTests = [
+        ("testLowFurnitureAllowsFan", testLowFurnitureAllowsFan),
+        ("testPlaceMoveRejectsAndUndo", testPlaceMoveRejectsAndUndo),
+        ("testPlacementRules", testPlacementRules),
+        ("testRotatedObstacleContains", testRotatedObstacleContains),
+        ("testTargets", testTargets),
+        ("testYawPowerNormalization", testYawPowerNormalization)
+    ]
+}
+
 fileprivate extension GeometryTopologyTests {
     @available(*, deprecated, message: "Not actually deprecated. Marked as deprecated to allow inclusion of deprecated tests (which test deprecated functionality) without warnings")
     static nonisolated(unsafe) let __allTests__GeometryTopologyTests = [
@@ -72,6 +84,7 @@ func __FXJCoreTests__allTests() -> [XCTestCaseEntry] {
     return [
         testCase(DomainModelTests.__allTests__DomainModelTests),
         testCase(EditorTests.__allTests__EditorTests),
+        testCase(FanTargetTests.__allTests__FanTargetTests),
         testCase(GeometryTopologyTests.__allTests__GeometryTopologyTests),
         testCase(LibraryTests.__allTests__LibraryTests)
     ]

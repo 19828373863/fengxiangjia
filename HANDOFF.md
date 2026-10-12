@@ -45,3 +45,8 @@
 - 新增：FXJCore `Editor/RoomTemplate`（矩形、L 形）、`Viewport`（平移、锚点缩放、适配）、`RoomEditor`（撤销/重做、历史上限 100、网格吸附 5 cm、顶点移动合法性校验、家具/风扇增删移、门窗吸附最近墙段并夹在墙内、防重叠）；App `FloorplanEditorView`（Canvas、工具栏、模板菜单、撤销重做、拖动顶点与家具、双指缩放）；“我家”页“编辑户型（手绘）”与空状态“新建房间（手绘）”入口；保存后刷新连接、geometryRevision+1
 - 已测：Linux `swift test` 累计 43 项通过（新增 16）；App 单测见 PR CI。
 - 未测：编辑器手势在模拟器/真机中的实际体验、截图；家具旋转与尺寸编辑、开口拖动 UI（逻辑已有 moveOpening）未接入。
+
+## 2026-10-12 · Issue #7 FXJ-06（Grok）
+- 分支：`feat/7-fan-targets`（基于 `feat/6-floorplan-editor`）
+- 新增：FXJCore `Editor/FanTargetEditing.swift`（FanPlacement 规则：房内、离墙 ≥0.2 m、不压非低矮家具；放置/移动/朝向 5° 吸附/对准/档位 0.1 吸附/类型；目标区域增删移、半径 0.2–3 m、目标切换；Obstacle 旋转矩形包含、Target 中心/包含）；App `TryoutView`（拖动、点选检查器、撤销重做、添加菜单），`RoomCanvasView` 支持目标区域与叠加层；`AppModel.updateLayout`（不提升 geometryRevision）
+- 已测：Linux `swift test` 累计 49 项；App 测试见 PR CI。未手动运行 UI。

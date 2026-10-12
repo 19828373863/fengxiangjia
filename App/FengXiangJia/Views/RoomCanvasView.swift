@@ -4,7 +4,7 @@ import FXJCore
 /// 户型坐标（米，+Y 向上）与屏幕坐标（点，+Y 向下）的适配变换。
 struct FitTransform {
     let scale: Double
-    let origin: CGPoint // 世界 (minX, maxY) 对应的屏幕点
+    let origin: CGPoint
     let minX: Double, maxY: Double
 
     init(polygon: [Vec2], size: CGSize, padding: Double = 24) {
@@ -24,10 +24,15 @@ struct FitTransform {
     }
 }
 
-struct RoomCanvasView: View {
+struct RoomCanvasView<Overlay: View>: View {
     let room: Room
+    var selectedId: UUID? = nil
     var onFanMove: ((UUID, Vec2) -> Void)? = nil
+    var onTargetMove: ((UUID, Vec2) -> Void)? = nil
+    var onSelect: ((UUID?) -> Void)? = nil
     var onDragEnd: (() -> Void)? = nil
+    /// 叠加层（如气流），在房间底图之上、交互手柄之下，接收坐标变换。
+    var overlay: (FitTransform) -> Overlay
 
     var body: some View {
         GeometryReader { geo in
@@ -40,46 +45,72 @@ struct RoomCanvasView: View {
                         room.polygon.dropFirst().forEach { path.addLine(to: t.toScreen($0)) }
                         path.closeSubpath()
                     }
-                    ctx.fill(path, with: .color(.blue.opacity(0.06)))
-                    ctx.stroke(path, with: .color(.primary), lineWidth: 4)
-
+                    ctx.fill(path, with: .color(.blue.opacity(0.05)))
                     for ob in room.obstacles {
                         let c = t.toScreen(ob.center)
-                        let r = CGRect(x: c.x - ob.size.x * t.scale / 2, y: c.y - ob.size.y * t.scale / 2,
+                        let r = CGRect(x: -ob.size.x * t.scale / 2, y: -ob.size.y * t.scale / 2,
                                        width: ob.size.x * t.scale, height: ob.size.y * t.scale)
-                        ctx.fill(Path(roundedRect: r, cornerRadius: 4), with: .color(.gray.opacity(0.3)))
+                        var g = ctx
+                        g.translateBy(x: c.x, y: c.y)
+                        g.rotate(by: .degrees(-ob.rotationDegrees))
+                        g.fill(Path(roundedRect: r, cornerRadius: 4), with: .color(.gray.opacity(0.3)))
                     }
-                    for target in room.targets {
-                        if case .circle(let center, let radius) = target.shape {
-                            let c = t.toScreen(center), rr = radius * t.scale
-                            ctx.stroke(Path(ellipseIn: CGRect(x: c.x - rr, y: c.y - rr, width: rr * 2, height: rr * 2)),
-                                       with: .color(.green), style: StrokeStyle(lineWidth: 2, dash: [5, 4]))
-                        }
-                    }
+                    ctx.stroke(path, with: .color(.primary), lineWidth: 4)
                     for o in room.openings {
                         guard let (a, b) = room.segment(of: o) else { continue }
                         var p = Path(); p.move(to: t.toScreen(a)); p.addLine(to: t.toScreen(b))
                         ctx.stroke(p, with: .color(o.kind == .window ? .cyan : .orange), lineWidth: 7)
                     }
                 }
+                overlay(t).allowsHitTesting(false)
+                ForEach(room.targets) { target in
+                    let rr = targetRadius(target) * t.scale
+                    Circle()
+                        .strokeBorder(target.objective == .wantBreeze ? Color.green : Color.red,
+                                      style: StrokeStyle(lineWidth: selectedId == target.id ? 3 : 2, dash: [5, 4]))
+                        .background(Circle().fill((target.objective == .wantBreeze ? Color.green : Color.red).opacity(0.08)))
+                        .frame(width: rr * 2, height: rr * 2)
+                        .position(t.toScreen(target.center))
+                        .accessibilityLabel(target.objective == .wantBreeze ? "希望有风区域" : "减少直吹区域")
+                        .onTapGesture { onSelect?(target.id) }
+                        .gesture(DragGesture()
+                            .onChanged { v in onTargetMove?(target.id, t.toWorld(v.location)) }
+                            .onEnded { _ in onDragEnd?() })
+                }
                 ForEach(room.fans) { fan in
-                    let s = t.toScreen(fan.position)
                     Image(systemName: "fan.fill")
                         .font(.title)
-                        .foregroundStyle(.teal)
+                        .foregroundStyle(selectedId == fan.id ? .blue : .teal)
+                        .overlay(alignment: .trailing) {
+                            Image(systemName: "arrowtriangle.right.fill").font(.caption2).offset(x: 12)
+                        }
                         .rotationEffect(.degrees(-fan.yawDegrees))
                         .frame(width: 44, height: 44)
                         .contentShape(Rectangle())
-                        .position(s)
-                        .accessibilityLabel("风扇")
-                        .gesture(
-                            DragGesture()
-                                .onChanged { v in onFanMove?(fan.id, t.toWorld(v.location)) }
-                                .onEnded { _ in onDragEnd?() }
-                        )
+                        .position(t.toScreen(fan.position))
+                        .accessibilityLabel("风扇，朝向 \(Int(fan.yawDegrees)) 度")
+                        .onTapGesture { onSelect?(fan.id) }
+                        .gesture(DragGesture()
+                            .onChanged { v in onFanMove?(fan.id, t.toWorld(v.location)) }
+                            .onEnded { _ in onDragEnd?() })
                 }
             }
+            .contentShape(Rectangle())
+            .onTapGesture { onSelect?(nil) }
         }
         .aspectRatio(1, contentMode: .fit)
+    }
+
+    private func targetRadius(_ t: Target) -> Double {
+        if case .circle(_, let r) = t.shape { return r }
+        return 0.5
+    }
+}
+
+extension RoomCanvasView where Overlay == EmptyView {
+    init(room: Room, selectedId: UUID? = nil, onFanMove: ((UUID, Vec2) -> Void)? = nil,
+         onTargetMove: ((UUID, Vec2) -> Void)? = nil, onSelect: ((UUID?) -> Void)? = nil, onDragEnd: (() -> Void)? = nil) {
+        self.init(room: room, selectedId: selectedId, onFanMove: onFanMove, onTargetMove: onTargetMove,
+                  onSelect: onSelect, onDragEnd: onDragEnd, overlay: { _ in EmptyView() })
     }
 }

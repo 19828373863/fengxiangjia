@@ -48,16 +48,8 @@ struct TryoutTabView: View {
     var body: some View {
         LoadStateView(state: model.state, onSample: model.openSample, onRetry: model.load) { doc in
             if let room = doc.home.rooms.first {
-                VStack(spacing: 12) {
-                    RoomCanvasView(room: room) { fanId, p in
-                        _ = model.moveFan(roomId: room.id, fanId: fanId, to: p)
-                    } onDragEnd: {
-                        model.persistCurrent()
-                    }
-                    Text("拖动风扇改变位置。气流模拟将在后续版本加入（#8）。")
-                        .font(.footnote).foregroundStyle(.secondary)
-                }
-                .padding()
+                TryoutView(room: room) { model.updateLayout($0) }
+                    .id(room.id)
             } else {
                 ContentUnavailableView("没有房间", systemImage: "square.dashed",
                                        description: Text("请先在“我家”中添加房间"))

@@ -57,4 +57,14 @@ final class SmokeTests: XCTestCase {
         XCTAssertEqual(m.document!.geometryRevision, 1)
         XCTAssertEqual(m.document!.home.rooms[0].openings.first?.connects.last, .outdoor)
     }
+
+    func testUpdateLayoutKeepsGeometryRevision() throws {
+        let m = AppModel(repository: tempRepo())
+        m.openSample()
+        var e = RoomEditor(room: m.document!.home.rooms[0])
+        try e.setFanPower(e.room.fans[0].id, 1)
+        m.updateLayout(e.room)
+        XCTAssertEqual(m.document!.geometryRevision, 0)
+        XCTAssertEqual(m.document!.home.rooms[0].fans[0].power, 1)
+    }
 }
