@@ -205,6 +205,15 @@ final class AppModel {
         update(doc)
     }
 
+    /// 扫描导入的房间加入住宅（#17）；无住宅时新建。
+    func importScannedRoom(_ room: Room) {
+        var doc = document ?? HomeDocument(home: Home(name: "我家"))
+        doc.home.rooms.append(room)
+        Topology.refreshConnections(&doc.home)
+        doc.geometryRevision += 1
+        update(doc)
+    }
+
     func persistCurrent() { if let d = document { persist(d) } }
 
     private func persist(_ doc: HomeDocument) {

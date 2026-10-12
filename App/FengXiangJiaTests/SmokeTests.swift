@@ -158,4 +158,15 @@ final class SmokeTests: XCTestCase {
         XCTAssertEqual(m.currentEnvironment?.obstructionByOpening[window.id], .nearBuilding)
         XCTAssertEqual(m.document?.home.floorLevel, 3)
     }
+
+    func testScanUnsupportedOnSimulatorAndImport() throws {
+        XCTAssertFalse(RoomScanSupport.isSupported, "模拟器应降级为手绘")
+        let walls = [ScannedWall(start: Vec2(0, 0), end: Vec2(3, 0)), ScannedWall(start: Vec2(3, 0), end: Vec2(3, 3)),
+                     ScannedWall(start: Vec2(3, 3), end: Vec2(0, 3)), ScannedWall(start: Vec2(0, 3), end: Vec2(0, 0))]
+        let r = try XCTUnwrap(ScanImport.convert(walls: walls, openings: []))
+        let m = AppModel(repository: tempRepo())
+        m.load()
+        m.importScannedRoom(r.room)
+        XCTAssertEqual(m.document?.home.rooms.count, 1)
+    }
 }
