@@ -45,7 +45,7 @@ struct TryoutTabView: View {
             if let room = doc.home.rooms.first {
                 VStack(spacing: 12) {
                     RoomCanvasView(room: room) { fanId, p in
-                        model.moveFan(roomId: room.id, fanId: fanId, to: p)
+                        _ = model.moveFan(roomId: room.id, fanId: fanId, to: p)
                     } onDragEnd: {
                         model.persistCurrent()
                     }
