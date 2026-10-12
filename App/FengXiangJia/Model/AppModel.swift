@@ -58,6 +58,21 @@ final class AppModel {
         persist(doc)
     }
 
+    /// 新建手绘房间（默认 4×3 m 矩形），随后可在编辑器中修改。
+    func createBlankRoom() {
+        let room = Room(name: "我的房间", polygon: RoomTemplate.defaultRectangle.polygon)
+        update(HomeDocument(home: Home(name: "我家", rooms: [room])))
+    }
+
+    /// 编辑器保存：替换房间、刷新开口连接、几何版本 +1（旧模拟结果因此失效）。
+    func replaceRoom(_ room: Room) {
+        guard var doc = document, let i = doc.home.rooms.firstIndex(where: { $0.id == room.id }) else { return }
+        doc.home.rooms[i] = room
+        Topology.refreshConnections(&doc.home)
+        doc.geometryRevision += 1
+        update(doc)
+    }
+
     func persistCurrent() { if let d = document { persist(d) } }
 
     private func persist(_ doc: HomeDocument) {

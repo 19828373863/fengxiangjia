@@ -47,4 +47,14 @@ final class SmokeTests: XCTestCase {
         let w = t.toWorld(t.toScreen(Vec2(1.25, 3.5)))
         XCTAssertEqual(w.x, 1.25, accuracy: 1e-9); XCTAssertEqual(w.y, 3.5, accuracy: 1e-9)
     }
+
+    func testCreateBlankAndReplaceRoomBumpsRevision() throws {
+        let m = AppModel(repository: tempRepo())
+        m.createBlankRoom()
+        var editor = RoomEditor(room: m.document!.home.rooms[0])
+        try editor.addOpening(.window, near: Vec2(2, 0))
+        m.replaceRoom(editor.room)
+        XCTAssertEqual(m.document!.geometryRevision, 1)
+        XCTAssertEqual(m.document!.home.rooms[0].openings.first?.connects.last, .outdoor)
+    }
 }

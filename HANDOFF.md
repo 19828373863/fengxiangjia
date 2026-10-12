@@ -39,3 +39,9 @@
 - 新增：FXJCore `SampleData`（固定 ID 示例客厅，含窗/门/家具/风扇/目标）、`HomeRepository`（本地 JSON 文件，HomeLoadState：loading/empty/loaded/failed）；App `AppModel`（@Observable）、我家/试摆/方案三页、`LoadStateView` 统一加载/空/错误态、`RoomCanvasView`（Canvas 绘制 + 拖动风扇，越界拒绝）
 - 已测：Linux `swift test` 累计 27 项；App 单测（AppModel/坐标变换）在 macOS CI 运行，见 PR。
 - 未测：模拟器中手动交互、截图、VoiceOver；真机。
+
+## 2026-10-12 · Issue #6 FXJ-05（Grok）
+- 分支：`feat/6-floorplan-editor`（基于 `feat/5-sample-room-nav`）
+- 新增：FXJCore `Editor/RoomTemplate`（矩形、L 形）、`Viewport`（平移、锚点缩放、适配）、`RoomEditor`（撤销/重做、历史上限 100、网格吸附 5 cm、顶点移动合法性校验、家具/风扇增删移、门窗吸附最近墙段并夹在墙内、防重叠）；App `FloorplanEditorView`（Canvas、工具栏、模板菜单、撤销重做、拖动顶点与家具、双指缩放）；“我家”页“编辑户型（手绘）”与空状态“新建房间（手绘）”入口；保存后刷新连接、geometryRevision+1
+- 已测：Linux `swift test` 累计 43 项通过（新增 16）；App 单测见 PR CI。
+- 未测：编辑器手势在模拟器/真机中的实际体验、截图；家具旋转与尺寸编辑、开口拖动 UI（逻辑已有 moveOpening）未接入。
