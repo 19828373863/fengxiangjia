@@ -13,3 +13,5 @@
 
 任务负责人在 GitHub Issue 认领。完成后补上提交 SHA、测试记录和阻塞。
 - #18：环境联动回归（Staleness + 6 项回归测试）PR 已开
+
+- #19：StoreKit 2 内购逻辑与 UI、.storekit 配置 PR 已开（沙盒未验证）

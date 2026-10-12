@@ -51,8 +51,17 @@ struct HomeTabView: View {
                             FloorplanEditorView(room: room) { edited in model.replaceRoom(edited) }
                         }
                     }
+                    NavigationLink {
+                        PaywallView(model: model)
+                    } label: {
+                        LabeledContent("完整版", value: model.entitlement.isUnlocked ? "已解锁" : "免费版")
+                    }
                     NavigationLink(RoomScanSupport.isSupported ? "扫描新房间（RoomPlan）" : "扫描新房间（此设备不支持）") {
-                        RoomScanView { model.importScannedRoom($0) }
+                        if model.entitlement.allows(.roomScan) || !RoomScanSupport.isSupported {
+                            RoomScanView { model.importScannedRoom($0) }
+                        } else {
+                            LockedFeatureView(model: model, feature: .roomScan)
+                        }
                     }
                     Button("去试摆风扇") { selection = .tryout }
                 }
@@ -106,8 +115,9 @@ struct TryoutTabView: View {
                 }
                 WeatherPanelView(model: model).padding(.horizontal)
                 TryoutView(room: room, home: doc.home, environment: model.currentEnvironment,
+                           recommendationLocked: !model.entitlement.allows(.autoRecommendation),
                            onFeedback: { rating, hash in model.addFeedback(roomId: room.id, scenarioHash: hash, rating: rating) },
-                           onSaveScenario: { r in _ = model.saveScenario(name: "方案 \(doc.scenarios.count + 1)", room: r, environment: model.currentEnvironment) }) { model.updateLayout($0) }
+                           onSaveScenario: !model.canSaveMoreScenarios ? nil : { r in _ = model.saveScenario(name: "方案 \(doc.scenarios.count + 1)", room: r, environment: model.currentEnvironment) }) { model.updateLayout($0) }
                     .id(room.id)
             } else {
                 ContentUnavailableView("没有房间", systemImage: "square.dashed",

@@ -17,7 +17,9 @@ targets:
   FengXiangJia:
     type: application
     platform: iOS
-    sources: [App/FengXiangJia]
+    sources:
+      - path: App/FengXiangJia
+        excludes: ["*.storekit"]
     dependencies:
       - package: FXJCore
     settings:
@@ -47,5 +49,7 @@ schemes:
       targets:
         FengXiangJia: all
         FengXiangJiaTests: [test]
+    run:
+      storeKitConfiguration: App/FengXiangJia/FengXiangJia.storekit
     test:
       targets: [FengXiangJiaTests]

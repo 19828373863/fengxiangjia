@@ -16,14 +16,37 @@ final class AppModel {
     private(set) var weatherLoading = false
     private let weather: WeatherService
 
+    // MARK: 内购（#19）
+    private(set) var entitlement: EntitlementState
+    private(set) var storeMessage: EntitlementManager.Message?
+    private let store: EntitlementManager
+    private let storeClient: StoreClient
+    private let persistsEntitlement: Bool
+
     private(set) var state: HomeLoadState = .loading
     var saveError: String?
     private let repository: HomeRepository
 
-    init(repository: HomeRepository = AppModel.defaultRepository(), weatherProvider: WeatherProvider = AppModel.defaultWeatherProvider()) {
+    init(repository: HomeRepository = AppModel.defaultRepository(), weatherProvider: WeatherProvider = AppModel.defaultWeatherProvider(),
+         storeClient: StoreClient? = nil, entitlementCache: EntitlementCache? = nil) {
         self.repository = repository
+        let cache = entitlementCache ?? EntitlementCacheStore.load()
+        self.persistsEntitlement = entitlementCache == nil
+        self.storeClient = storeClient ?? StoreKitClient()
+        self.store = EntitlementManager(client: self.storeClient, cache: cache)
+        self.entitlement = EntitlementState(cache: cache)
         self.weather = WeatherService(provider: weatherProvider)
     }
+
+    func refreshEntitlement() async { setEntitlement(await store.refresh()) }
+    func purchaseFullVersion() async { let (s, m) = await store.purchase(); setEntitlement(s); storeMessage = m }
+    func restorePurchases() async { let (s, m) = await store.restore(); setEntitlement(s); storeMessage = m }
+    func fullVersionPrice() async -> String? { try? await storeClient.displayPrice() }
+    private func setEntitlement(_ s: EntitlementState) {
+        entitlement = s
+        if persistsEntitlement { EntitlementCacheStore.save(s.cache) }
+    }
+    var canSaveMoreScenarios: Bool { entitlement.canSaveScenario(currentCount: document?.scenarios.count ?? 0) }
 
     nonisolated static func defaultWeatherProvider() -> WeatherProvider {
         #if FXJ_WEATHERKIT && canImport(WeatherKit)
@@ -42,7 +65,7 @@ final class AppModel {
             let hour = Date(timeIntervalSince1970: (now.timeIntervalSince1970 / 3600).rounded(.down) * 3600)
             return .manual(windFromDegrees: manualWindFrom, windSpeed: manualWindSpeed, at: hour)
         case .auto:
-            return weatherOutcome?.environment
+            return entitlement.allows(.liveWeather) ? weatherOutcome?.environment : nil
         }
     }
 
@@ -150,7 +173,7 @@ final class AppModel {
     /// 把当前布局保存为方案（#10/#11）。
     @discardableResult
     func saveScenario(name: String, room: Room, environment: OutdoorConditions? = nil) -> Scenario? {
-        guard var doc = document else { return nil }
+        guard var doc = document, entitlement.canSaveScenario(currentCount: doc.scenarios.count) else { return nil }
         let s = Scenario.capture(name: name, room: room, geometryRevision: doc.geometryRevision, environment: environment)
         doc.scenarios.append(s)
         update(doc)
@@ -180,6 +203,7 @@ final class AppModel {
     /// 在某房间某面墙外侧添加相邻房间（#12）。失败返回错误描述。
     func addAdjacentRoom(to roomId: UUID, wallIndex: Int, depth: Double = 3) -> String? {
         guard var doc = document else { return "没有住宅" }
+        guard entitlement.canAddRoom(currentCount: doc.home.rooms.count) else { return "多房间属于完整版" }
         do {
             try doc.home.addAdjacentRoom(to: roomId, wallIndex: wallIndex, depth: depth, name: "房间 \(doc.home.rooms.count + 1)")
             doc.geometryRevision += 1
@@ -208,6 +232,7 @@ final class AppModel {
     /// 扫描导入的房间加入住宅（#17）；无住宅时新建。
     func importScannedRoom(_ room: Room) {
         var doc = document ?? HomeDocument(home: Home(name: "我家"))
+        guard entitlement.canAddRoom(currentCount: doc.home.rooms.count) else { storeMessage = .none; return }
         doc.home.rooms.append(room)
         Topology.refreshConnections(&doc.home)
         doc.geometryRevision += 1
