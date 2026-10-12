@@ -48,6 +48,7 @@ struct LoadStateView<Content: View>: View {
     let state: HomeLoadState
     let onSample: () -> Void
     let onRetry: () -> Void
+    var onNew: (() -> Void)? = nil
     @ViewBuilder let content: (HomeDocument) -> Content
 
     var body: some View {
@@ -61,6 +62,7 @@ struct LoadStateView<Content: View>: View {
                 Text("先打开示例房间体验拖动风扇，无需注册登录。")
             } actions: {
                 Button("打开示例房间", action: onSample).buttonStyle(.borderedProminent)
+                if let onNew { Button("新建房间（手绘）", action: onNew) }
             }
         case .failed(let message):
             ContentUnavailableView {

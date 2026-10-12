@@ -16,6 +16,28 @@ fileprivate extension DomainModelTests {
     ]
 }
 
+fileprivate extension EditorTests {
+    @available(*, deprecated, message: "Not actually deprecated. Marked as deprecated to allow inclusion of deprecated tests (which test deprecated functionality) without warnings")
+    static nonisolated(unsafe) let __allTests__EditorTests = [
+        ("testApplyTemplateDropsOpeningsKeepsInsideItems", testApplyTemplateDropsOpeningsKeepsInsideItems),
+        ("testFailedEditDoesNotChangeOrRecord", testFailedEditDoesNotChangeOrRecord),
+        ("testHistoryLimit", testHistoryLimit),
+        ("testMoveOpeningToOtherWall", testMoveOpeningToOtherWall),
+        ("testMoveVertexRejectedWhenOpeningWouldLeaveWall", testMoveVertexRejectedWhenOpeningWouldLeaveWall),
+        ("testMoveVertexSnapsToGrid", testMoveVertexSnapsToGrid),
+        ("testNewEditClearsRedo", testNewEditClearsRedo),
+        ("testOpeningClampedAtCorner", testOpeningClampedAtCorner),
+        ("testOpeningFarFromWallRejected", testOpeningFarFromWallRejected),
+        ("testOpeningOverlapRejected", testOpeningOverlapRejected),
+        ("testOpeningSnapsToNearestWall", testOpeningSnapsToNearestWall),
+        ("testRemoveItem", testRemoveItem),
+        ("testTemplatesValid", testTemplatesValid),
+        ("testUndoRedo", testUndoRedo),
+        ("testViewportFitting", testViewportFitting),
+        ("testViewportPanZoom", testViewportPanZoom)
+    ]
+}
+
 fileprivate extension GeometryTopologyTests {
     @available(*, deprecated, message: "Not actually deprecated. Marked as deprecated to allow inclusion of deprecated tests (which test deprecated functionality) without warnings")
     static nonisolated(unsafe) let __allTests__GeometryTopologyTests = [
@@ -49,6 +71,7 @@ fileprivate extension LibraryTests {
 func __FXJCoreTests__allTests() -> [XCTestCaseEntry] {
     return [
         testCase(DomainModelTests.__allTests__DomainModelTests),
+        testCase(EditorTests.__allTests__EditorTests),
         testCase(GeometryTopologyTests.__allTests__GeometryTopologyTests),
         testCase(LibraryTests.__allTests__LibraryTests)
     ]

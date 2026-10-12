@@ -6,7 +6,7 @@ struct HomeTabView: View {
     @Binding var selection: AppTab
 
     var body: some View {
-        LoadStateView(state: model.state, onSample: model.openSample, onRetry: model.load) { doc in
+        LoadStateView(state: model.state, onSample: model.openSample, onRetry: model.load, onNew: model.createBlankRoom) { doc in
             List {
                 Section(doc.home.name) {
                     ForEach(doc.home.rooms) { room in
@@ -21,6 +21,11 @@ struct HomeTabView: View {
                     }
                 }
                 Section {
+                    if let room = doc.home.rooms.first {
+                        NavigationLink("编辑户型（手绘）") {
+                            FloorplanEditorView(room: room) { edited in model.replaceRoom(edited) }
+                        }
+                    }
                     Button("去试摆风扇") { selection = .tryout }
                     Button("重置为空（删除本地数据）", role: .destructive, action: model.resetToEmpty)
                 }
