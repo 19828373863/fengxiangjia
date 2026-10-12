@@ -31,5 +31,11 @@
     "object": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/LibraryTests.swift.o",
     "swiftmodule": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/LibraryTests~partial.swiftmodule",
     "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/LibraryTests.swiftdeps"
+  },
+  "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/SimulationTests.swift": {
+    "dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/SimulationTests.d",
+    "object": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/SimulationTests.swift.o",
+    "swiftmodule": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/SimulationTests~partial.swiftmodule",
+    "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/SimulationTests.swiftdeps"
   }
 }

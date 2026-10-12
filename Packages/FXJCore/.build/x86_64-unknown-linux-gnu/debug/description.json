@@ -80,6 +80,22 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/AirflowSolver.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/SHA256.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/ScenarioHash.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/SimulationTypes.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/swift-version--5F767C5DFF86BA86.txt"
         },
         {
@@ -103,7 +119,11 @@
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Validation.swift.o",
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/HomeRepository.swift.o",
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/SampleData.swift.o",
-        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/HomeDocument.swift.o"
+        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/HomeDocument.swift.o",
+        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/AirflowSolver.swift.o",
+        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/SHA256.swift.o",
+        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/ScenarioHash.swift.o",
+        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/SimulationTypes.swift.o"
       ],
       "otherArguments" : [
         "-target",
@@ -188,6 +208,22 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/AirflowSolver.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/SHA256.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/ScenarioHash.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/SimulationTypes.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/Modules/FXJCore.swiftmodule"
         }
       ],
@@ -205,7 +241,11 @@
         "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Geometry/Validation.swift",
         "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Library/HomeRepository.swift",
         "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Library/SampleData.swift",
-        "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Persistence/HomeDocument.swift"
+        "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Persistence/HomeDocument.swift",
+        "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/AirflowSolver.swift",
+        "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/SHA256.swift",
+        "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/ScenarioHash.swift",
+        "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/SimulationTypes.swift"
       ],
       "tempsPath" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build",
       "wholeModuleOptimization" : false
@@ -393,6 +433,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/SimulationTests.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/swift-version--5F767C5DFF86BA86.txt"
         },
         {
@@ -412,7 +456,8 @@
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/EditorTests.swift.o",
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/FanTargetTests.swift.o",
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/GeometryTopologyTests.swift.o",
-        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/LibraryTests.swift.o"
+        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/LibraryTests.swift.o",
+        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/SimulationTests.swift.o"
       ],
       "otherArguments" : [
         "-target",
@@ -465,6 +510,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/SimulationTests.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/Modules/FXJCoreTests.swiftmodule"
         }
       ],
@@ -474,7 +523,8 @@
         "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/EditorTests.swift",
         "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/FanTargetTests.swift",
         "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/GeometryTopologyTests.swift",
-        "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/LibraryTests.swift"
+        "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/LibraryTests.swift",
+        "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/SimulationTests.swift"
       ],
       "tempsPath" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build",
       "wholeModuleOptimization" : false
@@ -505,6 +555,10 @@
       "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Library/HomeRepository.swift",
       "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Library/SampleData.swift",
       "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Persistence/HomeDocument.swift",
+      "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/AirflowSolver.swift",
+      "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/SHA256.swift",
+      "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/ScenarioHash.swift",
+      "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/SimulationTypes.swift",
       "-I",
       "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/Modules",
       "-target",
@@ -623,6 +677,7 @@
       "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/FanTargetTests.swift",
       "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/GeometryTopologyTests.swift",
       "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/LibraryTests.swift",
+      "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/SimulationTests.swift",
       "-I",
       "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/Modules",
       "-target",
@@ -693,6 +748,10 @@
         {
           "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/LibraryTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/SimulationTests.swift.o"
         }
       ],
       "outputs" : [
@@ -782,6 +841,22 @@
         {
           "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Persistence/HomeDocument.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/AirflowSolver.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/SHA256.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/ScenarioHash.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/SimulationTypes.swift"
         }
       ],
       "outputFilePath" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/sources"
@@ -827,6 +902,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/AirflowSolver.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/FXJCore.swift.o"
         },
         {
@@ -863,7 +942,19 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/SHA256.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/SampleData.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/ScenarioHash.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/SimulationTypes.swift.o"
         },
         {
           "kind" : "file",
@@ -924,6 +1015,10 @@
         {
           "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/LibraryTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/SimulationTests.swift.o"
         }
       ],
       "outputFilePath" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCorePackageTests.product/Objects.LinkFileList"
@@ -954,6 +1049,10 @@
         {
           "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/LibraryTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/SimulationTests.swift"
         }
       ],
       "outputFilePath" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/sources"

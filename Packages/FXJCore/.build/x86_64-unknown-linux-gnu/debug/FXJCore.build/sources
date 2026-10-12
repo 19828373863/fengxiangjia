@@ -11,3 +11,7 @@
 /workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Library/HomeRepository.swift
 /workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Library/SampleData.swift
 /workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Persistence/HomeDocument.swift
+/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/AirflowSolver.swift
+/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/SHA256.swift
+/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/ScenarioHash.swift
+/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/SimulationTypes.swift

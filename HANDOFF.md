@@ -50,3 +50,10 @@
 - 分支：`feat/7-fan-targets`（基于 `feat/6-floorplan-editor`）
 - 新增：FXJCore `Editor/FanTargetEditing.swift`（FanPlacement 规则：房内、离墙 ≥0.2 m、不压非低矮家具；放置/移动/朝向 5° 吸附/对准/档位 0.1 吸附/类型；目标区域增删移、半径 0.2–3 m、目标切换；Obstacle 旋转矩形包含、Target 中心/包含）；App `TryoutView`（拖动、点选检查器、撤销重做、添加菜单），`RoomCanvasView` 支持目标区域与叠加层；`AppModel.updateLayout`（不提升 geometryRevision）
 - 已测：Linux `swift test` 累计 49 项；App 测试见 PR CI。未手动运行 UI。
+
+## 2026-10-12 · Issue #8 FXJ-07（Grok）
+- 分支：`feat/8-airflow-solver`（基于 `feat/7-fan-targets`）
+- 新增：FXJCore `Simulation/`：`SHA256.swift`（纯 Swift，含标准向量测试）、`ScenarioHash.swift`（规范化 JSON：键排序、1 mm/0.1° 量化、字典按 id 排序 + 模型版本）、`SimulationTypes.swift`（SimulationInput/Options、FlowField、Level、SimulationMetrics、Explanation、SimulationResult.isCurrent）、`AirflowSolver.swift`（模型 fxj-2d-0.1：网格掩码、风扇射流+视线遮挡、吊扇径向、穿堂风入流、邻域平滑、定性换气等级）
+- 不变量已测：全封闭/开口全关 → 对外换气 none（风扇仅室内循环）；相同输入逐位相同；输入变化 → isCurrent=false
+- 已测：Linux `swift test` 累计 65 项（新增 16）。
+- 限制：生活示意模型，未与实测或 CFD 校准；无回流/压力求解；单房间网格（邻室仅用于判断通路）。

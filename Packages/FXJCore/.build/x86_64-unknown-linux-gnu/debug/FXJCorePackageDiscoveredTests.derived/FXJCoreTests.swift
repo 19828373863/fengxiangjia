@@ -79,6 +79,28 @@ fileprivate extension LibraryTests {
         ("testSampleIsValid", testSampleIsValid)
     ]
 }
+
+fileprivate extension SimulationTests {
+    @available(*, deprecated, message: "Not actually deprecated. Marked as deprecated to allow inclusion of deprecated tests (which test deprecated functionality) without warnings")
+    static nonisolated(unsafe) let __allTests__SimulationTests = [
+        ("testClosedRoomNoOutdoorExchange", testClosedRoomNoOutdoorExchange),
+        ("testClosedWindowsCountAsClosed", testClosedWindowsCountAsClosed),
+        ("testCrossVentilation", testCrossVentilation),
+        ("testDeterministic", testDeterministic),
+        ("testDraftTarget", testDraftTarget),
+        ("testFanFacingWallFlagged", testFanFacingWallFlagged),
+        ("testFanTowardTargetCoversIt", testFanTowardTargetCoversIt),
+        ("testHashIgnoresDictionaryOrder", testHashIgnoresDictionaryOrder),
+        ("testHashSensitivityAndInvalidation", testHashSensitivityAndInvalidation),
+        ("testIndirectPathViaNeighbor", testIndirectPathViaNeighbor),
+        ("testInvalidRoomReportsStatus", testInvalidRoomReportsStatus),
+        ("testObstructionReducesExchange", testObstructionReducesExchange),
+        ("testSHA256Vectors", testSHA256Vectors),
+        ("testSampleRoomSolvesQuickly", testSampleRoomSolvesQuickly),
+        ("testSingleSided", testSingleSided),
+        ("testWardrobeBlocksJet", testWardrobeBlocksJet)
+    ]
+}
 @available(*, deprecated, message: "Not actually deprecated. Marked as deprecated to allow inclusion of deprecated tests (which test deprecated functionality) without warnings")
 func __FXJCoreTests__allTests() -> [XCTestCaseEntry] {
     return [
@@ -86,6 +108,7 @@ func __FXJCoreTests__allTests() -> [XCTestCaseEntry] {
         testCase(EditorTests.__allTests__EditorTests),
         testCase(FanTargetTests.__allTests__FanTargetTests),
         testCase(GeometryTopologyTests.__allTests__GeometryTopologyTests),
-        testCase(LibraryTests.__allTests__LibraryTests)
+        testCase(LibraryTests.__allTests__LibraryTests),
+        testCase(SimulationTests.__allTests__SimulationTests)
     ]
 }

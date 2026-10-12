@@ -79,5 +79,29 @@
     "object": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/HomeDocument.swift.o",
     "swiftmodule": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/HomeDocument~partial.swiftmodule",
     "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/HomeDocument.swiftdeps"
+  },
+  "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/AirflowSolver.swift": {
+    "dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/AirflowSolver.d",
+    "object": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/AirflowSolver.swift.o",
+    "swiftmodule": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/AirflowSolver~partial.swiftmodule",
+    "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/AirflowSolver.swiftdeps"
+  },
+  "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/SHA256.swift": {
+    "dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/SHA256.d",
+    "object": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/SHA256.swift.o",
+    "swiftmodule": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/SHA256~partial.swiftmodule",
+    "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/SHA256.swiftdeps"
+  },
+  "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/ScenarioHash.swift": {
+    "dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/ScenarioHash.d",
+    "object": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/ScenarioHash.swift.o",
+    "swiftmodule": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/ScenarioHash~partial.swiftmodule",
+    "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/ScenarioHash.swiftdeps"
+  },
+  "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Simulation/SimulationTypes.swift": {
+    "dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/SimulationTypes.d",
+    "object": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/SimulationTypes.swift.o",
+    "swiftmodule": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/SimulationTypes~partial.swiftmodule",
+    "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/SimulationTypes.swiftdeps"
   }
 }
