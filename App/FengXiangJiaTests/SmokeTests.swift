@@ -169,4 +169,8 @@ final class SmokeTests: XCTestCase {
         m.importScannedRoom(r.room)
         XCTAssertEqual(m.document?.home.rooms.count, 1)
     }
+
+    func testStaleReasonNamesCoverAllCases() {
+        for r in StaleReason.allCases { XCTAssertFalse(TryoutView.reasonName(r).isEmpty) }
+    }
 }

@@ -110,3 +110,8 @@
 - 分支：`feat/17-roomplan-scan`（基于 `feat/16-window-obstruction`）
 - 新增：FXJCore `Scan/ScanImport.swift`（与 RoomPlan 解耦：RoomPlan (x,z)→户型 (x,−z)；最长墙对齐坐标轴；端点 0.3 m 聚类吸附；链接闭合环，未闭合用外接矩形近似并警告；门/窗/开口匹配最近墙段，窗默认关闭；结果可直接编辑）；App `Services/RoomScan.swift`（RoomScanSupport：canImport + 非模拟器 + RoomCaptureSession.isSupported；RoomCaptureView 包装与代理；CapturedRoom→ScanImport；不支持时说明并引导手绘；完成后进入编辑器校准）；Info.plist 相机用途说明；AppModel.importScannedRoom
 - 已测：Linux `swift test` 新增 6 项（累计 121）；App +1（模拟器判定不支持）。**真机 LiDAR 扫描未验证**。
+
+## 2026-10-12 · Issue #18（Grok）
+- 分支：`feat/18-env-regression`（基于 `feat/17-roomplan-scan`）
+- 新增 Staleness/StaleReason；试摆页显示过期原因；比较随环境变化重算
+- 已测：Linux swift test 127（+6）；App +1（CI）。模拟器手动未运行。
