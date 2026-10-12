@@ -1,0 +1,198 @@
+{
+  "geometryRevision": 0,
+  "home": {
+    "constraints": [],
+    "id": "00000000-0000-0000-0000-00000000F001",
+    "location": {
+      "label": "SG",
+      "latitude": 1.35,
+      "longitude": 103.82
+    },
+    "name": "示例住宅",
+    "orientationDegrees": 0,
+    "rooms": [
+      {
+        "fans": [
+          {
+            "id": "00000000-0000-0000-0000-0000000D0001",
+            "kind": "pedestal",
+            "position": {
+              "x": 4.3,
+              "y": 0.8
+            },
+            "power": 0.6,
+            "yawDegrees": 135
+          }
+        ],
+        "height": 2.7,
+        "id": "00000000-0000-0000-0000-00000000F002",
+        "name": "示例客厅",
+        "obstacles": [
+          {
+            "center": {
+              "x": 2.5,
+              "y": 3.4
+            },
+            "heightClass": "low",
+            "id": "00000000-0000-0000-0000-0000000C0001",
+            "kind": "sofa",
+            "rotationDegrees": 0,
+            "size": {
+              "x": 2.2,
+              "y": 0.9
+            }
+          },
+          {
+            "center": {
+              "x": 2.5,
+              "y": 2.2
+            },
+            "heightClass": "low",
+            "id": "00000000-0000-0000-0000-0000000C0002",
+            "kind": "table",
+            "rotationDegrees": 0,
+            "size": {
+              "x": 1.2,
+              "y": 0.6
+            }
+          }
+        ],
+        "openings": [
+          {
+            "connects": [
+              {
+                "room": {
+                  "_0": "00000000-0000-0000-0000-00000000F002"
+                }
+              },
+              {
+                "outdoor": {}
+              }
+            ],
+            "id": "00000000-0000-0000-0000-0000000B0001",
+            "kind": "window",
+            "locked": false,
+            "offset": 1.5,
+            "openFraction": 1,
+            "wallId": "00000000-0000-0000-0000-0000000A0001",
+            "width": 2
+          },
+          {
+            "connects": [
+              {
+                "room": {
+                  "_0": "00000000-0000-0000-0000-00000000F002"
+                }
+              },
+              {
+                "outdoor": {}
+              }
+            ],
+            "id": "00000000-0000-0000-0000-0000000B0002",
+            "kind": "door",
+            "locked": false,
+            "offset": 3.5,
+            "openFraction": 0.5,
+            "wallId": "00000000-0000-0000-0000-0000000A0003",
+            "width": 0.9
+          }
+        ],
+        "polygon": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 4
+          },
+          {
+            "x": 0,
+            "y": 4
+          }
+        ],
+        "purpose": "living",
+        "targets": [
+          {
+            "id": "00000000-0000-0000-0000-0000000E0001",
+            "name": "沙发",
+            "objective": "wantBreeze",
+            "shape": {
+              "circle": {
+                "center": {
+                  "x": 2.5,
+                  "y": 3.4
+                },
+                "radius": 0.8
+              }
+            }
+          }
+        ],
+        "wallIds": [
+          "00000000-0000-0000-0000-0000000A0001",
+          "00000000-0000-0000-0000-0000000A0002",
+          "00000000-0000-0000-0000-0000000A0003",
+          "00000000-0000-0000-0000-0000000A0004"
+        ]
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "createdAt": "2027-01-15T08:00:00Z",
+      "environmentSnapshot": {
+        "observedAt": "2027-01-15T08:00:00Z",
+        "obstructionByOpening": [
+          "00000000-0000-0000-0000-0000000B0001",
+          "partial"
+        ],
+        "source": "manual",
+        "windFromDegrees": 180,
+        "windSpeed": 3
+      },
+      "fans": [
+        {
+          "id": "00000000-0000-0000-0000-0000000D0001",
+          "kind": "pedestal",
+          "position": {
+            "x": 4.3,
+            "y": 0.8
+          },
+          "power": 0.6,
+          "yawDegrees": 135
+        }
+      ],
+      "geometryRevision": 0,
+      "id": "00000000-0000-0000-0000-0000000F0001",
+      "name": "当前",
+      "openingStates": [
+        "00000000-0000-0000-0000-0000000B0001",
+        1,
+        "00000000-0000-0000-0000-0000000B0002",
+        0.5
+      ],
+      "roomId": "00000000-0000-0000-0000-00000000F002",
+      "targets": [
+        {
+          "id": "00000000-0000-0000-0000-0000000E0001",
+          "name": "沙发",
+          "objective": "wantBreeze",
+          "shape": {
+            "circle": {
+              "center": {
+                "x": 2.5,
+                "y": 3.4
+              },
+              "radius": 0.8
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 1
+}
