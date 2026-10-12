@@ -7,7 +7,7 @@ struct ComparisonView: View {
     let a: Scenario
     let b: Scenario
     let geometryRevision: Int
-    let environment: OutdoorConditions?
+    let environment: FXJCore.Environment?
     @State private var comparison: ScenarioComparison?
 
     var body: some View {
