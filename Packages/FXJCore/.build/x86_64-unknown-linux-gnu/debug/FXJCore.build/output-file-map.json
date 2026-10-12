@@ -1,0 +1,29 @@
+{
+  "": {
+    "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/master.swiftdeps"
+  },
+  "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Domain/Models.swift": {
+    "dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Models.d",
+    "object": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Models.swift.o",
+    "swiftmodule": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Models~partial.swiftmodule",
+    "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Models.swiftdeps"
+  },
+  "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Domain/Vec2.swift": {
+    "dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Vec2.d",
+    "object": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Vec2.swift.o",
+    "swiftmodule": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Vec2~partial.swiftmodule",
+    "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Vec2.swiftdeps"
+  },
+  "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/FXJCore.swift": {
+    "dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/FXJCore.d",
+    "object": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/FXJCore.swift.o",
+    "swiftmodule": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/FXJCore~partial.swiftmodule",
+    "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/FXJCore.swiftdeps"
+  },
+  "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Persistence/HomeDocument.swift": {
+    "dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/HomeDocument.d",
+    "object": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/HomeDocument.swift.o",
+    "swiftmodule": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/HomeDocument~partial.swiftmodule",
+    "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/HomeDocument.swiftdeps"
+  }
+}

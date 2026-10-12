@@ -1,0 +1,11 @@
+{
+  "": {
+    "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/master.swiftdeps"
+  },
+  "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/DomainModelTests.swift": {
+    "dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/DomainModelTests.d",
+    "object": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/DomainModelTests.swift.o",
+    "swiftmodule": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/DomainModelTests~partial.swiftmodule",
+    "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/DomainModelTests.swiftdeps"
+  }
+}

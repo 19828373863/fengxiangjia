@@ -1,5 +1,5 @@
-/// 风向家核心逻辑（Domain / Geometry / Simulation）。不依赖 UI 框架，可在 Linux 上测试。
-/// 当前仅为占位；正式数据模型见 Issue #3，须遵守 docs/ARCHITECTURE_AND_CONTRACTS.md。
+/// 风向家核心逻辑（Domain / Geometry / Editor / Simulation）。不依赖 UI 框架，可在 Linux 上测试。
+/// 契约为暂定版本（provisional），待 Issue #26 确认。
 public enum FXJCore {
-    public static let version = "0.0.1"
+    public static let version = "0.1.0"
 }
