@@ -20,6 +20,7 @@ struct TryoutView: View {
     @State private var savedToast = false
     @State private var feedbackToast: String?
     @State private var exportImage: Image?
+    @State private var showRecommend = false
 
     init(room: Room, home: Home, environment: OutdoorConditions? = nil,
          onFeedback: ((ComfortRating, String?) -> Void)? = nil,
@@ -104,6 +105,14 @@ struct TryoutView: View {
             inspector
         }
         .padding(.horizontal)
+        .sheet(isPresented: $showRecommend) {
+            RecommendationView(home: input.home, roomId: editor.room.id, fanId: selectedFan?.id, environment: environment) { fan in
+                commit {
+                    try editor.moveFan(fan.id, to: fan.position)
+                    try editor.setFanYaw(fan.id, degrees: fan.yawDegrees)
+                }
+            }
+        }
         .task(id: inputHash) { savedToast = false; exportImage = nil; await recompute() }
         .toolbar {
             ToolbarItemGroup(placement: .topBarLeading) {
@@ -114,6 +123,7 @@ struct TryoutView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
+                    Button("推荐摆法") { showRecommend = true }.disabled(editor.room.fans.isEmpty)
                     Button("添加风扇") { add { try editor.placeFan(at: freeSpot()) } }
                     Button("添加“希望有风”区域") { add { try editor.addTarget(name: "希望有风", at: centroid, objective: .wantBreeze) } }
                     Button("添加“减少直吹”区域") { add { try editor.addTarget(name: "减少直吹", at: centroid, objective: .avoidDirectDraft) } }

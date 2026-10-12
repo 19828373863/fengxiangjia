@@ -82,3 +82,9 @@
 - 顺带：CI push 触发仅限 main（PR 触发保留）；导出 JSON 改为点击时才生成临时文件
 - 已测：Linux `swift test` 累计 90 项（新增 MultiRoomTests 6）。UI 未手动运行。
 - 限制：单层；模拟仍逐房间网格计算（邻室只决定通路），未做跨房间连续流场。
+
+## 2026-10-12 · Issue #13 FXJ-12（Grok）
+- 分支：`feat/13-recommendation`（基于 `feat/12-multi-room`）
+- 新增：FXJCore `Recommendation/LayoutSearch.swift`（位置网格 0.5 m × 8 朝向 + 原位转向，上限 320 个候选；粗网格评估后选出“最省事/送风更强/少直吹”，再以标准精度重算，候选结果与其布局 scenarioHash 同源）；App `RecommendationView`（三候选图示 + 定性说明 + 一键采用，可撤销）
+- 已测：Linux `swift test` 新增 6 项（累计 96）。Linux debug 下单次搜索约 0.6 s；真机耗时未测。
+- 限制：只调整一台风扇；不搜索档位与开口状态。
