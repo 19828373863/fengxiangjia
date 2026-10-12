@@ -31,6 +31,7 @@ android {
 
 dependencies {
     implementation(project(":core"))
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     val composeBom = platform("androidx.compose:compose-bom:2024.10.01")
     implementation(composeBom)
     implementation("androidx.activity:activity-compose:1.9.3")
@@ -39,6 +40,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material:material-icons-core")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+    // #60 摄像头扫描：ARCore（optional，未安装 ARCore 的设备仍可使用手绘）
+    implementation("com.google.ar:core:1.46.0")
     debugImplementation("androidx.compose.ui:ui-tooling")
     testImplementation("junit:junit:4.13.2")
     testImplementation(kotlin("test"))
