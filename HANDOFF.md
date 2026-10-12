@@ -140,3 +140,8 @@
 - 分支：`feat/23-appstore-metadata`（基于 `feat/22-testflight-prep`）
 - 新增 App Store 文案草稿、元数据检查脚本、发布合规清单（含备案适用性）
 - 已测：check_metadata.py 通过（7 条占位警告）；Linux swift test 141。**提交审核：阻塞。**
+
+## 2026-10-12 · Issue #24（Grok）
+- 分支：`feat/24-mic-experiment`（基于 `feat/23-appstore-metadata`）
+- 新增麦克风实验方案与准入门槛；首版不纳入
+- 已测：无代码改动；实验**未运行**。
