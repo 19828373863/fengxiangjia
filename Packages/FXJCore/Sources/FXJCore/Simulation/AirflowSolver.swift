@@ -18,15 +18,6 @@ public enum AirflowSolver {
         }
     }
 
-    static func obstructionFactor(_ o: ObstructionLevel?) -> Double {
-        switch o ?? .unknown {
-        case .open: return 1
-        case .partial, .unknown: return 0.6
-        case .nearBuilding: return 0.35
-        case .lightWell: return 0.25
-        }
-    }
-
     public static func solve(_ input: SimulationInput) -> SimulationResult {
         let hash = ScenarioHash.compute(input)
         guard let room = input.room else {
@@ -64,7 +55,9 @@ public enum AirflowSolver {
             guard direct else { indirect += 1; continue }
             guard let w = room.wall(id: o.wallId), let wt = windTo else { continue }
             let d = w.outwardNormal.dot(wt)
-            let factor = obstructionFactor(input.environment?.obstructionByOpening[o.id])
+            let level = input.environment?.obstructionByOpening[o.id]
+            let factor = ObstructionModel.windFactor(level, floor: input.home.floorLevel)
+            if let level, level != .open { explanations.append(.obstructionReduced(openingId: o.id, level: level)) }
             if d < -0.3 { windward.append((o, w, windSpeed * factor * o.openFraction)) } else if d > 0.3 { leeward += 1 }
         }
         let cross = !windward.isEmpty && (leeward > 0 || indirect > 0) && windSpeed > 0.1

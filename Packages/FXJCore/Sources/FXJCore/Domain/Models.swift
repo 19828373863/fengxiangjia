@@ -92,11 +92,15 @@ public struct Opening: Codable, Hashable, Identifiable, Sendable {
     public var openFraction: Double
     public var locked: Bool
     public var connects: [ConnectionTarget]
+    /// #16 窗外遮挡（用户设置，仅对通向室外的开口有意义；可选字段，旧数据缺省为 nil = 未知）。
+    public var exteriorObstruction: ObstructionLevel?
 
     public init(id: EntityID = UUID(), wallId: EntityID, kind: OpeningKind, offset: Double, width: Double,
-                openFraction: Double = 1, locked: Bool = false, connects: [ConnectionTarget] = []) {
+                openFraction: Double = 1, locked: Bool = false, connects: [ConnectionTarget] = [],
+                exteriorObstruction: ObstructionLevel? = nil) {
         self.id = id; self.wallId = wallId; self.kind = kind; self.offset = offset; self.width = width
         self.openFraction = openFraction; self.locked = locked; self.connects = connects
+        self.exteriorObstruction = exteriorObstruction
     }
 }
 

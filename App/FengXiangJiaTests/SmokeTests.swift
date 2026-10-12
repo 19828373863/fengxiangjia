@@ -147,4 +147,15 @@ final class SmokeTests: XCTestCase {
         XCTAssertNil(m.currentEnvironment)
         XCTAssertEqual(m.weatherOutcome?.error, .offline)
     }
+
+    func testObstructionMergedIntoEnvironment() {
+        let m = AppModel(repository: tempRepo())
+        m.openSample()
+        let window = m.document!.home.rooms[0].openings.first { $0.kind == .window }!
+        m.setObstruction(openingId: window.id, level: .nearBuilding)
+        m.setFloor(3)
+        m.environmentMode = .manual
+        XCTAssertEqual(m.currentEnvironment?.obstructionByOpening[window.id], .nearBuilding)
+        XCTAssertEqual(m.document?.home.floorLevel, 3)
+    }
 }

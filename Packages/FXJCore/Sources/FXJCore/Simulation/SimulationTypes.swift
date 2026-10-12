@@ -104,6 +104,7 @@ public enum Explanation: Hashable, Codable, Sendable {
     case targetMissed(targetId: EntityID)
     case targetDraft(targetId: EntityID)
     case fanAidsExhaust(fanId: EntityID)
+    case obstructionReduced(openingId: EntityID, level: ObstructionLevel)
 }
 
 public enum SimulationStatus: Hashable, Codable, Sendable {

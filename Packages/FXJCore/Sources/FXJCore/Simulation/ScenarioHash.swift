@@ -6,6 +6,7 @@ public enum ScenarioHash {
     struct Canonical: Encodable {
         var model: String
         var orientation: Int
+        var floor: Int?
         var polygon: [[Int]]
         var wallIds: [String]
         var openings: [[String]]
@@ -55,6 +56,7 @@ public enum ScenarioHash {
         let canonical = Canonical(
             model: SimulationResult.modelVersion,
             orientation: q(input.home.orientationDegrees, 0.1),
+            floor: input.home.floorLevel,
             polygon: room.polygon.map { [q($0.x, mm), q($0.y, mm)] },
             wallIds: room.wallIds.map(\.uuidString),
             openings: openings, obstacles: obstacles, fans: fans, targets: targets,
