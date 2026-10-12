@@ -194,4 +194,13 @@ final class SmokeTests: XCTestCase {
         XCTAssertFalse(m.entitlement.isUnlocked)
         XCTAssertEqual(m.storeMessage, .cancelled)
     }
+
+    func testPrivacyManifestAndUsageStringsBundled() throws {
+        let url = try XCTUnwrap(Bundle.main.url(forResource: "PrivacyInfo", withExtension: "xcprivacy"), "隐私清单应打包进 App")
+        let plist = try XCTUnwrap(NSDictionary(contentsOf: url))
+        XCTAssertEqual(plist["NSPrivacyTracking"] as? Bool, false)
+        for k in ["NSCameraUsageDescription", "NSLocationWhenInUseUsageDescription"] {
+            XCTAssertFalse((Bundle.main.object(forInfoDictionaryKey: k) as? String ?? "").isEmpty, k)
+        }
+    }
 }

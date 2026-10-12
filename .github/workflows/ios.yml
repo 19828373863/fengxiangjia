@@ -25,6 +25,13 @@ jobs:
       - run: swift test
         working-directory: Packages/FXJCore
 
+  compliance:
+    name: Privacy & permission checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/check_compliance.py
+
   ios:
     name: iOS build & test (Simulator)
     runs-on: macos-15
