@@ -31,7 +31,7 @@ struct FloorplanEditorView: View {
     @State private var zoomStart: Viewport?
     @State private var dragHistoryMark = false
     let onSave: (Room) -> Void
-    @Environment(\.dismiss) private var dismiss
+    @SwiftUI.Environment(\.dismiss) private var dismiss
 
     init(room: Room, onSave: @escaping (Room) -> Void) {
         _editor = State(initialValue: RoomEditor(room: room))
