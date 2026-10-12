@@ -84,7 +84,7 @@ final class AppModel {
 
     /// 把当前布局保存为方案（#10/#11）。
     @discardableResult
-    func saveScenario(name: String, room: Room, environment: FXJCore.Environment? = nil) -> Scenario? {
+    func saveScenario(name: String, room: Room, environment: OutdoorConditions? = nil) -> Scenario? {
         guard var doc = document else { return nil }
         let s = Scenario.capture(name: name, room: room, geometryRevision: doc.geometryRevision, environment: environment)
         doc.scenarios.append(s)

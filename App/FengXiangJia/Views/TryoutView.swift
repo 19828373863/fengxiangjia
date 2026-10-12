@@ -21,7 +21,7 @@ struct TryoutView: View {
     @State private var feedbackToast: String?
     @State private var exportImage: Image?
 
-    init(room: Room, home: Home, environment: FXJCore.Environment? = nil,
+    init(room: Room, home: Home, environment: OutdoorConditions? = nil,
          onFeedback: ((ComfortRating, String?) -> Void)? = nil,
          onSaveScenario: ((Room) -> Void)? = nil, onChange: @escaping (Room) -> Void) {
         self.onFeedback = onFeedback
