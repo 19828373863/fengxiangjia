@@ -34,10 +34,22 @@ fileprivate extension GeometryTopologyTests {
         ("testValidRoomHasNoIssues", testValidRoomHasNoIssues)
     ]
 }
+
+fileprivate extension LibraryTests {
+    @available(*, deprecated, message: "Not actually deprecated. Marked as deprecated to allow inclusion of deprecated tests (which test deprecated functionality) without warnings")
+    static nonisolated(unsafe) let __allTests__LibraryTests = [
+        ("testCorruptFileGivesError", testCorruptFileGivesError),
+        ("testEmptyThenSaveThenLoad", testEmptyThenSaveThenLoad),
+        ("testFutureVersionGivesError", testFutureVersionGivesError),
+        ("testSampleIsDeterministic", testSampleIsDeterministic),
+        ("testSampleIsValid", testSampleIsValid)
+    ]
+}
 @available(*, deprecated, message: "Not actually deprecated. Marked as deprecated to allow inclusion of deprecated tests (which test deprecated functionality) without warnings")
 func __FXJCoreTests__allTests() -> [XCTestCaseEntry] {
     return [
         testCase(DomainModelTests.__allTests__DomainModelTests),
-        testCase(GeometryTopologyTests.__allTests__GeometryTopologyTests)
+        testCase(GeometryTopologyTests.__allTests__GeometryTopologyTests),
+        testCase(LibraryTests.__allTests__LibraryTests)
     ]
 }
