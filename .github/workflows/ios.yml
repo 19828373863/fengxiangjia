@@ -65,6 +65,11 @@ jobs:
             -derivedDataPath build/DD \
             -resultBundlePath build/TestResults.xcresult \
             CODE_SIGNING_ALLOWED=NO | tee xcodebuild.log
+      - name: Release build (unsigned, generic iOS)
+        run: |
+          set -o pipefail
+          xcodebuild build -project FengXiangJia.xcodeproj -scheme FengXiangJia -configuration Release \
+            -destination 'generic/platform=iOS' -derivedDataPath build/DDR CODE_SIGNING_ALLOWED=NO | tail -20
       - name: Simulator screenshots (on demand)
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.screenshots }}
         run: |

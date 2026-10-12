@@ -14,3 +14,13 @@ Secrets.xcconfig
 # XcodeGen 生成的工程不提交，由 project.yml 生成
 *.xcodeproj
 .build/
+
+# fastlane / 签名密钥（勿提交）
+*.p8
+*.mobileprovision
+*.cer
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/test_output/
+*.ipa
+*.dSYM.zip
