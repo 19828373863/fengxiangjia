@@ -57,3 +57,8 @@
 - 不变量已测：全封闭/开口全关 → 对外换气 none（风扇仅室内循环）；相同输入逐位相同；输入变化 → isCurrent=false
 - 已测：Linux `swift test` 累计 65 项（新增 16）。
 - 限制：生活示意模型，未与实测或 CFD 校准；无回流/压力求解；单房间网格（邻室仅用于判断通路）。
+
+## 2026-10-12 · Issue #9 FXJ-08（Grok）
+- 分支：`feat/9-airflow-visualization`（基于 `feat/8-airflow-solver`）
+- 新增：FXJCore `Simulation/Visualization.swift`（FlowVisualization：RK2 流线、静态箭头、固定图例 0–1.5 m/s，携带 scenarioHash 与结果同源）；App `FlowOverlayView`（TimelineView 流线动画/静态箭头，减少动态效果、低电量、非前台时暂停）、`FlowLegendView`、`ExplanationText`；试摆页随输入变化防抖重算（后台线程），过期结果淡化并标“待更新”，展示定性指标与 ≤3 条解释
+- 已测：Linux `swift test` 累计 71 项（新增 6：同源 hash、确定性、流线不穿固体、箭头方向、图例夹取、无效结果）。UI 未手动运行。

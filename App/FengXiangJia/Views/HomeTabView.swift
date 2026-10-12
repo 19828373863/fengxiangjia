@@ -48,7 +48,7 @@ struct TryoutTabView: View {
     var body: some View {
         LoadStateView(state: model.state, onSample: model.openSample, onRetry: model.load) { doc in
             if let room = doc.home.rooms.first {
-                TryoutView(room: room) { model.updateLayout($0) }
+                TryoutView(room: room, home: doc.home) { model.updateLayout($0) }
                     .id(room.id)
             } else {
                 ContentUnavailableView("没有房间", systemImage: "square.dashed",
