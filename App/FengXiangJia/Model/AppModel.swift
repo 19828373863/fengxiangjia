@@ -46,7 +46,27 @@ final class AppModel {
         }
     }
 
-    var currentEnvironment: OutdoorConditions? { environment() }
+    /// 已合并住宅楼层/窗外遮挡设置（#16）的环境快照。
+    var currentEnvironment: OutdoorConditions? {
+        guard let home = document?.home else { return environment() }
+        return ObstructionModel.apply(environment(), home: home)
+    }
+
+    func setObstruction(openingId: UUID, level: ObstructionLevel) {
+        guard var doc = document else { return }
+        for r in doc.home.rooms.indices {
+            if let o = doc.home.rooms[r].openings.firstIndex(where: { $0.id == openingId }) {
+                doc.home.rooms[r].openings[o].exteriorObstruction = level
+            }
+        }
+        update(doc)
+    }
+
+    func setFloor(_ floor: Int?) {
+        guard var doc = document else { return }
+        doc.home.floorLevel = floor
+        update(doc)
+    }
 
     func setEnvironmentMode(_ m: EnvironmentMode) {
         environmentMode = m

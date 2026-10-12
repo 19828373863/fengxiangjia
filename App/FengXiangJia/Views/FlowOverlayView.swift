@@ -79,6 +79,7 @@ enum ExplanationText {
         case .targetMissed(let id): return "“\(name(id))”风较弱，可让风扇更靠近或对准它。"
         case .targetDraft(let id): return "“\(name(id))”有明显直吹，可降低档位或偏转风扇。"
         case .fanAidsExhaust: return "风扇靠近开口朝外吹，有助于把室内空气排出。"
+        case .obstructionReduced(_, let level): return "迎风窗外\(ObstructionText.name(level))，进风按较低风速估计。"
         }
     }
 
@@ -88,5 +89,17 @@ enum ExplanationText {
 
     static func level(_ l: Level) -> String {
         switch l { case .none: return "无"; case .low: return "弱"; case .medium: return "中"; case .high: return "强" }
+    }
+}
+
+enum ObstructionText {
+    static func name(_ l: ObstructionLevel) -> String {
+        switch l {
+        case .open: return "开阔"
+        case .partial: return "部分遮挡"
+        case .nearBuilding: return "紧邻楼房"
+        case .lightWell: return "天井/凹槽"
+        case .unknown: return "情况未知"
+        }
     }
 }

@@ -41,6 +41,11 @@ struct HomeTabView: View {
                     } label: {
                         LabeledContent("位置与朝向", value: doc.home.location == nil ? "未设置" : "上方朝\(Bearing.name(doc.home.orientationDegrees))")
                     }
+                    NavigationLink {
+                        ObstructionSettingsView(model: model)
+                    } label: {
+                        LabeledContent("楼层与窗外遮挡", value: doc.home.floorLevel.map { "\($0) 层" } ?? "未设置")
+                    }
                     if let room = doc.home.rooms.first {
                         NavigationLink("编辑户型（手绘）") {
                             FloorplanEditorView(room: room) { edited in model.replaceRoom(edited) }

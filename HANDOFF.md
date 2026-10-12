@@ -99,3 +99,9 @@
 - 新增：FXJCore `Weather/Weather.swift`（HourlyWeather、WeatherForecast（isDemo、attribution）、WeatherProvider 协议、确定性 MockWeatherProvider（标注演示数据）、WeatherCache（按粗化位置，1 h 新鲜 / 6 h 过期）、WeatherService actor：新鲜缓存→在线→未过期缓存→错误；Environment.manual）
 - App：`Services/WeatherKitProvider.swift`（**默认不编译**，需 FXJ_WEATHERKIT 编译条件 + 开发者账号/WeatherKit capability；含 Apple 天气署名与法律链接）、`WeatherPanelView`（住宅天气/手动/不考虑；来源、时间、缓存、过期、错误、署名占位）；AppModel 环境模式、手动风况（取整到小时，避免 hash 抖动），试摆与保存方案使用同一环境
 - 已测：Linux `swift test` 新增 7 项（累计 109）；App +2。WeatherKit 真实数据**未验证**（无账号）。
+
+## 2026-10-12 · Issue #16 FXJ-15（Grok）
+- 分支：`feat/16-window-obstruction`（基于 `feat/15-weather`）
+- 新增：`Opening.exteriorObstruction`（可选字段，旧数据缺省 nil=未知，无需 schema 升级）；FXJCore `Weather/Obstruction.swift`（遮挡系数 开阔1/部分0.6/未知0.6/近楼0.35/天井0.25 × 楼层系数 低层0.7/2–5层0.85/6层+1.0；obstructionMap 仅外窗；apply 合并进环境快照；exteriorOpenings）；求解器改用该系数并输出 `obstructionReduced` 解释；scenarioHash 纳入楼层
+- App：`ObstructionSettingsView`（楼层、每扇外窗遮挡及朝向）、AppModel.setObstruction/setFloor，currentEnvironment 合并遮挡
+- 已测：Linux `swift test` 新增 6 项（累计 115）；App +1。系数为经验估计，**未校准**。
