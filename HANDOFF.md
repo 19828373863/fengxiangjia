@@ -67,3 +67,10 @@
 - 分支：`feat/10-ab-compare`（基于 `feat/9-airflow-visualization`）
 - 新增：FXJCore `Recommendation/Comparison.swift`（Scenario.capture/applied；ScenarioComparison：强制同一环境快照与网格参数、共享固定图例；维度=目标有风/直吹风险/对外换气/室内循环/调整成本，均为定性等级与“A/B/相近”，无伪精确分数；备注=环境统一、户型已改、封闭房间、无效；建议 ≤3 条）；App `ComparisonView`、方案页多选比较与删除、试摆页“保存方案”；`AppModel.saveScenario/deleteScenario`
 - 已测：Linux `swift test` 累计 78 项（新增 7）。UI 未手动运行。
+
+## 2026-10-12 · Issue #11 FXJ-10（Grok）
+- 分支：`feat/11-save-export-feedback`（基于 `feat/10-ab-compare`）
+- 新增：FXJCore `Domain/Feedback.swift`（ComfortFeedback：太弱/刚好/太大/闷，关联 scenarioHash）、`Persistence/Export.swift`（脱敏导出：默认去位置与反馈备注）；**schemaVersion 1 → 2**（新增 `feedback`，含 v1→v2、v0→v2 迁移测试）；App：试摆页体感反馈、生成图片（ImageRenderer，静态箭头，与屏上同一结果）+ ShareLink；我家页“数据与隐私”：导出 JSON、确认后删除全部本地数据；方案随 HomeDocument 保存恢复
+- CI：`ios.yml` 新增 workflow_dispatch 输入 `screenshots`，按需在模拟器启动 App（`-FXJSampleOnLaunch -FXJTab home|tryout|plans`）并用 `simctl io screenshot` 截图上传（产物配额满时 continue-on-error）
+- 已测：Linux `swift test` 累计 84 项（新增 6）。UI 未手动运行。
+- 风险：schema v2 为公共契约变更（暂定，见 #26）。

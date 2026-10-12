@@ -84,4 +84,19 @@ final class SmokeTests: XCTestCase {
         m.deleteScenario(doc.scenarios[0].id)
         XCTAssertEqual(m.document!.scenarios.count, 1)
     }
+
+    func testFeedbackExportAndDelete() throws {
+        let repo = tempRepo()
+        let m = AppModel(repository: repo)
+        m.openSample()
+        m.addFeedback(roomId: SampleData.roomId, scenarioHash: nil, rating: .justRight)
+        XCTAssertEqual(m.document?.feedback.count, 1)
+        let url = try XCTUnwrap(m.exportFileURL())
+        let exported = try DocumentCodec.decode(Data(contentsOf: url))
+        XCTAssertEqual(exported.feedback.first?.rating, .justRight)
+        XCTAssertNil(exported.home.location)
+        m.resetToEmpty()
+        XCTAssertEqual(m.state, .empty)
+        XCTAssertEqual(repo.load(), .empty)
+    }
 }

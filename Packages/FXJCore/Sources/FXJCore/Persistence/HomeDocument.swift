@@ -2,17 +2,19 @@ import Foundation
 
 /// 持久化根对象。D009（提议）：Codable JSON + schemaVersion + 显式迁移。
 public struct HomeDocument: Codable, Hashable, Sendable {
-    public static let currentSchemaVersion = 1
+    public static let currentSchemaVersion = 2
 
     public var schemaVersion: Int
     public var geometryRevision: Int
     public var home: Home
     public var scenarios: [Scenario]
+    /// v2 新增：体感反馈。
+    public var feedback: [ComfortFeedback]
 
-    public init(home: Home, scenarios: [Scenario] = [], geometryRevision: Int = 0) {
+    public init(home: Home, scenarios: [Scenario] = [], geometryRevision: Int = 0, feedback: [ComfortFeedback] = []) {
         self.schemaVersion = Self.currentSchemaVersion
         self.geometryRevision = geometryRevision
-        self.home = home; self.scenarios = scenarios
+        self.home = home; self.scenarios = scenarios; self.feedback = feedback
     }
 }
 
@@ -79,6 +81,12 @@ public enum DocumentCodec {
             if doc["geometryRevision"] == nil { doc["geometryRevision"] = 0 }
             if doc["scenarios"] == nil { doc["scenarios"] = [Any]() }
             return doc
-        }
+        },
+        // v1 → v2：新增 feedback 数组。
+        1: { old in
+            var doc = old
+            if doc["feedback"] == nil { doc["feedback"] = [Any]() }
+            return doc
+        },
     ]
 }

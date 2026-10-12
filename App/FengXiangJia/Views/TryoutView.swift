@@ -16,10 +16,15 @@ struct TryoutView: View {
     let environment: OutdoorConditions?
     let onChange: (Room) -> Void
     var onSaveScenario: ((Room) -> Void)? = nil
+    var onFeedback: ((ComfortRating, String?) -> Void)? = nil
     @State private var savedToast = false
+    @State private var feedbackToast: String?
+    @State private var exportImage: Image?
 
     init(room: Room, home: Home, environment: OutdoorConditions? = nil,
+         onFeedback: ((ComfortRating, String?) -> Void)? = nil,
          onSaveScenario: ((Room) -> Void)? = nil, onChange: @escaping (Room) -> Void) {
+        self.onFeedback = onFeedback
         self.onSaveScenario = onSaveScenario
         _editor = State(initialValue: RoomEditor(room: room))
         self.home = home
@@ -66,11 +71,33 @@ struct TryoutView: View {
                 }
             }
             resultSummary
+            HStack {
+                if let onFeedback {
+                    Menu("体感反馈") {
+                        ForEach(ComfortRating.allCases, id: \.self) { r in
+                            Button(Self.ratingName(r)) {
+                                onFeedback(r, isStale ? nil : result?.scenarioHash)
+                                feedbackToast = "已记录：\(Self.ratingName(r))"
+                            }
+                        }
+                    }
+                    .font(.caption)
+                }
+                if let feedbackToast { Text(feedbackToast).font(.caption2).foregroundStyle(.secondary) }
+                Spacer()
+                if let exportImage {
+                    ShareLink(item: exportImage, preview: SharePreview("风向家方案", image: exportImage)) {
+                        Label("分享图片", systemImage: "square.and.arrow.up")
+                    }.font(.caption)
+                } else {
+                    Button("生成图片") { renderImage() }.font(.caption)
+                }
+            }
             if let m = message { Text(m).font(.footnote).foregroundStyle(.orange) }
             inspector
         }
         .padding(.horizontal)
-        .task(id: inputHash) { savedToast = false; await recompute() }
+        .task(id: inputHash) { savedToast = false; exportImage = nil; await recompute() }
         .toolbar {
             ToolbarItemGroup(placement: .topBarLeading) {
                 Button { editor.undo(); onChange(editor.room) } label: { Image(systemName: "arrow.uturn.backward") }
@@ -149,6 +176,31 @@ struct TryoutView: View {
         computing = false
         guard !Task.isCancelled else { return }
         result = r; viz = v
+    }
+
+    static func ratingName(_ r: ComfortRating) -> String {
+        switch r {
+        case .tooWeak: return "风太弱"
+        case .justRight: return "刚好"
+        case .tooStrong: return "风太大/直吹"
+        case .stuffy: return "闷"
+        }
+    }
+
+    /// 以静态箭头离屏渲染当前方案（与屏幕上同一结果）。
+    @MainActor private func renderImage() {
+        let room = editor.room, v = viz, stale = isStale
+        let content = VStack(spacing: 6) {
+            RoomCanvasView(room: room) { t in
+                if let v { FlowOverlayView(viz: v, transform: t, animated: false, stale: stale) }
+            }
+            FlowLegendView()
+            Text("风向家 · 简化示意，非工程计算").font(.caption2)
+        }
+        .padding(16).frame(width: 420).background(Color.white)
+        let renderer = ImageRenderer(content: content)
+        renderer.scale = 2
+        if let ui = renderer.uiImage { exportImage = Image(uiImage: ui) }
     }
 
     static func kindName(_ k: FanKind) -> String {
