@@ -1,0 +1,61 @@
+name: iOS CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, "feat/**", "fix/**"]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core-linux:
+    name: FXJCore swift test (Linux)
+    runs-on: ubuntu-latest
+    container: swift:6.0
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift test
+        working-directory: Packages/FXJCore
+
+  ios:
+    name: iOS build & test (Simulator)
+    runs-on: macos-15
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Xcode version
+        run: xcodebuild -version
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate project
+        run: xcodegen generate
+      - name: Pick simulator
+        id: sim
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json,sys
+          d=json.load(sys.stdin)["devices"]
+          c=[(rt,x) for rt,xs in d.items() if "iOS" in rt for x in xs if x["name"].startswith("iPhone")]
+          c.sort(key=lambda t:t[0])
+          print(c[-1][1]["udid"] if c else "")')
+          test -n "$UDID" || { echo "No iPhone simulator"; xcrun simctl list; exit 1; }
+          echo "Using $UDID"; echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+      - name: Build & test
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project FengXiangJia.xcodeproj \
+            -scheme FengXiangJia \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -resultBundlePath build/TestResults.xcresult \
+            CODE_SIGNING_ALLOWED=NO | tee xcodebuild.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-test-results
+          path: |
+            build/TestResults.xcresult
+            xcodebuild.log

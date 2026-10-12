@@ -10,3 +10,6 @@ xcuserdata/
 *.p12
 *.mobileprovision
 Secrets.xcconfig
+
+# XcodeGen 生成的工程不提交，由 project.yml 生成
+*.xcodeproj
