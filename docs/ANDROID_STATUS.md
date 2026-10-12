@@ -10,3 +10,4 @@
 | #55 | 气流求解 fxj-2d-0.1、scenarioHash、可视化、A/B 比较、遮挡模型；跨平台黄金样例 | ✅ | 见 PR | 不适用（纯 JVM） | — | — |
 | #56 | Compose UI：我家/试摆/方案、示例房间、户型/门窗/风扇/目标/家具编辑（撤销重做）、气流显示、A/B 比较、自动保存、导出 | ✅ | 见 PR | 见 PR | 未运行 | — |
 | #60 | ARCore 摄像头扫描（地面描墙角、墙面平面、Depth、权限/可用性降级）+ core ScanImport | ✅ | 见 PR | 未运行（需 ARCore 真机） | **未验证** | — |
+| #64 | 自动推荐 LayoutSearch、过期原因、天气 provider（Mock/Open-Meteo 暂定）+ 缓存降级、一次性购买权益规则 | ✅ | 见 PR | 不适用（纯 JVM） | — | — |

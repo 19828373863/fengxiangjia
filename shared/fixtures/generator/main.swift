@@ -189,3 +189,31 @@ do {
     }
     try! JSONSerialization.data(withJSONObject: ["cases": out], options: [.sortedKeys, .prettyPrinted]).write(to: URL(fileURLWithPath: "out/scan-golden.json"))
 }
+// —— layout search + mock weather golden (#64) ——
+do {
+    var cases: [[String: Any]] = []
+    let s = SampleData.sampleDocument()
+    var withDraft = s
+    withDraft.home.rooms[0].targets.append(Target(id: U("00000000-0000-0000-0000-0000000E0002"), name: "书桌",
+        shape: .circle(center: Vec2(1.0, 2.0), radius: 0.6), objective: .avoidDirectDraft))
+    let inputs: [(String, HomeDocument, Environment?)] = [
+        ("sample-no-wind", s, nil),
+        ("sample-south-3ms", s, Environment(source: .manual, observedAt: t0, windFromDegrees: 180, windSpeed: 3)),
+        ("sample-draft-target", withDraft, Environment(source: .manual, observedAt: t0, windFromDegrees: 90, windSpeed: 2)),
+    ]
+    for (name, doc, env) in inputs {
+        let cands = LayoutSearch.search(home: doc.home, roomId: SampleData.roomId, environment: env)
+        cases.append(["name": name, "document": jsonObj(doc), "environment": env.map { jsonObj($0) } ?? NSNull(),
+            "candidates": cands.map { c in ["kind": c.kind.rawValue, "x": c.fan.position.x, "y": c.fan.position.y, "yaw": c.fan.yawDegrees,
+                "cost": c.cost.rawValue, "breeze": c.breeze.rawValue, "draft": c.draft.rawValue, "isCurrent": c.isCurrent, "hash": c.result.scenarioHash] }])
+    }
+    let semaphore = DispatchSemaphore(value: 0)
+    var weather: Any = NSNull()
+    Task {
+        let f = try! await MockWeatherProvider().forecast(for: Location(latitude: 1.35, longitude: 103.82), now: Date(timeIntervalSince1970: 1_800_001_234))
+        weather = f.hours.map { ["t": Int($0.date.timeIntervalSince1970), "from": $0.windFromDegrees, "speed": $0.windSpeed, "temp": $0.temperature!, "rain": $0.precipitation!] }
+        semaphore.signal()
+    }
+    semaphore.wait()
+    try! JSONSerialization.data(withJSONObject: ["layoutSearch": cases, "mockWeather": weather], options: [.sortedKeys]).write(to: URL(fileURLWithPath: "out/recommendation-golden.json"))
+}
