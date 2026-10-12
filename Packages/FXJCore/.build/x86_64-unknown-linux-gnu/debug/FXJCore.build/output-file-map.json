@@ -20,6 +20,24 @@
     "swiftmodule": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/FXJCore~partial.swiftmodule",
     "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/FXJCore.swiftdeps"
   },
+  "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Geometry/Polygon.swift": {
+    "dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Polygon.d",
+    "object": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Polygon.swift.o",
+    "swiftmodule": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Polygon~partial.swiftmodule",
+    "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Polygon.swiftdeps"
+  },
+  "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Geometry/Topology.swift": {
+    "dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Topology.d",
+    "object": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Topology.swift.o",
+    "swiftmodule": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Topology~partial.swiftmodule",
+    "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Topology.swiftdeps"
+  },
+  "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Geometry/Validation.swift": {
+    "dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Validation.d",
+    "object": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Validation.swift.o",
+    "swiftmodule": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Validation~partial.swiftmodule",
+    "swift-dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Validation.swiftdeps"
+  },
   "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Persistence/HomeDocument.swift": {
     "dependencies": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/HomeDocument.d",
     "object": "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/HomeDocument.swift.o",

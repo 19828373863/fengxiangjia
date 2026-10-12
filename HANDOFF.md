@@ -26,3 +26,10 @@
 - 契约：**暂定**，采用 #26 中开发侧提议，待总调度确认。
 - 已测：Linux `swift test` 9 项通过；macOS CI 见 PR。
 - 未做：scenarioHash（留给模拟模块 #8）、SwiftData 方案对比。
+
+## 2026-10-12 · Issue #4 FXJ-03（Grok）
+- 分支：`feat/4-geometry-topology`（基于 `feat/3-domain-models`）
+- 新增：`FXJCore/Geometry/Polygon.swift`（面积、线段相交、自交、点在多边形内、墙段派生、绕向归一化保持开口位置）、`Validation.swift`（RoomIssue 校验）、`Topology.swift`（开口内外连接推导、连接图、室外可达性）
+- 规则：墙体按零厚度中心线；邻室墙段反向共线且距离 ≤0.05 m 视为共享；**只有开口能连通区域**，openFraction=0 视为关闭。
+- 已测：Linux `swift test` 累计 22 项通过（新增 13）；macOS CI 见 PR。
+- 未做：墙厚、房间之间互相重叠检测、曲线墙。

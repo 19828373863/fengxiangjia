@@ -40,6 +40,18 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Geometry/Polygon.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Geometry/Topology.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Geometry/Validation.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Persistence/HomeDocument.swift"
         },
         {
@@ -58,6 +70,9 @@
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Models.swift.o",
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Vec2.swift.o",
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/FXJCore.swift.o",
+        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Polygon.swift.o",
+        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Topology.swift.o",
+        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Validation.swift.o",
         "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/HomeDocument.swift.o"
       ],
       "otherArguments" : [
@@ -103,6 +118,18 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Polygon.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Topology.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Validation.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/HomeDocument.swift.o"
         },
         {
@@ -115,6 +142,9 @@
         "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Domain/Models.swift",
         "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Domain/Vec2.swift",
         "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/FXJCore.swift",
+        "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Geometry/Polygon.swift",
+        "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Geometry/Topology.swift",
+        "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Geometry/Validation.swift",
         "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Persistence/HomeDocument.swift"
       ],
       "tempsPath" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build",
@@ -287,6 +317,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/GeometryTopologyTests.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/swift-version--5F767C5DFF86BA86.txt"
         },
         {
@@ -302,7 +336,8 @@
       "moduleName" : "FXJCoreTests",
       "moduleOutputPath" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/Modules/FXJCoreTests.swiftmodule",
       "objects" : [
-        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/DomainModelTests.swift.o"
+        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/DomainModelTests.swift.o",
+        "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/GeometryTopologyTests.swift.o"
       ],
       "otherArguments" : [
         "-target",
@@ -339,12 +374,17 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/GeometryTopologyTests.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/Modules/FXJCoreTests.swiftmodule"
         }
       ],
       "prepareForIndexing" : false,
       "sources" : [
-        "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/DomainModelTests.swift"
+        "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/DomainModelTests.swift",
+        "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/GeometryTopologyTests.swift"
       ],
       "tempsPath" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build",
       "wholeModuleOptimization" : false
@@ -365,6 +405,9 @@
       "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Domain/Models.swift",
       "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Domain/Vec2.swift",
       "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/FXJCore.swift",
+      "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Geometry/Polygon.swift",
+      "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Geometry/Topology.swift",
+      "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Geometry/Validation.swift",
       "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Persistence/HomeDocument.swift",
       "-I",
       "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/Modules",
@@ -480,6 +523,7 @@
       "-incremental",
       "-c",
       "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/DomainModelTests.swift",
+      "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/GeometryTopologyTests.swift",
       "-I",
       "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/Modules",
       "-target",
@@ -534,6 +578,10 @@
         {
           "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/DomainModelTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/GeometryTopologyTests.swift.o"
         }
       ],
       "outputs" : [
@@ -583,6 +631,18 @@
         {
           "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/FXJCore.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Geometry/Polygon.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Geometry/Topology.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Sources/FXJCore/Geometry/Validation.swift"
         },
         {
           "kind" : "file",
@@ -648,6 +708,18 @@
         },
         {
           "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Polygon.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Topology.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Validation.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCore.build/Vec2.swift.o"
         },
         {
@@ -677,6 +749,10 @@
         {
           "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/FXJCoreTests.swiftmodule.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/GeometryTopologyTests.swift.o"
         }
       ],
       "outputFilePath" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCorePackageTests.product/Objects.LinkFileList"
@@ -691,6 +767,10 @@
         {
           "kind" : "file",
           "name" : "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/DomainModelTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/fengxiangjia/Packages/FXJCore/Tests/FXJCoreTests/GeometryTopologyTests.swift"
         }
       ],
       "outputFilePath" : "/workspace/fengxiangjia/Packages/FXJCore/.build/x86_64-unknown-linux-gnu/debug/FXJCoreTests.build/sources"

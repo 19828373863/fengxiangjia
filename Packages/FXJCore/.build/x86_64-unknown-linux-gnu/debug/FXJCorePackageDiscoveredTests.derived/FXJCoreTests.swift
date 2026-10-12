@@ -15,9 +15,29 @@ fileprivate extension DomainModelTests {
         ("testWindVectorConvention", testWindVectorConvention)
     ]
 }
+
+fileprivate extension GeometryTopologyTests {
+    @available(*, deprecated, message: "Not actually deprecated. Marked as deprecated to allow inclusion of deprecated tests (which test deprecated functionality) without warnings")
+    static nonisolated(unsafe) let __allTests__GeometryTopologyTests = [
+        ("testAreaAndWalls", testAreaAndWalls),
+        ("testClockwiseAndDegenerate", testClockwiseAndDegenerate),
+        ("testClosedOpeningBlocksPath", testClosedOpeningBlocksPath),
+        ("testFanOutsideRoomFlagged", testFanOutsideRoomFlagged),
+        ("testLShapeIsSimple", testLShapeIsSimple),
+        ("testNoThroughWallWithoutOpening", testNoThroughWallWithoutOpening),
+        ("testNormalizeWindingKeepsOpeningPosition", testNormalizeWindingKeepsOpeningPosition),
+        ("testOpeningConnectsIndoorOutdoor", testOpeningConnectsIndoorOutdoor),
+        ("testOpeningMustStayWithinWall", testOpeningMustStayWithinWall),
+        ("testOverlappingOpeningsAndNarrow", testOverlappingOpeningsAndNarrow),
+        ("testRefreshConnections", testRefreshConnections),
+        ("testSelfIntersectionDetected", testSelfIntersectionDetected),
+        ("testValidRoomHasNoIssues", testValidRoomHasNoIssues)
+    ]
+}
 @available(*, deprecated, message: "Not actually deprecated. Marked as deprecated to allow inclusion of deprecated tests (which test deprecated functionality) without warnings")
 func __FXJCoreTests__allTests() -> [XCTestCaseEntry] {
     return [
-        testCase(DomainModelTests.__allTests__DomainModelTests)
+        testCase(DomainModelTests.__allTests__DomainModelTests),
+        testCase(GeometryTopologyTests.__allTests__GeometryTopologyTests)
     ]
 }
