@@ -57,6 +57,9 @@ struct HomeSettingsView: View {
                         catch { message = location.authorizationDenied ? "未授权定位，可在地图上点选或手动输入" : "定位失败，请手动输入" }
                     }
                 }
+                if location.authorizationDenied, let url = URL(string: UIApplication.openSettingsURLString) {
+                    Link("定位未授权：打开设置（可选）", destination: url).font(.caption)
+                }
                 if home.location != nil { Button("清除位置", role: .destructive) { home.location = nil; locationText = "" } }
             } header: { Text("住宅位置") } footer: {
                 Text("用于查询住宅所在地天气。只保存约 1 km 精度，与手机当前位置无关，不上传。")

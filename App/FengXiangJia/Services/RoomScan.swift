@@ -1,5 +1,6 @@
 import SwiftUI
 import FXJCore
+import AVFoundation
 #if canImport(RoomPlan)
 import RoomPlan
 #endif
@@ -112,7 +113,10 @@ struct RoomScanView: View {
         ZStack(alignment: .bottom) {
             RoomCaptureRepresentable(coordinator: coordinator).ignoresSafeArea()
             VStack {
-                if let errorText { Text(errorText).foregroundStyle(.red) }
+                if let errorText {
+                    Text(errorText).foregroundStyle(.red)
+                    if let url = URL(string: UIApplication.openSettingsURLString) { Link("打开设置", destination: url) }
+                }
                 Button(finished ? "处理中…" : "完成扫描") {
                     finished = true
                     coordinator.captureView?.captureSession.stop()
@@ -125,7 +129,11 @@ struct RoomScanView: View {
             coordinator.onResult = { room, error in
                 Task { @MainActor in
                     guard let room, error == nil, let r = ScanImport.convert(room) else {
-                        errorText = "扫描结果无法识别墙体，请重试或改用手绘"; finished = false; return
+                        // #20：相机被拒绝时 RoomPlan 会报错；给出去设置或手绘的路径
+                        errorText = AVCaptureDevice.authorizationStatus(for: .video) == .denied
+                            ? "未授权相机。可在“设置”中允许，或改用手绘户型。"
+                            : "扫描结果无法识别墙体，请重试或改用手绘"
+                        finished = false; return
                     }
                     result = r
                 }

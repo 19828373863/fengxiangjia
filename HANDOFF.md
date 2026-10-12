@@ -120,3 +120,8 @@
 - 分支：`feat/19-storekit`（基于 `feat/18-env-regression`）
 - 新增 StoreKit 2 一次性内购、权益缓存、付费墙与功能门控；.storekit 本地测试配置
 - 已测：Linux swift test 133（+6）；App +2（CI）。**沙盒/真机购买未验证（阻塞：开发者账号）**；商品 ID/价格/免费范围待确认。
+
+## 2026-10-12 · Issue #20（Grok）
+- 分支：`feat/20-privacy-a11y`（基于 `feat/19-storekit`）
+- 新增隐私清单、隐私政策草案、合规检查脚本与 CI job；权限拒绝路径补充“打开设置”
+- 已测：check_compliance.py 本地通过；Linux swift test 133（无变化）；App +1（CI）。VoiceOver/动态字体人工检查**未运行**。
