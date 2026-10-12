@@ -80,6 +80,22 @@ final class AppModel {
         update(doc)
     }
 
+    /// 把当前布局保存为方案（#10/#11）。
+    @discardableResult
+    func saveScenario(name: String, room: Room, environment: OutdoorConditions? = nil) -> Scenario? {
+        guard var doc = document else { return nil }
+        let s = Scenario.capture(name: name, room: room, geometryRevision: doc.geometryRevision, environment: environment)
+        doc.scenarios.append(s)
+        update(doc)
+        return s
+    }
+
+    func deleteScenario(_ id: UUID) {
+        guard var doc = document else { return }
+        doc.scenarios.removeAll { $0.id == id }
+        update(doc)
+    }
+
     func persistCurrent() { if let d = document { persist(d) } }
 
     private func persist(_ doc: HomeDocument) {

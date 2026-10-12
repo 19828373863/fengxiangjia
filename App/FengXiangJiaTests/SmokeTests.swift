@@ -67,4 +67,21 @@ final class SmokeTests: XCTestCase {
         XCTAssertEqual(m.document!.geometryRevision, 0)
         XCTAssertEqual(m.document!.home.rooms[0].fans[0].power, 1)
     }
+
+    func testSaveAndCompareScenarios() throws {
+        let m = AppModel(repository: tempRepo())
+        m.openSample()
+        var room = m.document!.home.rooms[0]
+        m.saveScenario(name: "A", room: room)
+        room.fans[0].yawDegrees = (room.fans[0].yawDegrees + 180).truncatingRemainder(dividingBy: 360)
+        m.saveScenario(name: "B", room: room)
+        let doc = try XCTUnwrap(m.document)
+        XCTAssertEqual(doc.scenarios.map(\.name), ["A", "B"])
+        let c = ScenarioComparison.compare(home: doc.home, roomId: room.id, a: doc.scenarios[0], b: doc.scenarios[1],
+                                           currentGeometryRevision: doc.geometryRevision, environment: nil)
+        XCTAssertNotNil(c)
+        XCTAssertLessThanOrEqual(c!.suggestions.count, 3)
+        m.deleteScenario(doc.scenarios[0].id)
+        XCTAssertEqual(m.document!.scenarios.count, 1)
+    }
 }
