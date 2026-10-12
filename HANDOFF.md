@@ -33,3 +33,9 @@
 - 规则：墙体按零厚度中心线；邻室墙段反向共线且距离 ≤0.05 m 视为共享；**只有开口能连通区域**，openFraction=0 视为关闭。
 - 已测：Linux `swift test` 累计 22 项通过（新增 13）；macOS CI 见 PR。
 - 未做：墙厚、房间之间互相重叠检测、曲线墙。
+
+## 2026-10-12 · Issue #5 FXJ-04（Grok）
+- 分支：`feat/5-sample-room-nav`（基于 `feat/4-geometry-topology`）
+- 新增：FXJCore `SampleData`（固定 ID 示例客厅，含窗/门/家具/风扇/目标）、`HomeRepository`（本地 JSON 文件，HomeLoadState：loading/empty/loaded/failed）；App `AppModel`（@Observable）、我家/试摆/方案三页、`LoadStateView` 统一加载/空/错误态、`RoomCanvasView`（Canvas 绘制 + 拖动风扇，越界拒绝）
+- 已测：Linux `swift test` 累计 27 项；App 单测（AppModel/坐标变换）在 macOS CI 运行，见 PR。
+- 未测：模拟器中手动交互、截图、VoiceOver；真机。
