@@ -120,4 +120,31 @@ final class SmokeTests: XCTestCase {
         XCTAssertEqual(m.document!.home.orientationDegrees, 10, accuracy: 1e-9)
         XCTAssertEqual(m.document!.geometryRevision, 0)
     }
+
+    func testEnvironmentModes() async {
+        let m = AppModel(repository: tempRepo(), weatherProvider: MockWeatherProvider())
+        m.openSample()
+        XCTAssertNil(m.currentEnvironment)
+        m.environmentMode = .manual
+        m.manualWindFrom = 270; m.manualWindSpeed = 3
+        XCTAssertEqual(m.currentEnvironment?.source, .manual)
+        XCTAssertEqual(m.environment(now: Date(timeIntervalSince1970: 1000)), m.environment(now: Date(timeIntervalSince1970: 3000)))
+        m.environmentMode = .auto
+        await m.refreshWeather(force: false)
+        XCTAssertEqual(m.weatherOutcome?.error, .noLocation, "未设置住宅位置时不得使用手机位置")
+        m.updateHomeInfo(name: "h", location: Location(latitude: 1.35, longitude: 103.82), orientation: 0)
+        await m.refreshWeather(force: true)
+        XCTAssertNotNil(m.currentEnvironment)
+        XCTAssertEqual(m.weatherOutcome?.forecast?.isDemo, true)
+    }
+
+    func testWeatherFailureFallsBackToManual() async {
+        let m = AppModel(repository: tempRepo(), weatherProvider: MockWeatherProvider(failure: .offline))
+        m.openSample()
+        m.updateHomeInfo(name: "h", location: Location(latitude: 1.35, longitude: 103.82), orientation: 0)
+        m.environmentMode = .auto
+        await m.refreshWeather(force: true)
+        XCTAssertNil(m.currentEnvironment)
+        XCTAssertEqual(m.weatherOutcome?.error, .offline)
+    }
 }
