@@ -130,3 +130,8 @@
 - 分支：`feat/21-test-perf`（基于 `feat/20-privacy-a11y`）
 - 新增 GoldenScenarios 与 8 项综合回归、App 跨平台哈希与性能测量、docs/TEST_REPORT.md
 - 已测：Linux swift test 141（+8，Debug 与 Release 均通过）；App +2（CI）。真机性能/发热**未运行**。
+
+## 2026-10-12 · Issue #22（Grok）
+- 分支：`feat/22-testflight-prep`（基于 `feat/21-test-perf`）
+- 新增真机验收清单、fastlane 草稿、Release 编译 CI 步骤
+- 已测：Linux swift test 141（无变化）；CI Release 编译见 PR checks。**TestFlight/真机：阻塞，未运行。**

@@ -1,0 +1,30 @@
+# 草稿（#22/#23）：未运行。需要 App Store Connect API Key 与正式 Bundle ID。
+# 环境变量：ASC_KEY_ID / ASC_ISSUER_ID / ASC_KEY_PATH（.p8，勿入库）、FXJ_TEAM_ID
+default_platform(:ios)
+
+platform :ios do
+  before_all do
+    sh("cd .. && xcodegen generate")
+  end
+
+  def asc_key
+    app_store_connect_api_key(key_id: ENV.fetch("ASC_KEY_ID"), issuer_id: ENV.fetch("ASC_ISSUER_ID"),
+                              key_filepath: ENV.fetch("ASC_KEY_PATH"))
+  end
+
+  desc "构建并上传 TestFlight"
+  lane :beta do
+    api_key = asc_key
+    increment_build_number(xcodeproj: "FengXiangJia.xcodeproj", build_number: latest_testflight_build_number(api_key: api_key) + 1)
+    build_app(project: "FengXiangJia.xcodeproj", scheme: "FengXiangJia", export_method: "app-store",
+              xcargs: "DEVELOPMENT_TEAM=#{ENV.fetch('FXJ_TEAM_ID')}")
+    upload_to_testflight(api_key: api_key, skip_waiting_for_build_processing: true,
+                         changelog: File.read("metadata/zh-Hans/release_notes.txt"))
+  end
+
+  desc "上传元数据（不含截图、不提交审核）"
+  lane :metadata do
+    deliver(api_key: asc_key, skip_binary_upload: true, skip_screenshots: true, submit_for_review: false, force: true,
+            metadata_path: "./fastlane/metadata")
+  end
+end
