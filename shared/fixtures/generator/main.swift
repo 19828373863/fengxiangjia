@@ -143,3 +143,49 @@ full.feedback = [ComfortFeedback(id: U("00000000-0000-0000-0000-0000000F1001"), 
 full.home.location = Location(latitude: 1.35, longitude: 103.82, label: "SG")
 try! DocumentCodec.encode(full).write(to: URL(fileURLWithPath: "out/document-v2.json"))
 print("ok", out.count)
+// —— scan import golden (#60) ——
+do {
+    func t(_ p: Vec2, _ deg: Double = 30) -> Vec2 { let a = deg * .pi / 180; return Vec2(p.x * cos(a) - p.y * sin(a) + 10, p.x * sin(a) + p.y * cos(a) - 5) }
+    func walls(rotation: Double = 30, noise: Double = 0.05, closed: Bool = true) -> [ScannedWall] {
+        let pts = [Vec2(0, 0), Vec2(4, 0), Vec2(4, 3), Vec2(0, 3)]
+        return (0..<(closed ? 4 : 3)).map { i in
+            let j = Double(i % 2 == 0 ? 1 : -1) * noise
+            return ScannedWall(start: t(pts[i], rotation) + Vec2(j, 0), end: t(pts[(i + 1) % 4], rotation) + Vec2(0, j), height: 2.6)
+        }
+    }
+    let lw = [Vec2(0,0), Vec2(5,0), Vec2(5,2.5), Vec2(3,2.5), Vec2(3,4), Vec2(0,4)].map { t($0, -12) }
+    let lwalls = (0..<6).map { ScannedWall(start: lw[$0], end: lw[($0 + 1) % 6], height: nil) }
+    let inputs: [(String, [ScannedWall], [ScannedOpening])] = [
+        ("closed", walls(), []),
+        ("openings", walls(), [ScannedOpening(kind: .window, center: t(Vec2(2, 0.05)), width: 1.2),
+                               ScannedOpening(kind: .door(isOpen: true), center: t(Vec2(4, 1.5)), width: 0.9),
+                               ScannedOpening(kind: .window, center: t(Vec2(2, 1.5)), width: 1),
+                               ScannedOpening(kind: .opening, center: t(Vec2(0.02, 2)), width: 0.1)]),
+        ("open-chain", walls(closed: false), []),
+        ("rot-100", walls(rotation: 100, noise: 0.1), [ScannedOpening(kind: .door(isOpen: false), center: t(Vec2(1, 3), 100), width: 0.8)]),
+        ("lshape-reversed", Array(lwalls.reversed()).map { ScannedWall(start: $0.end, end: $0.start) }, [ScannedOpening(kind: .window, centerX: lw[1].x, centerZ: -lw[1].y, width: 1)]),
+        ("one-wall", Array(walls().prefix(1)), []),
+    ]
+    func wj(_ w: ScannedWall) -> [String: Any] { var d: [String: Any] = ["start": [w.start.x, w.start.y], "end": [w.end.x, w.end.y]]; if let h = w.height { d["height"] = h }; return d }
+    func oj(_ o: ScannedOpening) -> [String: Any] {
+        let k: String; switch o.kind { case .door(let open): k = open ? "doorOpen" : "doorClosed"; case .window: k = "window"; case .opening: k = "opening" }
+        return ["kind": k, "center": [o.center.x, o.center.y], "width": o.width]
+    }
+    func warn(_ w: ScanWarning) -> String {
+        switch w { case .notClosedApproximated: return "notClosedApproximated"; case .tooFewWalls: return "tooFewWalls"
+        case .openingUnmatched(let n): return "openingUnmatched:\(n)"; case .validation(let i): return "validation:" + i.map { String(describing: $0) }.joined(separator: ";") }
+    }
+    var out: [[String: Any]] = []
+    for (name, w, o) in inputs {
+        var c: [String: Any] = ["name": name, "walls": w.map(wj), "openings": o.map(oj)]
+        if let r = ScanImport.convert(walls: w, openings: o) {
+            c["result"] = ["polygon": r.room.polygon.map { [$0.x, $0.y] }, "height": r.room.height ?? NSNull(),
+                           "heightEstimate": r.heightEstimate ?? NSNull(), "rotationDegrees": r.rotationDegrees,
+                           "warnings": r.warnings.map(warn),
+                           "openings": r.room.openings.map { op in ["kind": op.kind.rawValue, "wallIndex": r.room.wallIds.firstIndex(of: op.wallId)!,
+                                                                     "offset": op.offset, "width": op.width, "openFraction": op.openFraction] }]
+        } else { c["result"] = NSNull() }
+        out.append(c)
+    }
+    try! JSONSerialization.data(withJSONObject: ["cases": out], options: [.sortedKeys, .prettyPrinted]).write(to: URL(fileURLWithPath: "out/scan-golden.json"))
+}

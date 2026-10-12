@@ -10,12 +10,33 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import app.fengxiangjia.android.scan.ScanActivity
+import app.fengxiangjia.android.scan.ScanAvailability
+import app.fengxiangjia.android.scan.ScanSupport
+import app.fengxiangjia.core.domain.Room
+import app.fengxiangjia.core.persistence.DocumentCodec
 import app.fengxiangjia.core.persistence.HomeRepository
 
 class MainActivity : ComponentActivity() {
+    private lateinit var model: AppModel
+    private val scan = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        val data = res.data
+        val json = data?.getStringExtra(ScanActivity.EXTRA_ROOM_JSON)
+        if (res.resultCode == RESULT_OK && json != null) {
+            val room = DocumentCodec.json.decodeFromString(Room.serializer(), json)
+            model.importRoom(room)
+            val w = data.getStringArrayExtra(ScanActivity.EXTRA_WARNINGS).orEmpty()
+            toast(if (w.isEmpty()) "已导入扫描房间，请在「试摆 › 户型」中核对" else "已导入（有 ${w.size} 条提示），请在编辑器中校准")
+        } else data?.getStringExtra(ScanActivity.EXTRA_MESSAGE)?.let(::toast)
+    }
+
+    private fun toast(m: String) = Toast.makeText(this, m, Toast.LENGTH_LONG).show()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val model = AppModel(HomeRepository(filesDir))
+        model = AppModel(HomeRepository(filesDir))
         setContent { MaterialTheme { RootTabs(model, onShare = ::share, onScan = ::openScan) } }
     }
 
@@ -25,8 +46,12 @@ class MainActivity : ComponentActivity() {
         startActivity(Intent.createChooser(i, "导出户型与方案"))
     }
 
-    /** 扫描入口由 #60 提供；此处为占位钩子。 */
-    @Suppress("unused") private fun openScan() {}
+    /** #60：先检查 ARCore 可用性，不支持则提示改用手绘。 */
+    private fun openScan() {
+        val a = ScanSupport.check(this)
+        if (a == ScanAvailability.SUPPORTED || a == ScanAvailability.NEEDS_INSTALL) scan.launch(Intent(this, ScanActivity::class.java))
+        else ScanSupport.message(a)?.let(::toast)
+    }
 }
 
 enum class AppTab(val title: String) { HOME("我家"), TRIAL("试摆"), PLANS("方案") }
