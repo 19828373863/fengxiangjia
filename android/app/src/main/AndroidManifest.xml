@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- #60：仅扫描时按需申请；拒绝后仍可手绘 -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <!-- #65：仅在用户选用 Open-Meteo 时联网；位置仅粗略、按需申请 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-feature android:name="android.hardware.location" android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.compass" android:required="false" />
     <uses-feature android:name="android.hardware.camera.ar" android:required="false" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:glEsVersion="0x00020000" android:required="true" />

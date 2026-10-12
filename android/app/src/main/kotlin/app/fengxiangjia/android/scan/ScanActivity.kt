@@ -18,6 +18,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.foundation.Canvas
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import android.opengl.Matrix
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -49,6 +55,9 @@ class ScanActivity : ComponentActivity(), GLSurfaceView.Renderer {
     private var status by mutableStateOf("正在启动摄像头…")
     private var tapMode by mutableStateOf(TapMode.CORNER)
     private var floorFound by mutableStateOf(false)
+    /** 已标墙角投影到屏幕上的像素坐标（null = 在相机后方），用于叠加角点标记。 */
+    private var cornerMarkers by mutableStateOf<List<Offset?>>(emptyList())
+    private var viewW = 1; private var viewH = 1
 
     enum class TapMode(val title: String) { CORNER("标墙角"), WINDOW("标窗"), DOOR("标门") }
 
@@ -102,7 +111,7 @@ class ScanActivity : ComponentActivity(), GLSurfaceView.Renderer {
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) { GLES20.glClearColor(0f, 0f, 0f, 1f); bg.create() }
     override fun onSurfaceChanged(gl: GL10?, w: Int, h: Int) {
-        GLES20.glViewport(0, 0, w, h)
+        GLES20.glViewport(0, 0, w, h); viewW = w; viewH = h
         session?.setDisplayGeometry(windowManager.defaultDisplay.rotation, w, h)
     }
 
@@ -146,11 +155,29 @@ class ScanActivity : ComponentActivity(), GLSurfaceView.Renderer {
             if (floorY != null) hits.firstOrNull()?.let { h -> val dy = h.hitPose.ty() - floorY; if (dy > 1.8 && dy < 4.0) capture = capture.copy(ceilingHeight = maxOf(capture.ceilingHeight ?: 0.0, dy)) }
             e.recycle()
         }
+        cornerMarkers = if (floorY == null) emptyList() else project(frame.camera, capture.cornersXZ.map { floatArrayOf(it.first.toFloat(), floorY.toFloat(), it.second.toFloat(), 1f) })
+    }
+
+    /** 世界坐标 → 屏幕像素（GL 视口与 Compose 叠加层同尺寸）。 */
+    private fun project(cam: Camera, pts: List<FloatArray>): List<Offset?> {
+        val view = FloatArray(16); val proj = FloatArray(16); val vp = FloatArray(16)
+        cam.getViewMatrix(view, 0); cam.getProjectionMatrix(proj, 0, 0.05f, 50f); Matrix.multiplyMM(vp, 0, proj, 0, view, 0)
+        return pts.map { p ->
+            val o = FloatArray(4); Matrix.multiplyMV(o, 0, vp, 0, p, 0)
+            if (o[3] <= 0f) null else Offset((o[0] / o[3] + 1f) / 2f * viewW, (1f - o[1] / o[3]) / 2f * viewH)
+        }
     }
 
     @Composable
     private fun Overlay() {
         Box(Modifier.fillMaxSize()) {
+            val markers = cornerMarkers
+            Canvas(Modifier.fillMaxSize().semantics { contentDescription = "已标墙角 ${markers.size} 个" }) {
+                val vis = markers.filterNotNull()
+                for (i in 0 until vis.size - 1) drawLine(Color(0xFF4FC3F7), vis[i], vis[i + 1], strokeWidth = 5f)
+                if (vis.size >= 3) drawLine(Color(0x804FC3F7), vis.last(), vis.first(), strokeWidth = 3f)
+                vis.forEach { drawCircle(Color.White, 16f, it); drawCircle(Color(0xFF0288D1), 16f, it, style = Stroke(5f)) }
+            }
             Text("+", color = Color.White, style = MaterialTheme.typography.headlineMedium, modifier = Modifier.align(Alignment.Center))
             Surface(color = Color.Black.copy(alpha = 0.55f), modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth()) {
                 Column(Modifier.padding(12.dp)) {
@@ -164,7 +191,7 @@ class ScanActivity : ComponentActivity(), GLSurfaceView.Renderer {
                     for (m in TapMode.entries) FilterChip(tapMode == m, { tapMode = m }, label = { Text(m.title) })
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedButton(onClick = { capture = capture.undoCorner() }, enabled = capture.cornersXZ.isNotEmpty()) { Text("撤销墙角") }
+                    OutlinedButton(modifier = Modifier.semantics { contentDescription = "撤销最后一个墙角" }, onClick = { capture = capture.undoCorner() }, enabled = capture.cornersXZ.isNotEmpty()) { Text("撤销墙角") }
                     OutlinedButton(onClick = { finishWithMessage(null) }) { Text("取消") }
                     Button(onClick = ::finishScan, enabled = capture.cornersXZ.size >= 3 || capture.wallPlanes.size >= 3) { Text("完成") }
                 }

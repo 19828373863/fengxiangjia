@@ -42,6 +42,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     // #60 摄像头扫描：ARCore（optional，未安装 ARCore 的设备仍可使用手绘）
     implementation("com.google.ar:core:1.46.0")
+    // #65 一次性购买（暂定）
+    implementation("com.android.billingclient:billing-ktx:7.1.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
     debugImplementation("androidx.compose.ui:ui-tooling")
     testImplementation("junit:junit:4.13.2")
     testImplementation(kotlin("test"))
