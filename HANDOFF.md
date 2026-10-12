@@ -145,3 +145,8 @@
 - 分支：`feat/24-mic-experiment`（基于 `feat/23-appstore-metadata`）
 - 新增麦克风实验方案与准入门槛；首版不纳入
 - 已测：无代码改动；实验**未运行**。
+
+## 2026-10-12 · Issue #25（Grok）
+- 分支：`feat/25-surroundings-eval`（基于 `feat/24-mic-experiment`）
+- 新增周边建筑/地形自动推断评估；首版不做
+- 已测：无代码改动；原型**未运行**。
