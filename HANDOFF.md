@@ -105,3 +105,8 @@
 - 新增：`Opening.exteriorObstruction`（可选字段，旧数据缺省 nil=未知，无需 schema 升级）；FXJCore `Weather/Obstruction.swift`（遮挡系数 开阔1/部分0.6/未知0.6/近楼0.35/天井0.25 × 楼层系数 低层0.7/2–5层0.85/6层+1.0；obstructionMap 仅外窗；apply 合并进环境快照；exteriorOpenings）；求解器改用该系数并输出 `obstructionReduced` 解释；scenarioHash 纳入楼层
 - App：`ObstructionSettingsView`（楼层、每扇外窗遮挡及朝向）、AppModel.setObstruction/setFloor，currentEnvironment 合并遮挡
 - 已测：Linux `swift test` 新增 6 项（累计 115）；App +1。系数为经验估计，**未校准**。
+
+## 2026-10-12 · Issue #17 FXJ-16（Grok）
+- 分支：`feat/17-roomplan-scan`（基于 `feat/16-window-obstruction`）
+- 新增：FXJCore `Scan/ScanImport.swift`（与 RoomPlan 解耦：RoomPlan (x,z)→户型 (x,−z)；最长墙对齐坐标轴；端点 0.3 m 聚类吸附；链接闭合环，未闭合用外接矩形近似并警告；门/窗/开口匹配最近墙段，窗默认关闭；结果可直接编辑）；App `Services/RoomScan.swift`（RoomScanSupport：canImport + 非模拟器 + RoomCaptureSession.isSupported；RoomCaptureView 包装与代理；CapturedRoom→ScanImport；不支持时说明并引导手绘；完成后进入编辑器校准）；Info.plist 相机用途说明；AppModel.importScannedRoom
+- 已测：Linux `swift test` 新增 6 项（累计 121）；App +1（模拟器判定不支持）。**真机 LiDAR 扫描未验证**。

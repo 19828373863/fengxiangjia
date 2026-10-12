@@ -51,6 +51,9 @@ struct HomeTabView: View {
                             FloorplanEditorView(room: room) { edited in model.replaceRoom(edited) }
                         }
                     }
+                    NavigationLink(RoomScanSupport.isSupported ? "扫描新房间（RoomPlan）" : "扫描新房间（此设备不支持）") {
+                        RoomScanView { model.importScannedRoom($0) }
+                    }
                     Button("去试摆风扇") { selection = .tryout }
                 }
                 Section {
