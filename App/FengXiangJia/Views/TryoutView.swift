@@ -18,7 +18,7 @@ struct TryoutView: View {
     var onSaveScenario: ((Room) -> Void)? = nil
     @State private var savedToast = false
 
-    init(room: Room, home: Home, environment: FXJCore.Environment? = nil,
+    init(room: Room, home: Home, environment: OutdoorConditions? = nil,
          onSaveScenario: ((Room) -> Void)? = nil, onChange: @escaping (Room) -> Void) {
         self.onSaveScenario = onSaveScenario
         _editor = State(initialValue: RoomEditor(room: room))
