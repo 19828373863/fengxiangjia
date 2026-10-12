@@ -125,3 +125,8 @@
 - 分支：`feat/20-privacy-a11y`（基于 `feat/19-storekit`）
 - 新增隐私清单、隐私政策草案、合规检查脚本与 CI job；权限拒绝路径补充“打开设置”
 - 已测：check_compliance.py 本地通过；Linux swift test 133（无变化）；App +1（CI）。VoiceOver/动态字体人工检查**未运行**。
+
+## 2026-10-12 · Issue #21（Grok）
+- 分支：`feat/21-test-perf`（基于 `feat/20-privacy-a11y`）
+- 新增 GoldenScenarios 与 8 项综合回归、App 跨平台哈希与性能测量、docs/TEST_REPORT.md
+- 已测：Linux swift test 141（+8，Debug 与 Release 均通过）；App +2（CI）。真机性能/发热**未运行**。
