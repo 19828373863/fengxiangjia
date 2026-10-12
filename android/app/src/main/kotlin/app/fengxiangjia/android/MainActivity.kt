@@ -18,9 +18,21 @@ import app.fengxiangjia.android.scan.ScanSupport
 import app.fengxiangjia.core.domain.Room
 import app.fengxiangjia.core.persistence.DocumentCodec
 import app.fengxiangjia.core.persistence.HomeRepository
+import app.fengxiangjia.core.store.PaidFeature
+import app.fengxiangjia.android.store.PlayStoreClient
+import app.fengxiangjia.android.sensors.CoarseLocation
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 
 class MainActivity : ComponentActivity() {
     private lateinit var model: AppModel
+    private lateinit var services: Services
+    private val locationPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { ok ->
+        if (ok) readLocation() else toast("未授予位置权限，可手动输入经纬度")
+    }
     private val scan = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
         val data = res.data
         val json = data?.getStringExtra(ScanActivity.EXTRA_ROOM_JSON)
@@ -37,7 +49,20 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         model = AppModel(HomeRepository(filesDir))
-        setContent { MaterialTheme { RootTabs(model, onShare = ::share, onScan = ::openScan) } }
+        services = Services(this, PlayStoreClient(this) { this })
+        model.setEntitlement(services.entitlements.state)
+        val actions = SuggestActions(requestLocation = ::requestLocation, services = services)
+        setContent { MaterialTheme { RootTabs(model, onShare = ::share, onScan = ::openScan, actions = actions) } }
+    }
+
+    /** 位置按需申请（仅粗略）；已授权则直接读取一次。 */
+    private fun requestLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) readLocation()
+        else locationPermission.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+    }
+    private fun readLocation() {
+        val l = CoarseLocation.last(this) ?: return toast("暂时无法获取位置，请手动输入经纬度")
+        model.setLocation(l.first, l.second); toast("已保存大致位置（约 1 km 精度）")
     }
 
     private fun share(name: String, json: String) {
@@ -48,13 +73,15 @@ class MainActivity : ComponentActivity() {
 
     /** #60：先检查 ARCore 可用性，不支持则提示改用手绘。 */
     private fun openScan() {
+        model.paywall(PaidFeature.roomScan)?.let { model.reportMessage(it); return }
+        model.paywall(PaidFeature.multiRoom)?.let { model.reportMessage(it); return }
         val a = ScanSupport.check(this)
         if (a == ScanAvailability.SUPPORTED || a == ScanAvailability.NEEDS_INSTALL) scan.launch(Intent(this, ScanActivity::class.java))
         else ScanSupport.message(a)?.let(::toast)
     }
 }
 
-enum class AppTab(val title: String) { HOME("我家"), TRIAL("试摆"), PLANS("方案") }
+enum class AppTab(val title: String) { HOME("我家"), TRIAL("试摆"), PLANS("方案"), SUGGEST("建议") }
 
 /** 让 Compose 在 AppModel 变化时重组。 */
 @Composable
@@ -65,7 +92,7 @@ fun rememberModelRevision(model: AppModel): Int {
 }
 
 @Composable
-fun RootTabs(model: AppModel, onShare: (String, String) -> Unit = { _, _ -> }, onScan: () -> Unit = {}) {
+fun RootTabs(model: AppModel, onShare: (String, String) -> Unit = { _, _ -> }, onScan: () -> Unit = {}, actions: SuggestActions = SuggestActions()) {
     var tab by rememberSaveable { mutableIntStateOf(0) }
     val rev = rememberModelRevision(model)
     val snack = remember { SnackbarHostState() }
@@ -74,7 +101,7 @@ fun RootTabs(model: AppModel, onShare: (String, String) -> Unit = { _, _ -> }, o
     Scaffold(snackbarHost = { SnackbarHost(snack) }, bottomBar = {
         NavigationBar {
             AppTab.entries.forEachIndexed { i, t ->
-                NavigationBarItem(selected = tab == i, onClick = { tab = i }, icon = { Text(listOf("🏠", "🌀", "⚖️")[i]) }, label = { Text(t.title) })
+                NavigationBarItem(selected = tab == i, onClick = { tab = i }, icon = { Text(listOf("🏠", "🌀", "⚖️", "💡")[i], modifier = Modifier.semantics { contentDescription = t.title }) }, label = { Text(t.title) })
             }
         }
     }) { pad ->
@@ -83,6 +110,7 @@ fun RootTabs(model: AppModel, onShare: (String, String) -> Unit = { _, _ -> }, o
                 AppTab.HOME -> key(model.selectedRoomId) { HomeScreen(model, rev, onShare, onScan, onOpenRoom = { tab = 1 }) }
                 AppTab.TRIAL -> key(model.selectedRoomId) { TrialScreen(model, rev) }
                 AppTab.PLANS -> PlansScreen(model, rev, onApplied = { tab = 1 })
+                AppTab.SUGGEST -> key(model.selectedRoomId) { SuggestScreen(model, rev, actions, onApplied = { tab = 1 }) }
             }
         }
     }

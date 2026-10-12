@@ -1,5 +1,8 @@
 package app.fengxiangjia.android
 
+import app.fengxiangjia.core.store.EntitlementCache
+import app.fengxiangjia.core.store.EntitlementState
+
 import app.fengxiangjia.core.domain.*
 import app.fengxiangjia.core.editor.RoomTemplate
 import app.fengxiangjia.core.library.SampleData
@@ -74,7 +77,7 @@ class AppModelTest {
     }
 
     @Test fun roomsAddDeleteAndAdjacent() {
-        val m = model()
+        val m = model(); m.setEntitlement(EntitlementState(EntitlementCache(true, 0)))
         m.addRoom(RoomTemplate.DEFAULT_L_SHAPE, "L"); assertEquals(2, m.home.rooms.size)
         m.selectRoom(SampleData.ROOM_ID); assertTrue(m.addAdjacentRoom(1, 3.0, "卧室")); assertEquals(3, m.home.rooms.size)
         m.deleteRoom(m.selectedRoomId); assertEquals(2, m.home.rooms.size)

@@ -18,6 +18,13 @@ import app.fengxiangjia.core.recommendation.capture
 import app.fengxiangjia.core.simulation.ScenarioHash
 import app.fengxiangjia.core.simulation.SimulationInput
 import app.fengxiangjia.core.weather.ObstructionModel
+import app.fengxiangjia.core.store.EntitlementCache
+import app.fengxiangjia.core.store.EntitlementState
+import app.fengxiangjia.core.store.FreeLimits
+import app.fengxiangjia.core.store.PaidFeature
+import app.fengxiangjia.core.weather.WeatherOutcome
+import app.fengxiangjia.core.weather.coarsenedLocation
+import app.fengxiangjia.core.recommendation.LayoutSearch
 import java.time.Instant
 
 /**
@@ -33,6 +40,10 @@ class AppModel(private val repo: HomeRepository?, private val clock: () -> Insta
     var lastError: String? = null; private set
     private val editors = mutableMapOf<EntityID, RoomEditor>()
     var revision = 0; private set
+    /** 权益（#65）：由 Activity 从 Play 结算同步；默认未解锁，免费额度与 iOS 相同。 */
+    var entitlement = EntitlementState(); private set
+    /** 最近一次天气结果（含新鲜度、归属、错误），null = 使用手动风向。 */
+    var weather: WeatherOutcome? = null; private set
     private val listeners = mutableListOf<() -> Unit>()
 
     init {
@@ -62,6 +73,7 @@ class AppModel(private val repo: HomeRepository?, private val clock: () -> Insta
     fun currentHash(): String? = simulationInput()?.let { ScenarioHash.compute(it) }
 
     fun selectRoom(id: EntityID) { if (home.rooms.any { it.id == id }) { selectedRoomId = id; changed(false) } }
+    fun reportMessage(m: String) { lastError = m; listeners.forEach { it() } }
     fun clearError() { lastError = null; listeners.forEach { it() } }
 
     /** 执行房间编辑；失败时记录中文错误，不改变状态。 */
@@ -91,13 +103,49 @@ class AppModel(private val repo: HomeRepository?, private val clock: () -> Insta
     fun setOrientation(deg: Double) { document = document.copy(home = home.copy(orientationDegrees = ((deg % 360) + 360) % 360)); changed() }
     fun setFloor(floor: Int?) { document = document.copy(home = home.copy(floorLevel = floor)); changed() }
 
-    fun addRoom(template: RoomTemplate, name: String): EntityID {
+    // —— 权益 / 付费墙 ——
+    fun setEntitlement(e: EntitlementState) { entitlement = e; changed(false) }
+    /** 返回 null = 允许；否则为中文提示（界面据此弹出购买页）。 */
+    fun paywall(f: PaidFeature): String? = when (f) {
+        PaidFeature.multiRoom -> if (entitlement.canAddRoom(home.rooms.size)) null else "免费版可编辑 ${FreeLimits.ROOMS} 个房间，解锁完整版可添加更多"
+        PaidFeature.unlimitedScenarios -> if (entitlement.canSaveScenario(document.scenarios.size)) null else "免费版可保存 ${FreeLimits.SCENARIOS} 个方案，解锁完整版不限数量"
+        else -> if (entitlement.allows(f)) null else "${featureName(f)}属于完整版功能"
+    }
+    private fun featureName(f: PaidFeature) = when (f) {
+        PaidFeature.autoRecommendation -> "自动推荐"; PaidFeature.liveWeather -> "实时天气"; PaidFeature.roomScan -> "摄像头扫描"
+        PaidFeature.multiRoom -> "多房间"; PaidFeature.unlimitedScenarios -> "无限方案"
+    }
+    private fun gate(f: PaidFeature): Boolean { val m = paywall(f) ?: return true; lastError = m; listeners.forEach { it() }; return false }
+
+    // —— 位置 / 天气 ——
+    /** 住宅位置只按 0.01°（约 1 km）粗化后保存。 */
+    fun setLocation(lat: Double, lon: Double, label: String? = null) {
+        document = document.copy(home = home.copy(location = Location(lat, lon, label).coarsenedLocation())); changed()
+    }
+    fun clearLocation() { document = document.copy(home = home.copy(location = null)); changed() }
+    fun applyWeather(o: WeatherOutcome) {
+        weather = o
+        o.environment?.let { environment = it }
+        changed(false)
+    }
+
+    // —— 自动推荐 ——
+    fun canRecommend() = paywall(PaidFeature.autoRecommendation) == null
+    fun recommend(): List<LayoutSearch.Candidate> {
+        val r = room ?: return emptyList()
+        if (!gate(PaidFeature.autoRecommendation)) return emptyList()
+        return LayoutSearch.search(home, r.id, null, ObstructionModel.apply(environment, home))
+    }
+    fun applyCandidate(c: LayoutSearch.Candidate) { edit { it.replace(c.room) } }
+
+    fun addRoom(template: RoomTemplate, name: String): EntityID? {
+        if (!gate(PaidFeature.multiRoom)) return null
         val r = Room(name = name, polygon = template.polygon.map { it + Vec2(0.0, (home.rooms.maxOfOrNull { x -> x.polygon.maxOf { p -> p.y } } ?: 0.0) + 1.0) })
         document = document.copy(home = Topology.refreshConnections(home.copy(rooms = home.rooms + r)))
         selectedRoomId = r.id; changed(); return r.id
     }
 
-    fun addAdjacentRoom(wallIndex: Int, depth: Double, name: String): Boolean = try {
+    fun addAdjacentRoom(wallIndex: Int, depth: Double, name: String): Boolean = if (!gate(PaidFeature.multiRoom)) false else try {
         val (h, id) = home.addAdjacentRoom(selectedRoomId, wallIndex, depth, name)
         document = document.copy(home = h); selectedRoomId = id; changed(); true
     } catch (e: Exception) { lastError = "这面墙外已有房间或位置无效"; listeners.forEach { it() }; false }
@@ -115,6 +163,7 @@ class AppModel(private val repo: HomeRepository?, private val clock: () -> Insta
     // —— 方案 ——
     fun saveScenario(name: String): Scenario? {
         val r = room ?: return null
+        if (!gate(PaidFeature.unlimitedScenarios)) return null
         val s = Scenario.capture(name, r, document.geometryRevision, environment, clock())
         document = document.copy(scenarios = document.scenarios + s); changed(); return s
     }
@@ -152,6 +201,7 @@ class AppModel(private val repo: HomeRepository?, private val clock: () -> Insta
 
     /** 外部导入（扫描结果等）：作为新房间加入并选中。 */
     fun importRoom(r: Room) {
+        if (!gate(PaidFeature.multiRoom)) return
         document = document.copy(home = Topology.refreshConnections(home.copy(rooms = home.rooms + r)))
         selectedRoomId = r.id; changed()
     }

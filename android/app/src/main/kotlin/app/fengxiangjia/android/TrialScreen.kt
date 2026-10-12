@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /** 计算结果 + 对应可视化（同源）。 */
-class Computed(val result: SimulationResult, val vis: FlowVisualization?)
+class Computed(val result: SimulationResult, val vis: FlowVisualization?, val input: SimulationInput)
 
 @Composable
 fun rememberSimulation(model: AppModel, rev: Int): Pair<Computed?, Boolean> {
@@ -25,11 +25,18 @@ fun rememberSimulation(model: AppModel, rev: Int): Pair<Computed?, Boolean> {
     LaunchedEffect(hash) {
         if (input == null) return@LaunchedEffect
         if (computed?.result?.scenarioHash == hash) return@LaunchedEffect
-        val c = withContext(Dispatchers.Default) { val r = AirflowSolver.solve(input); Computed(r, FlowVisualization.of(r)) }
+        val c = withContext(Dispatchers.Default) { val r = AirflowSolver.solve(input); Computed(r, FlowVisualization.of(r), input) }
         computed = c; lastComputed = c
     }
     val stale = computed == null || computed!!.result.scenarioHash != hash
     return computed to stale
+}
+
+/** 过期原因（#65）：与上次计算的输入比较，给出中文说明。 */
+fun staleReasonText(c: Computed?, now: SimulationInput?): String? {
+    if (c == null || now == null) return null
+    val r = Staleness.reasons(c.result, c.input, now)
+    return if (r.isEmpty()) null else r.joinToString("、") { it.label }
 }
 private var lastComputed: Computed? = null
 
@@ -90,6 +97,7 @@ fun TrialScreen(model: AppModel, @Suppress("UNUSED_PARAMETER") rev: Int) {
         Legend(stale)
         Column(Modifier.heightIn(max = 260.dp).verticalScroll(rememberScrollState()).padding(horizontal = 12.dp)) {
             SelectionPanel(model, room, selected) { selected = null }
+            if (stale) staleReasonText(computed, model.simulationInput())?.let { Text("待更新原因：$it", color = Color(0xFFE5533D), style = MaterialTheme.typography.bodySmall) }
             ResultPanel(computed?.result, stale, room)
             var name by remember { mutableStateOf("") }
             Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
