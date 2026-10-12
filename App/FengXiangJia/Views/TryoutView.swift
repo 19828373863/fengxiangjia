@@ -15,8 +15,12 @@ struct TryoutView: View {
     let home: Home
     let environment: OutdoorConditions?
     let onChange: (Room) -> Void
+    var onSaveScenario: ((Room) -> Void)? = nil
+    @State private var savedToast = false
 
-    init(room: Room, home: Home, environment: OutdoorConditions? = nil, onChange: @escaping (Room) -> Void) {
+    init(room: Room, home: Home, environment: FXJCore.Environment? = nil,
+         onSaveScenario: ((Room) -> Void)? = nil, onChange: @escaping (Room) -> Void) {
+        self.onSaveScenario = onSaveScenario
         _editor = State(initialValue: RoomEditor(room: room))
         self.home = home
         self.environment = environment
@@ -56,13 +60,17 @@ struct TryoutView: View {
             HStack {
                 FlowLegendView()
                 Toggle("静态箭头", isOn: $staticArrows).toggleStyle(.button).font(.caption)
+                if let onSaveScenario {
+                    Button(savedToast ? "已保存" : "保存方案") { onSaveScenario(editor.room); savedToast = true }
+                        .buttonStyle(.bordered).font(.caption)
+                }
             }
             resultSummary
             if let m = message { Text(m).font(.footnote).foregroundStyle(.orange) }
             inspector
         }
         .padding(.horizontal)
-        .task(id: inputHash) { await recompute() }
+        .task(id: inputHash) { savedToast = false; await recompute() }
         .toolbar {
             ToolbarItemGroup(placement: .topBarLeading) {
                 Button { editor.undo(); onChange(editor.room) } label: { Image(systemName: "arrow.uturn.backward") }
