@@ -20,3 +20,22 @@ SwiftUI 优先；本地处理和离线可用；先实现可验证的 2D 简化�
 
 ## 状态
 初始化文档阶段；尚无经验证的 iOS 成品、真机测试或 App Store 上架。
+## 构建与测试
+需要 macOS + Xcode 16+（iOS 17 SDK 以上）与 [XcodeGen](https://github.com/yonaskolb/XcodeGen)。`.xcodeproj` 由 `project.yml` 生成，不入库。
+
+```bash
+brew install xcodegen
+xcodegen generate
+xcodebuild test -project FengXiangJia.xcodeproj -scheme FengXiangJia \
+  -destination 'platform=iOS Simulator,name=iPhone 16' CODE_SIGNING_ALLOWED=NO
+
+# 纯逻辑核心包（macOS 或 Linux，Swift 5.10+）
+cd Packages/FXJCore && swift test
+```
+
+CI：`.github/workflows/ios.yml`（macos-15 模拟器构建测试 + Linux 上 FXJCore `swift test`）。
+
+## 目录
+- `App/FengXiangJia`：SwiftUI App（UI 层）
+- `App/FengXiangJiaTests`：App 单元测试
+- `Packages/FXJCore`：Domain/Geometry/Simulation 纯逻辑，不依赖 UI

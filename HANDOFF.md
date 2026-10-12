@@ -11,3 +11,11 @@
 
 ## 优先事项
 从 P0 最小 SwiftUI 工程、核心数据实体与一间示例房间开始，再纵向实现编辑、试摆、A/B 对比；不要首先开发云服务、AI 聊天或复杂 CFD。
+
+## 2026-10-12 · Issue #2 FXJ-01（Grok）
+- 分支：`feat/2-ios-project-ci`（PR 见 Issue #2）
+- 新增：`project.yml`（XcodeGen，iOS 17）、`App/FengXiangJia`（TabView：我家/试摆/方案 占位）、`App/FengXiangJiaTests`（冒烟测试）、`Packages/FXJCore`（占位 + 单测）、`.github/workflows/ios.yml`
+- 已测：FXJCore `swift test` 于 Linux（Swift 6.0.3）1 项通过；iOS 编译/模拟器测试以 PR 的 GitHub Actions macos-15 结果为准（见 PR）。
+- 未测：真机、签名、TestFlight（无开发者账号/证书）。
+- 阻塞：公共契约缺口见 Issue #26，#3/#4 接口需其确认。
+- 下一步：#26 确认后实现 #3 Domain 模型与 JSON 序列化迁移测试，随后 #4。
