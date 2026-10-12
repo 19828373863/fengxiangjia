@@ -32,7 +32,14 @@ struct RoomCanvasView<Overlay: View>: View {
     var onSelect: ((UUID?) -> Void)? = nil
     var onDragEnd: (() -> Void)? = nil
     /// 叠加层（如气流），在房间底图之上、交互手柄之下，接收坐标变换。
-    var overlay: (FitTransform) -> Overlay
+    let overlay: (FitTransform) -> Overlay
+
+    init(room: Room, selectedId: UUID? = nil, onFanMove: ((UUID, Vec2) -> Void)? = nil,
+         onTargetMove: ((UUID, Vec2) -> Void)? = nil, onSelect: ((UUID?) -> Void)? = nil,
+         onDragEnd: (() -> Void)? = nil, @ViewBuilder overlay: @escaping (FitTransform) -> Overlay) {
+        self.room = room; self.selectedId = selectedId; self.onFanMove = onFanMove
+        self.onTargetMove = onTargetMove; self.onSelect = onSelect; self.onDragEnd = onDragEnd; self.overlay = overlay
+    }
 
     var body: some View {
         GeometryReader { geo in

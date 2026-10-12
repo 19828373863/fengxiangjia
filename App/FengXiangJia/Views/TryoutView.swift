@@ -6,11 +6,33 @@ struct TryoutView: View {
     @State private var editor: RoomEditor
     @State private var selected: UUID?
     @State private var message: String?
+    @State private var result: SimulationResult?
+    @State private var viz: FlowVisualization?
+    @State private var computing = false
+    @State private var staticArrows = false
+    @SwiftUI.Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @SwiftUI.Environment(\.scenePhase) private var scenePhase
+    let home: Home
+    let environment: FXJCore.Environment?
     let onChange: (Room) -> Void
 
-    init(room: Room, onChange: @escaping (Room) -> Void) {
+    init(room: Room, home: Home, environment: FXJCore.Environment? = nil, onChange: @escaping (Room) -> Void) {
         _editor = State(initialValue: RoomEditor(room: room))
+        self.home = home
+        self.environment = environment
         self.onChange = onChange
+    }
+
+    private var input: SimulationInput {
+        var h = home
+        if let i = h.rooms.firstIndex(where: { $0.id == editor.room.id }) { h.rooms[i] = editor.room }
+        return SimulationInput(home: h, roomId: editor.room.id, environment: environment)
+    }
+
+    private var inputHash: String { ScenarioHash.compute(input) }
+    private var isStale: Bool { result.map { !$0.isCurrent(for: input) } ?? true }
+    private var animate: Bool {
+        !staticArrows && !reduceMotion && scenePhase == .active && !ProcessInfo.processInfo.isLowPowerModeEnabled
     }
 
     private var selectedFan: Fan? { editor.room.fans.first { $0.id == selected } }
@@ -22,11 +44,25 @@ struct TryoutView: View {
                            onFanMove: { id, p in run { try editor.moveFan(id, to: p) } },
                            onTargetMove: { id, p in run { try editor.moveTarget(id, to: p) } },
                            onSelect: { selected = $0 },
-                           onDragEnd: { onChange(editor.room) })
+                           onDragEnd: { onChange(editor.room) }) { t in
+                if let viz { FlowOverlayView(viz: viz, transform: t, animated: animate, stale: isStale) }
+            }
+            .overlay(alignment: .topTrailing) {
+                if computing || (result != nil && isStale) {
+                    Label(computing ? "计算中…" : "待更新", systemImage: "arrow.triangle.2.circlepath")
+                        .font(.caption).padding(6).background(.thinMaterial, in: Capsule())
+                }
+            }
+            HStack {
+                FlowLegendView()
+                Toggle("静态箭头", isOn: $staticArrows).toggleStyle(.button).font(.caption)
+            }
+            resultSummary
             if let m = message { Text(m).font(.footnote).foregroundStyle(.orange) }
             inspector
         }
         .padding(.horizontal)
+        .task(id: inputHash) { await recompute() }
         .toolbar {
             ToolbarItemGroup(placement: .topBarLeading) {
                 Button { editor.undo(); onChange(editor.room) } label: { Image(systemName: "arrow.uturn.backward") }
@@ -75,6 +111,36 @@ struct TryoutView: View {
             Text("点选风扇或目标区域以调整；拖动可移动。风扇需离墙 0.2 m 且不能压在高家具上。")
                 .font(.footnote).foregroundStyle(.secondary)
         }
+    }
+
+    @ViewBuilder private var resultSummary: some View {
+        if let r = result, !isStale, let m = r.metrics {
+            VStack(alignment: .leading, spacing: 2) {
+                Text("室内循环 \(ExplanationText.coverage(m.circulationCoverage)) · 对外换气 \(ExplanationText.level(m.outdoorExchange))")
+                    .font(.footnote.bold())
+                ForEach(Array(r.explanations.prefix(3).enumerated()), id: \.offset) { _, e in
+                    Text("• " + ExplanationText.text(e, room: editor.room)).font(.caption)
+                }
+                Text("简化示意模型（\(r.modelVersion)），非工程级计算").font(.caption2).foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        } else if case .invalidInput? = result?.status {
+            Text("房间形状有误，无法计算").font(.footnote).foregroundStyle(.red)
+        }
+    }
+
+    private func recompute() async {
+        try? await Task.sleep(nanoseconds: 250_000_000) // 拖动防抖
+        guard !Task.isCancelled else { return }
+        computing = true
+        let inp = input
+        let (r, v) = await Task.detached(priority: .userInitiated) { () -> (SimulationResult, FlowVisualization?) in
+            let r = AirflowSolver.solve(inp)
+            return (r, FlowVisualization(result: r))
+        }.value
+        computing = false
+        guard !Task.isCancelled else { return }
+        result = r; viz = v
     }
 
     static func kindName(_ k: FanKind) -> String {
