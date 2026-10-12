@@ -201,3 +201,7 @@ public struct Scenario: Codable, Hashable, Identifiable, Sendable {
         self.targets = targets; self.createdAt = createdAt
     }
 }
+
+/// App 层别名：避免与 SwiftUI `Environment` 冲突（模块与同名 enum `FXJCore` 使 `FXJCore.Environment` 无法限定）。
+/// 是否将类型正式改名见 #26。
+public typealias OutdoorConditions = Environment

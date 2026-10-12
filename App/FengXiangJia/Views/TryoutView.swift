@@ -13,10 +13,10 @@ struct TryoutView: View {
     @SwiftUI.Environment(\.accessibilityReduceMotion) private var reduceMotion
     @SwiftUI.Environment(\.scenePhase) private var scenePhase
     let home: Home
-    let environment: FXJCore.Environment?
+    let environment: OutdoorConditions?
     let onChange: (Room) -> Void
 
-    init(room: Room, home: Home, environment: FXJCore.Environment? = nil, onChange: @escaping (Room) -> Void) {
+    init(room: Room, home: Home, environment: OutdoorConditions? = nil, onChange: @escaping (Room) -> Void) {
         _editor = State(initialValue: RoomEditor(room: room))
         self.home = home
         self.environment = environment
