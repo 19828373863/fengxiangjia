@@ -145,15 +145,18 @@ public enum AirflowSolver {
 
     /// 本房间开启的、可通向室外的开口；direct = 直接通室外。
     static func outdoorPathOpenings(_ room: Room, home: Home) -> [(Opening, Bool)] {
+        let affecting = home.openingsAffecting(room.id).filter { $0.opening.openFraction > 0 }
+        // 隔离：去掉所有与本房间相关的开口，判断邻室是否能“不经本房间”通向室外
+        let related = Set(home.openingsAffecting(room.id).map(\.opening.id))
         var isolated = home
-        if let i = isolated.rooms.firstIndex(where: { $0.id == room.id }) { isolated.rooms[i].openings = [] }
-        return room.openings.filter { $0.openFraction > 0 }.compactMap { o in
-            let c = Topology.connections(for: o, in: room, home: home)
-            switch c.last {
+        for i in isolated.rooms.indices { isolated.rooms[i].openings.removeAll { related.contains($0.id) } }
+        return affecting.compactMap { item in
+            let (o, host) = item
+            let c = Topology.connections(for: o, in: host, home: home)
+            let other: ConnectionTarget? = host.id == room.id ? c.last : .room(host.id)
+            switch other {
             case .outdoor?: return (o, true)
-            case .room(let other)?:
-                // 邻室通室外（排除经本房间回流），同时邻室侧的对应开口已被隔离
-                return Topology.reachesOutdoor(other, in: isolated) ? (o, false) : nil
+            case .room(let rid)?: return Topology.reachesOutdoor(rid, in: isolated) ? (o, false) : nil
             default: return nil
             }
         }

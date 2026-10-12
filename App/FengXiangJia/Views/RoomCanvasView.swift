@@ -26,6 +26,8 @@ struct FitTransform {
 
 struct RoomCanvasView<Overlay: View>: View {
     let room: Room
+    /// 邻室持有、通向本房间的开口线段（如室内门），只绘制不编辑。
+    var foreignOpenings: [(Vec2, Vec2)] = []
     var selectedId: UUID? = nil
     var onFanMove: ((UUID, Vec2) -> Void)? = nil
     var onTargetMove: ((UUID, Vec2) -> Void)? = nil
@@ -67,6 +69,10 @@ struct RoomCanvasView<Overlay: View>: View {
                         guard let (a, b) = room.segment(of: o) else { continue }
                         var p = Path(); p.move(to: t.toScreen(a)); p.addLine(to: t.toScreen(b))
                         ctx.stroke(p, with: .color(o.kind == .window ? .cyan : .orange), lineWidth: 7)
+                    }
+                    for (a, b) in foreignOpenings {
+                        var p = Path(); p.move(to: t.toScreen(a)); p.addLine(to: t.toScreen(b))
+                        ctx.stroke(p, with: .color(.orange), lineWidth: 7)
                     }
                 }
                 overlay(t).allowsHitTesting(false)
@@ -119,5 +125,11 @@ extension RoomCanvasView where Overlay == EmptyView {
          onTargetMove: ((UUID, Vec2) -> Void)? = nil, onSelect: ((UUID?) -> Void)? = nil, onDragEnd: (() -> Void)? = nil) {
         self.init(room: room, selectedId: selectedId, onFanMove: onFanMove, onTargetMove: onTargetMove,
                   onSelect: onSelect, onDragEnd: onDragEnd, overlay: { _ in EmptyView() })
+    }
+}
+
+extension RoomCanvasView {
+    func foreignOpenings(_ segs: [(Vec2, Vec2)]) -> Self {
+        var c = self; c.foreignOpenings = segs; return c
     }
 }

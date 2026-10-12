@@ -5,6 +5,8 @@ struct HomeTabView: View {
     let model: AppModel
     @Binding var selection: AppTab
     @State private var confirmDelete = false
+    @State private var exportURL: URL?
+    @State private var roomMessage: String?
 
     var body: some View {
         LoadStateView(state: model.state, onSample: model.openSample, onRetry: model.load, onNew: model.createBlankRoom) { doc in
@@ -19,7 +21,19 @@ struct HomeTabView: View {
                                     .font(.caption).foregroundStyle(.secondary)
                             }
                         }
+                        .contextMenu {
+                            ForEach(Array(room.walls.enumerated()), id: \.offset) { i, w in
+                                Button("在\(Self.direction(w.outwardNormal))侧添加房间") {
+                                    roomMessage = model.addAdjacentRoom(to: room.id, wallIndex: i)
+                                }
+                            }
+                            if doc.home.rooms.count > 1 {
+                                Button("删除此房间", role: .destructive) { model.removeRoom(room.id) }
+                            }
+                        }
                     }
+                    if let roomMessage { Text(roomMessage).font(.caption).foregroundStyle(.orange) }
+                    Text("长按房间可在其旁添加相邻房间；在相邻墙上放门即连通两室。").font(.caption2).foregroundStyle(.secondary)
                 }
                 Section {
                     if let room = doc.home.rooms.first {
@@ -30,8 +44,11 @@ struct HomeTabView: View {
                     Button("去试摆风扇") { selection = .tryout }
                 }
                 Section {
-                    if let url = model.exportFileURL() {
-                        ShareLink("导出数据（JSON，不含位置）", item: url)
+                    // 点击时才生成导出文件（不在渲染时写盘）
+                    if let url = exportURL {
+                        ShareLink("分享导出文件", item: url)
+                    } else {
+                        Button("导出数据（JSON，不含位置）") { exportURL = model.exportFileURL() }
                     }
                     Button("删除全部本地数据", role: .destructive) { confirmDelete = true }
                 } header: { Text("数据与隐私") } footer: {
@@ -52,13 +69,28 @@ struct HomeTabView: View {
     }
 }
 
+extension HomeTabView {
+    /// 户型坐标方向（+Y 为图上方）。
+    static func direction(_ n: Vec2) -> String {
+        if abs(n.x) > abs(n.y) { return n.x > 0 ? "右（东）" : "左（西）" }
+        return n.y > 0 ? "上（北）" : "下（南）"
+    }
+}
+
 struct TryoutTabView: View {
     let model: AppModel
     @Binding var selection: AppTab
+    @State private var roomId: UUID?
 
     var body: some View {
         LoadStateView(state: model.state, onSample: model.openSample, onRetry: model.load) { doc in
-            if let room = doc.home.rooms.first {
+            if let room = doc.home.rooms.first(where: { $0.id == roomId }) ?? doc.home.rooms.first {
+                if doc.home.rooms.count > 1 {
+                    Picker("房间", selection: Binding(get: { room.id }, set: { roomId = $0 })) {
+                        ForEach(doc.home.rooms) { Text($0.name).tag($0.id) }
+                    }
+                    .pickerStyle(.segmented).padding(.horizontal)
+                }
                 TryoutView(room: room, home: doc.home,
                            onFeedback: { rating, hash in model.addFeedback(roomId: room.id, scenarioHash: hash, rating: rating) },
                            onSaveScenario: { r in _ = model.saveScenario(name: "方案 \(doc.scenarios.count + 1)", room: r) }) { model.updateLayout($0) }

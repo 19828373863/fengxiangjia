@@ -112,6 +112,25 @@ final class AppModel {
         do { try data.write(to: url, options: .atomic); return url } catch { return nil }
     }
 
+    /// 在某房间某面墙外侧添加相邻房间（#12）。失败返回错误描述。
+    func addAdjacentRoom(to roomId: UUID, wallIndex: Int, depth: Double = 3) -> String? {
+        guard var doc = document else { return "没有住宅" }
+        do {
+            try doc.home.addAdjacentRoom(to: roomId, wallIndex: wallIndex, depth: depth, name: "房间 \(doc.home.rooms.count + 1)")
+            doc.geometryRevision += 1
+            update(doc)
+            return nil
+        } catch { return "该方向已有房间或空间不足" }
+    }
+
+    func removeRoom(_ id: UUID) {
+        guard var doc = document, doc.home.rooms.count > 1 else { return }
+        doc.home.removeRoom(id)
+        doc.scenarios.removeAll { $0.roomId == id }
+        doc.geometryRevision += 1
+        update(doc)
+    }
+
     func persistCurrent() { if let d = document { persist(d) } }
 
     private func persist(_ doc: HomeDocument) {

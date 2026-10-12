@@ -99,4 +99,15 @@ final class SmokeTests: XCTestCase {
         XCTAssertEqual(m.state, .empty)
         XCTAssertEqual(repo.load(), .empty)
     }
+
+    func testAddAndRemoveAdjacentRoom() {
+        let m = AppModel(repository: tempRepo())
+        m.openSample()
+        XCTAssertNil(m.addAdjacentRoom(to: SampleData.roomId, wallIndex: 1))
+        XCTAssertEqual(m.document?.home.rooms.count, 2)
+        XCTAssertNotNil(m.addAdjacentRoom(to: SampleData.roomId, wallIndex: 1), "同方向重复添加应被拒绝")
+        let newId = m.document!.home.rooms[1].id
+        m.removeRoom(newId)
+        XCTAssertEqual(m.document?.home.rooms.count, 1)
+    }
 }
