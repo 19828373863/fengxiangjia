@@ -96,9 +96,10 @@ struct TryoutTabView: View {
                     }
                     .pickerStyle(.segmented).padding(.horizontal)
                 }
-                TryoutView(room: room, home: doc.home,
+                WeatherPanelView(model: model).padding(.horizontal)
+                TryoutView(room: room, home: doc.home, environment: model.currentEnvironment,
                            onFeedback: { rating, hash in model.addFeedback(roomId: room.id, scenarioHash: hash, rating: rating) },
-                           onSaveScenario: { r in _ = model.saveScenario(name: "方案 \(doc.scenarios.count + 1)", room: r) }) { model.updateLayout($0) }
+                           onSaveScenario: { r in _ = model.saveScenario(name: "方案 \(doc.scenarios.count + 1)", room: r, environment: model.currentEnvironment) }) { model.updateLayout($0) }
                     .id(room.id)
             } else {
                 ContentUnavailableView("没有房间", systemImage: "square.dashed",

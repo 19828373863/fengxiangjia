@@ -3,15 +3,60 @@ import Observation
 import FXJCore
 
 /// App 状态：加载本地住宅文档，或在用户选择后载入示例房间。无需登录。
+enum EnvironmentMode: String { case auto, manual, none }
+
 @MainActor
 @Observable
 final class AppModel {
+    // MARK: 外部风况（#15）
+    var environmentMode: EnvironmentMode = .none
+    var manualWindFrom: Double = 180
+    var manualWindSpeed: Double = 2
+    private(set) var weatherOutcome: WeatherOutcome?
+    private(set) var weatherLoading = false
+    private let weather: WeatherService
+
     private(set) var state: HomeLoadState = .loading
     var saveError: String?
     private let repository: HomeRepository
 
-    init(repository: HomeRepository = AppModel.defaultRepository()) {
+    init(repository: HomeRepository = AppModel.defaultRepository(), weatherProvider: WeatherProvider = AppModel.defaultWeatherProvider()) {
         self.repository = repository
+        self.weather = WeatherService(provider: weatherProvider)
+    }
+
+    nonisolated static func defaultWeatherProvider() -> WeatherProvider {
+        #if FXJ_WEATHERKIT && canImport(WeatherKit)
+        return WeatherKitProvider()
+        #else
+        return MockWeatherProvider() // 无开发者账号：演示数据，界面明确标注
+        #endif
+    }
+
+    /// 当前用于模拟的外部环境；`now` 可注入以便测试。
+    func environment(now: Date = Date()) -> OutdoorConditions? {
+        switch environmentMode {
+        case .none: return nil
+        case .manual:
+            // 时间取整到小时，避免每次渲染改变 scenarioHash
+            let hour = Date(timeIntervalSince1970: (now.timeIntervalSince1970 / 3600).rounded(.down) * 3600)
+            return .manual(windFromDegrees: manualWindFrom, windSpeed: manualWindSpeed, at: hour)
+        case .auto:
+            return weatherOutcome?.environment
+        }
+    }
+
+    var currentEnvironment: OutdoorConditions? { environment() }
+
+    func setEnvironmentMode(_ m: EnvironmentMode) {
+        environmentMode = m
+        if m == .auto, weatherOutcome == nil { Task { await refreshWeather(force: false) } }
+    }
+
+    func refreshWeather(force: Bool, now: Date = Date()) async {
+        weatherLoading = true
+        weatherOutcome = await weather.environment(for: document?.home.location, now: now, forceRefresh: force)
+        weatherLoading = false
     }
 
     nonisolated static func defaultRepository() -> HomeRepository {
