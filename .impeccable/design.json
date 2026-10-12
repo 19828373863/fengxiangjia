@@ -1,0 +1,1149 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-12T16:45:34Z",
+  "title": "Design System: 风向家 Android",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "墨绿操作 · 明",
+        "canonical": "#28513E",
+        "tonalRamp": [
+          "oklch(15.000% 0.05697 162.201)",
+          "oklch(26.429% 0.05697 162.201)",
+          "oklch(37.857% 0.05697 162.201)",
+          "oklch(49.286% 0.05697 162.201)",
+          "oklch(60.714% 0.05697 162.201)",
+          "oklch(72.143% 0.05697 162.201)",
+          "oklch(83.571% 0.05697 162.201)",
+          "oklch(95.000% 0.05697 162.201)"
+        ]
+      },
+      "dark-primary": {
+        "role": "primary",
+        "displayName": "墨绿操作 · 暗",
+        "canonical": "#ADD1B7",
+        "tonalRamp": [
+          "oklch(15.000% 0.05260 153.756)",
+          "oklch(26.429% 0.05260 153.756)",
+          "oklch(37.857% 0.05260 153.756)",
+          "oklch(49.286% 0.05260 153.756)",
+          "oklch(60.714% 0.05260 153.756)",
+          "oklch(72.143% 0.05260 153.756)",
+          "oklch(83.571% 0.05260 153.756)",
+          "oklch(95.000% 0.05260 153.756)"
+        ]
+      },
+      "on-primary": {
+        "role": "primary",
+        "displayName": "主操作文字 · 明",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "oklch(15.000% 0.00000 89.876)",
+          "oklch(26.429% 0.00000 89.876)",
+          "oklch(37.857% 0.00000 89.876)",
+          "oklch(49.286% 0.00000 89.876)",
+          "oklch(60.714% 0.00000 89.876)",
+          "oklch(72.143% 0.00000 89.876)",
+          "oklch(83.571% 0.00000 89.876)",
+          "oklch(95.000% 0.00000 89.876)"
+        ]
+      },
+      "dark-on-primary": {
+        "role": "primary",
+        "displayName": "主操作文字 · 暗",
+        "canonical": "#153A26",
+        "tonalRamp": [
+          "oklch(15.000% 0.05599 157.220)",
+          "oklch(26.429% 0.05599 157.220)",
+          "oklch(37.857% 0.05599 157.220)",
+          "oklch(49.286% 0.05599 157.220)",
+          "oklch(60.714% 0.05599 157.220)",
+          "oklch(72.143% 0.05599 157.220)",
+          "oklch(83.571% 0.05599 157.220)",
+          "oklch(95.000% 0.05599 157.220)"
+        ]
+      },
+      "primary-container": {
+        "role": "primary",
+        "displayName": "浅绿选中容器 · 明",
+        "canonical": "#D9E8D9",
+        "tonalRamp": [
+          "oklch(15.000% 0.02567 145.362)",
+          "oklch(26.429% 0.02567 145.362)",
+          "oklch(37.857% 0.02567 145.362)",
+          "oklch(49.286% 0.02567 145.362)",
+          "oklch(60.714% 0.02567 145.362)",
+          "oklch(72.143% 0.02567 145.362)",
+          "oklch(83.571% 0.02567 145.362)",
+          "oklch(95.000% 0.02567 145.362)"
+        ]
+      },
+      "dark-primary-container": {
+        "role": "primary",
+        "displayName": "浅绿选中容器 · 暗",
+        "canonical": "#2D513C",
+        "tonalRamp": [
+          "oklch(15.000% 0.05515 157.162)",
+          "oklch(26.429% 0.05515 157.162)",
+          "oklch(37.857% 0.05515 157.162)",
+          "oklch(49.286% 0.05515 157.162)",
+          "oklch(60.714% 0.05515 157.162)",
+          "oklch(72.143% 0.05515 157.162)",
+          "oklch(83.571% 0.05515 157.162)",
+          "oklch(95.000% 0.05515 157.162)"
+        ]
+      },
+      "on-primary-container": {
+        "role": "primary",
+        "displayName": "选中容器文字 · 明",
+        "canonical": "#173725",
+        "tonalRamp": [
+          "oklch(15.000% 0.05039 156.961)",
+          "oklch(26.429% 0.05039 156.961)",
+          "oklch(37.857% 0.05039 156.961)",
+          "oklch(49.286% 0.05039 156.961)",
+          "oklch(60.714% 0.05039 156.961)",
+          "oklch(72.143% 0.05039 156.961)",
+          "oklch(83.571% 0.05039 156.961)",
+          "oklch(95.000% 0.05039 156.961)"
+        ]
+      },
+      "dark-on-primary-container": {
+        "role": "primary",
+        "displayName": "选中容器文字 · 暗",
+        "canonical": "#D4EAD7",
+        "tonalRamp": [
+          "oklch(15.000% 0.03453 149.304)",
+          "oklch(26.429% 0.03453 149.304)",
+          "oklch(37.857% 0.03453 149.304)",
+          "oklch(49.286% 0.03453 149.304)",
+          "oklch(60.714% 0.03453 149.304)",
+          "oklch(72.143% 0.03453 149.304)",
+          "oklch(83.571% 0.03453 149.304)",
+          "oklch(95.000% 0.03453 149.304)"
+        ]
+      },
+      "secondary": {
+        "role": "secondary",
+        "displayName": "鼠尾草辅助 · 明",
+        "canonical": "#526657",
+        "tonalRamp": [
+          "oklch(15.000% 0.03388 152.635)",
+          "oklch(26.429% 0.03388 152.635)",
+          "oklch(37.857% 0.03388 152.635)",
+          "oklch(49.286% 0.03388 152.635)",
+          "oklch(60.714% 0.03388 152.635)",
+          "oklch(72.143% 0.03388 152.635)",
+          "oklch(83.571% 0.03388 152.635)",
+          "oklch(95.000% 0.03388 152.635)"
+        ]
+      },
+      "dark-secondary": {
+        "role": "secondary",
+        "displayName": "鼠尾草辅助 · 暗",
+        "canonical": "#B9CCB8",
+        "tonalRamp": [
+          "oklch(15.000% 0.03440 143.883)",
+          "oklch(26.429% 0.03440 143.883)",
+          "oklch(37.857% 0.03440 143.883)",
+          "oklch(49.286% 0.03440 143.883)",
+          "oklch(60.714% 0.03440 143.883)",
+          "oklch(72.143% 0.03440 143.883)",
+          "oklch(83.571% 0.03440 143.883)",
+          "oklch(95.000% 0.03440 143.883)"
+        ]
+      },
+      "on-secondary": {
+        "role": "secondary",
+        "displayName": "辅助操作文字 · 明",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "oklch(15.000% 0.00000 89.876)",
+          "oklch(26.429% 0.00000 89.876)",
+          "oklch(37.857% 0.00000 89.876)",
+          "oklch(49.286% 0.00000 89.876)",
+          "oklch(60.714% 0.00000 89.876)",
+          "oklch(72.143% 0.00000 89.876)",
+          "oklch(83.571% 0.00000 89.876)",
+          "oklch(95.000% 0.00000 89.876)"
+        ]
+      },
+      "dark-on-secondary": {
+        "role": "secondary",
+        "displayName": "辅助操作文字 · 暗",
+        "canonical": "#263C29",
+        "tonalRamp": [
+          "oklch(15.000% 0.04338 147.982)",
+          "oklch(26.429% 0.04338 147.982)",
+          "oklch(37.857% 0.04338 147.982)",
+          "oklch(49.286% 0.04338 147.982)",
+          "oklch(60.714% 0.04338 147.982)",
+          "oklch(72.143% 0.04338 147.982)",
+          "oklch(83.571% 0.04338 147.982)",
+          "oklch(95.000% 0.04338 147.982)"
+        ]
+      },
+      "secondary-container": {
+        "role": "secondary",
+        "displayName": "家具与选择栏 · 明",
+        "canonical": "#E0E8DD",
+        "tonalRamp": [
+          "oklch(15.000% 0.01699 137.027)",
+          "oklch(26.429% 0.01699 137.027)",
+          "oklch(37.857% 0.01699 137.027)",
+          "oklch(49.286% 0.01699 137.027)",
+          "oklch(60.714% 0.01699 137.027)",
+          "oklch(72.143% 0.01699 137.027)",
+          "oklch(83.571% 0.01699 137.027)",
+          "oklch(95.000% 0.01699 137.027)"
+        ]
+      },
+      "dark-secondary-container": {
+        "role": "secondary",
+        "displayName": "家具与选择栏 · 暗",
+        "canonical": "#3C5240",
+        "tonalRamp": [
+          "oklch(15.000% 0.04029 149.861)",
+          "oklch(26.429% 0.04029 149.861)",
+          "oklch(37.857% 0.04029 149.861)",
+          "oklch(49.286% 0.04029 149.861)",
+          "oklch(60.714% 0.04029 149.861)",
+          "oklch(72.143% 0.04029 149.861)",
+          "oklch(83.571% 0.04029 149.861)",
+          "oklch(95.000% 0.04029 149.861)"
+        ]
+      },
+      "on-secondary-container": {
+        "role": "secondary",
+        "displayName": "辅助容器文字 · 明",
+        "canonical": "#273D2C",
+        "tonalRamp": [
+          "oklch(15.000% 0.04079 150.842)",
+          "oklch(26.429% 0.04079 150.842)",
+          "oklch(37.857% 0.04079 150.842)",
+          "oklch(49.286% 0.04079 150.842)",
+          "oklch(60.714% 0.04079 150.842)",
+          "oklch(72.143% 0.04079 150.842)",
+          "oklch(83.571% 0.04079 150.842)",
+          "oklch(95.000% 0.04079 150.842)"
+        ]
+      },
+      "dark-on-secondary-container": {
+        "role": "secondary",
+        "displayName": "辅助容器文字 · 暗",
+        "canonical": "#DCE8D8",
+        "tonalRamp": [
+          "oklch(15.000% 0.02493 137.810)",
+          "oklch(26.429% 0.02493 137.810)",
+          "oklch(37.857% 0.02493 137.810)",
+          "oklch(49.286% 0.02493 137.810)",
+          "oklch(60.714% 0.02493 137.810)",
+          "oklch(72.143% 0.02493 137.810)",
+          "oklch(83.571% 0.02493 137.810)",
+          "oklch(95.000% 0.02493 137.810)"
+        ]
+      },
+      "tertiary": {
+        "role": "tertiary",
+        "displayName": "陶土窗标记 · 明",
+        "canonical": "#825943",
+        "tonalRamp": [
+          "oklch(15.000% 0.06381 49.029)",
+          "oklch(26.429% 0.06381 49.029)",
+          "oklch(37.857% 0.06381 49.029)",
+          "oklch(49.286% 0.06381 49.029)",
+          "oklch(60.714% 0.06381 49.029)",
+          "oklch(72.143% 0.06381 49.029)",
+          "oklch(83.571% 0.06381 49.029)",
+          "oklch(95.000% 0.06381 49.029)"
+        ]
+      },
+      "dark-tertiary": {
+        "role": "tertiary",
+        "displayName": "陶土窗标记 · 暗",
+        "canonical": "#E7BA9F",
+        "tonalRamp": [
+          "oklch(15.000% 0.06379 52.522)",
+          "oklch(26.429% 0.06379 52.522)",
+          "oklch(37.857% 0.06379 52.522)",
+          "oklch(49.286% 0.06379 52.522)",
+          "oklch(60.714% 0.06379 52.522)",
+          "oklch(72.143% 0.06379 52.522)",
+          "oklch(83.571% 0.06379 52.522)",
+          "oklch(95.000% 0.06379 52.522)"
+        ]
+      },
+      "on-tertiary": {
+        "role": "tertiary",
+        "displayName": "陶土操作文字 · 明",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "oklch(15.000% 0.00000 89.876)",
+          "oklch(26.429% 0.00000 89.876)",
+          "oklch(37.857% 0.00000 89.876)",
+          "oklch(49.286% 0.00000 89.876)",
+          "oklch(60.714% 0.00000 89.876)",
+          "oklch(72.143% 0.00000 89.876)",
+          "oklch(83.571% 0.00000 89.876)",
+          "oklch(95.000% 0.00000 89.876)"
+        ]
+      },
+      "dark-on-tertiary": {
+        "role": "tertiary",
+        "displayName": "陶土操作文字 · 暗",
+        "canonical": "#4B2D1A",
+        "tonalRamp": [
+          "oklch(15.000% 0.05375 52.234)",
+          "oklch(26.429% 0.05375 52.234)",
+          "oklch(37.857% 0.05375 52.234)",
+          "oklch(49.286% 0.05375 52.234)",
+          "oklch(60.714% 0.05375 52.234)",
+          "oklch(72.143% 0.05375 52.234)",
+          "oklch(83.571% 0.05375 52.234)",
+          "oklch(95.000% 0.05375 52.234)"
+        ]
+      },
+      "tertiary-container": {
+        "role": "tertiary",
+        "displayName": "陶土容器 · 明",
+        "canonical": "#F3DFD2",
+        "tonalRamp": [
+          "oklch(15.000% 0.02820 55.311)",
+          "oklch(26.429% 0.02820 55.311)",
+          "oklch(37.857% 0.02820 55.311)",
+          "oklch(49.286% 0.02820 55.311)",
+          "oklch(60.714% 0.02820 55.311)",
+          "oklch(72.143% 0.02820 55.311)",
+          "oklch(83.571% 0.02820 55.311)",
+          "oklch(95.000% 0.02820 55.311)"
+        ]
+      },
+      "dark-tertiary-container": {
+        "role": "tertiary",
+        "displayName": "陶土容器 · 暗",
+        "canonical": "#68452F",
+        "tonalRamp": [
+          "oklch(15.000% 0.05912 52.654)",
+          "oklch(26.429% 0.05912 52.654)",
+          "oklch(37.857% 0.05912 52.654)",
+          "oklch(49.286% 0.05912 52.654)",
+          "oklch(60.714% 0.05912 52.654)",
+          "oklch(72.143% 0.05912 52.654)",
+          "oklch(83.571% 0.05912 52.654)",
+          "oklch(95.000% 0.05912 52.654)"
+        ]
+      },
+      "on-tertiary-container": {
+        "role": "tertiary",
+        "displayName": "陶土容器文字 · 明",
+        "canonical": "#442917",
+        "tonalRamp": [
+          "oklch(15.000% 0.04985 53.548)",
+          "oklch(26.429% 0.04985 53.548)",
+          "oklch(37.857% 0.04985 53.548)",
+          "oklch(49.286% 0.04985 53.548)",
+          "oklch(60.714% 0.04985 53.548)",
+          "oklch(72.143% 0.04985 53.548)",
+          "oklch(83.571% 0.04985 53.548)",
+          "oklch(95.000% 0.04985 53.548)"
+        ]
+      },
+      "dark-on-tertiary-container": {
+        "role": "tertiary",
+        "displayName": "陶土容器文字 · 暗",
+        "canonical": "#FFDCC5",
+        "tonalRamp": [
+          "oklch(15.000% 0.04967 55.291)",
+          "oklch(26.429% 0.04967 55.291)",
+          "oklch(37.857% 0.04967 55.291)",
+          "oklch(49.286% 0.04967 55.291)",
+          "oklch(60.714% 0.04967 55.291)",
+          "oklch(72.143% 0.04967 55.291)",
+          "oklch(83.571% 0.04967 55.291)",
+          "oklch(95.000% 0.04967 55.291)"
+        ]
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "页面背景 · 明",
+        "canonical": "#FAF8F2",
+        "tonalRamp": [
+          "oklch(15.000% 0.00821 91.482)",
+          "oklch(26.429% 0.00821 91.482)",
+          "oklch(37.857% 0.00821 91.482)",
+          "oklch(49.286% 0.00821 91.482)",
+          "oklch(60.714% 0.00821 91.482)",
+          "oklch(72.143% 0.00821 91.482)",
+          "oklch(83.571% 0.00821 91.482)",
+          "oklch(95.000% 0.00821 91.482)"
+        ]
+      },
+      "dark-background": {
+        "role": "neutral",
+        "displayName": "页面背景 · 暗",
+        "canonical": "#131C16",
+        "tonalRamp": [
+          "oklch(15.000% 0.01763 155.467)",
+          "oklch(26.429% 0.01763 155.467)",
+          "oklch(37.857% 0.01763 155.467)",
+          "oklch(49.286% 0.01763 155.467)",
+          "oklch(60.714% 0.01763 155.467)",
+          "oklch(72.143% 0.01763 155.467)",
+          "oklch(83.571% 0.01763 155.467)",
+          "oklch(95.000% 0.01763 155.467)"
+        ]
+      },
+      "on-background": {
+        "role": "neutral",
+        "displayName": "背景文字 · 明",
+        "canonical": "#202B23",
+        "tonalRamp": [
+          "oklch(15.000% 0.02113 153.305)",
+          "oklch(26.429% 0.02113 153.305)",
+          "oklch(37.857% 0.02113 153.305)",
+          "oklch(49.286% 0.02113 153.305)",
+          "oklch(60.714% 0.02113 153.305)",
+          "oklch(72.143% 0.02113 153.305)",
+          "oklch(83.571% 0.02113 153.305)",
+          "oklch(95.000% 0.02113 153.305)"
+        ]
+      },
+      "dark-on-background": {
+        "role": "neutral",
+        "displayName": "背景文字 · 暗",
+        "canonical": "#E3E9DF",
+        "tonalRamp": [
+          "oklch(15.000% 0.01479 132.479)",
+          "oklch(26.429% 0.01479 132.479)",
+          "oklch(37.857% 0.01479 132.479)",
+          "oklch(49.286% 0.01479 132.479)",
+          "oklch(60.714% 0.01479 132.479)",
+          "oklch(72.143% 0.01479 132.479)",
+          "oklch(83.571% 0.01479 132.479)",
+          "oklch(95.000% 0.01479 132.479)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "房间与基础表面 · 明",
+        "canonical": "#FAF8F2",
+        "tonalRamp": [
+          "oklch(15.000% 0.00821 91.482)",
+          "oklch(26.429% 0.00821 91.482)",
+          "oklch(37.857% 0.00821 91.482)",
+          "oklch(49.286% 0.00821 91.482)",
+          "oklch(60.714% 0.00821 91.482)",
+          "oklch(72.143% 0.00821 91.482)",
+          "oklch(83.571% 0.00821 91.482)",
+          "oklch(95.000% 0.00821 91.482)"
+        ]
+      },
+      "dark-surface": {
+        "role": "neutral",
+        "displayName": "房间与基础表面 · 暗",
+        "canonical": "#131C16",
+        "tonalRamp": [
+          "oklch(15.000% 0.01763 155.467)",
+          "oklch(26.429% 0.01763 155.467)",
+          "oklch(37.857% 0.01763 155.467)",
+          "oklch(49.286% 0.01763 155.467)",
+          "oklch(60.714% 0.01763 155.467)",
+          "oklch(72.143% 0.01763 155.467)",
+          "oklch(83.571% 0.01763 155.467)",
+          "oklch(95.000% 0.01763 155.467)"
+        ]
+      },
+      "on-surface": {
+        "role": "neutral",
+        "displayName": "正文与房间轮廓 · 明",
+        "canonical": "#202B23",
+        "tonalRamp": [
+          "oklch(15.000% 0.02113 153.305)",
+          "oklch(26.429% 0.02113 153.305)",
+          "oklch(37.857% 0.02113 153.305)",
+          "oklch(49.286% 0.02113 153.305)",
+          "oklch(60.714% 0.02113 153.305)",
+          "oklch(72.143% 0.02113 153.305)",
+          "oklch(83.571% 0.02113 153.305)",
+          "oklch(95.000% 0.02113 153.305)"
+        ]
+      },
+      "dark-on-surface": {
+        "role": "neutral",
+        "displayName": "正文与房间轮廓 · 暗",
+        "canonical": "#E3E9DF",
+        "tonalRamp": [
+          "oklch(15.000% 0.01479 132.479)",
+          "oklch(26.429% 0.01479 132.479)",
+          "oklch(37.857% 0.01479 132.479)",
+          "oklch(49.286% 0.01479 132.479)",
+          "oklch(60.714% 0.01479 132.479)",
+          "oklch(72.143% 0.01479 132.479)",
+          "oklch(83.571% 0.01479 132.479)",
+          "oklch(95.000% 0.01479 132.479)"
+        ]
+      },
+      "surface-variant": {
+        "role": "neutral",
+        "displayName": "变体表面 · 明",
+        "canonical": "#E5E9E0",
+        "tonalRamp": [
+          "oklch(15.000% 0.01273 126.378)",
+          "oklch(26.429% 0.01273 126.378)",
+          "oklch(37.857% 0.01273 126.378)",
+          "oklch(49.286% 0.01273 126.378)",
+          "oklch(60.714% 0.01273 126.378)",
+          "oklch(72.143% 0.01273 126.378)",
+          "oklch(83.571% 0.01273 126.378)",
+          "oklch(95.000% 0.01273 126.378)"
+        ]
+      },
+      "dark-surface-variant": {
+        "role": "neutral",
+        "displayName": "变体表面 · 暗",
+        "canonical": "#3B483D",
+        "tonalRamp": [
+          "oklch(15.000% 0.02490 149.492)",
+          "oklch(26.429% 0.02490 149.492)",
+          "oklch(37.857% 0.02490 149.492)",
+          "oklch(49.286% 0.02490 149.492)",
+          "oklch(60.714% 0.02490 149.492)",
+          "oklch(72.143% 0.02490 149.492)",
+          "oklch(83.571% 0.02490 149.492)",
+          "oklch(95.000% 0.02490 149.492)"
+        ]
+      },
+      "on-surface-variant": {
+        "role": "neutral",
+        "displayName": "说明与次要文字 · 明",
+        "canonical": "#4E5D51",
+        "tonalRamp": [
+          "oklch(15.000% 0.02672 151.103)",
+          "oklch(26.429% 0.02672 151.103)",
+          "oklch(37.857% 0.02672 151.103)",
+          "oklch(49.286% 0.02672 151.103)",
+          "oklch(60.714% 0.02672 151.103)",
+          "oklch(72.143% 0.02672 151.103)",
+          "oklch(83.571% 0.02672 151.103)",
+          "oklch(95.000% 0.02672 151.103)"
+        ]
+      },
+      "dark-on-surface-variant": {
+        "role": "neutral",
+        "displayName": "说明与次要文字 · 暗",
+        "canonical": "#C3CFC0",
+        "tonalRamp": [
+          "oklch(15.000% 0.02431 139.437)",
+          "oklch(26.429% 0.02431 139.437)",
+          "oklch(37.857% 0.02431 139.437)",
+          "oklch(49.286% 0.02431 139.437)",
+          "oklch(60.714% 0.02431 139.437)",
+          "oklch(72.143% 0.02431 139.437)",
+          "oklch(83.571% 0.02431 139.437)",
+          "oklch(95.000% 0.02431 139.437)"
+        ]
+      },
+      "surface-container-lowest": {
+        "role": "neutral",
+        "displayName": "最低容器层 · 明",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "oklch(15.000% 0.00000 89.876)",
+          "oklch(26.429% 0.00000 89.876)",
+          "oklch(37.857% 0.00000 89.876)",
+          "oklch(49.286% 0.00000 89.876)",
+          "oklch(60.714% 0.00000 89.876)",
+          "oklch(72.143% 0.00000 89.876)",
+          "oklch(83.571% 0.00000 89.876)",
+          "oklch(95.000% 0.00000 89.876)"
+        ]
+      },
+      "dark-surface-container-lowest": {
+        "role": "neutral",
+        "displayName": "最低容器层 · 暗",
+        "canonical": "#0D1510",
+        "tonalRamp": [
+          "oklch(15.000% 0.01579 157.056)",
+          "oklch(26.429% 0.01579 157.056)",
+          "oklch(37.857% 0.01579 157.056)",
+          "oklch(49.286% 0.01579 157.056)",
+          "oklch(60.714% 0.01579 157.056)",
+          "oklch(72.143% 0.01579 157.056)",
+          "oklch(83.571% 0.01579 157.056)",
+          "oklch(95.000% 0.01579 157.056)"
+        ]
+      },
+      "surface-container-low": {
+        "role": "neutral",
+        "displayName": "房间预览与方案容器 · 明",
+        "canonical": "#F3F3EB",
+        "tonalRamp": [
+          "oklch(15.000% 0.01058 106.597)",
+          "oklch(26.429% 0.01058 106.597)",
+          "oklch(37.857% 0.01058 106.597)",
+          "oklch(49.286% 0.01058 106.597)",
+          "oklch(60.714% 0.01058 106.597)",
+          "oklch(72.143% 0.01058 106.597)",
+          "oklch(83.571% 0.01058 106.597)",
+          "oklch(95.000% 0.01058 106.597)"
+        ]
+      },
+      "dark-surface-container-low": {
+        "role": "neutral",
+        "displayName": "房间预览与方案容器 · 暗",
+        "canonical": "#1B251D",
+        "tonalRamp": [
+          "oklch(15.000% 0.02059 150.703)",
+          "oklch(26.429% 0.02059 150.703)",
+          "oklch(37.857% 0.02059 150.703)",
+          "oklch(49.286% 0.02059 150.703)",
+          "oklch(60.714% 0.02059 150.703)",
+          "oklch(72.143% 0.02059 150.703)",
+          "oklch(83.571% 0.02059 150.703)",
+          "oklch(95.000% 0.02059 150.703)"
+        ]
+      },
+      "surface-container": {
+        "role": "neutral",
+        "displayName": "导航容器 · 明",
+        "canonical": "#EEEEE5",
+        "tonalRamp": [
+          "oklch(15.000% 0.01195 106.626)",
+          "oklch(26.429% 0.01195 106.626)",
+          "oklch(37.857% 0.01195 106.626)",
+          "oklch(49.286% 0.01195 106.626)",
+          "oklch(60.714% 0.01195 106.626)",
+          "oklch(72.143% 0.01195 106.626)",
+          "oklch(83.571% 0.01195 106.626)",
+          "oklch(95.000% 0.01195 106.626)"
+        ]
+      },
+      "dark-surface-container": {
+        "role": "neutral",
+        "displayName": "导航容器 · 暗",
+        "canonical": "#202A22",
+        "tonalRamp": [
+          "oklch(15.000% 0.02023 150.831)",
+          "oklch(26.429% 0.02023 150.831)",
+          "oklch(37.857% 0.02023 150.831)",
+          "oklch(49.286% 0.02023 150.831)",
+          "oklch(60.714% 0.02023 150.831)",
+          "oklch(72.143% 0.02023 150.831)",
+          "oklch(83.571% 0.02023 150.831)",
+          "oklch(95.000% 0.02023 150.831)"
+        ]
+      },
+      "surface-container-high": {
+        "role": "neutral",
+        "displayName": "较高原生容器层 · 明",
+        "canonical": "#E8E9DF",
+        "tonalRamp": [
+          "oklch(15.000% 0.01336 111.282)",
+          "oklch(26.429% 0.01336 111.282)",
+          "oklch(37.857% 0.01336 111.282)",
+          "oklch(49.286% 0.01336 111.282)",
+          "oklch(60.714% 0.01336 111.282)",
+          "oklch(72.143% 0.01336 111.282)",
+          "oklch(83.571% 0.01336 111.282)",
+          "oklch(95.000% 0.01336 111.282)"
+        ]
+      },
+      "dark-surface-container-high": {
+        "role": "neutral",
+        "displayName": "较高原生容器层 · 暗",
+        "canonical": "#2B352D",
+        "tonalRamp": [
+          "oklch(15.000% 0.01955 151.040)",
+          "oklch(26.429% 0.01955 151.040)",
+          "oklch(37.857% 0.01955 151.040)",
+          "oklch(49.286% 0.01955 151.040)",
+          "oklch(60.714% 0.01955 151.040)",
+          "oklch(72.143% 0.01955 151.040)",
+          "oklch(83.571% 0.01955 151.040)",
+          "oklch(95.000% 0.01955 151.040)"
+        ]
+      },
+      "surface-container-highest": {
+        "role": "neutral",
+        "displayName": "最高原生容器层 · 明",
+        "canonical": "#E2E4D9",
+        "tonalRamp": [
+          "oklch(15.000% 0.01486 115.055)",
+          "oklch(26.429% 0.01486 115.055)",
+          "oklch(37.857% 0.01486 115.055)",
+          "oklch(49.286% 0.01486 115.055)",
+          "oklch(60.714% 0.01486 115.055)",
+          "oklch(72.143% 0.01486 115.055)",
+          "oklch(83.571% 0.01486 115.055)",
+          "oklch(95.000% 0.01486 115.055)"
+        ]
+      },
+      "dark-surface-container-highest": {
+        "role": "neutral",
+        "displayName": "最高原生容器层 · 暗",
+        "canonical": "#354037",
+        "tonalRamp": [
+          "oklch(15.000% 0.02112 150.479)",
+          "oklch(26.429% 0.02112 150.479)",
+          "oklch(37.857% 0.02112 150.479)",
+          "oklch(49.286% 0.02112 150.479)",
+          "oklch(60.714% 0.02112 150.479)",
+          "oklch(72.143% 0.02112 150.479)",
+          "oklch(83.571% 0.02112 150.479)",
+          "oklch(95.000% 0.02112 150.479)"
+        ]
+      },
+      "outline": {
+        "role": "neutral",
+        "displayName": "轮廓与旧风线 · 明",
+        "canonical": "#748074",
+        "tonalRamp": [
+          "oklch(15.000% 0.02292 145.275)",
+          "oklch(26.429% 0.02292 145.275)",
+          "oklch(37.857% 0.02292 145.275)",
+          "oklch(49.286% 0.02292 145.275)",
+          "oklch(60.714% 0.02292 145.275)",
+          "oklch(72.143% 0.02292 145.275)",
+          "oklch(83.571% 0.02292 145.275)",
+          "oklch(95.000% 0.02292 145.275)"
+        ]
+      },
+      "dark-outline": {
+        "role": "neutral",
+        "displayName": "轮廓与旧风线 · 暗",
+        "canonical": "#8E9C8C",
+        "tonalRamp": [
+          "oklch(15.000% 0.02811 141.723)",
+          "oklch(26.429% 0.02811 141.723)",
+          "oklch(37.857% 0.02811 141.723)",
+          "oklch(49.286% 0.02811 141.723)",
+          "oklch(60.714% 0.02811 141.723)",
+          "oklch(72.143% 0.02811 141.723)",
+          "oklch(83.571% 0.02811 141.723)",
+          "oklch(95.000% 0.02811 141.723)"
+        ]
+      },
+      "outline-variant": {
+        "role": "neutral",
+        "displayName": "分隔线与画布网格 · 明",
+        "canonical": "#CBD2C5",
+        "tonalRamp": [
+          "oklch(15.000% 0.01925 130.209)",
+          "oklch(26.429% 0.01925 130.209)",
+          "oklch(37.857% 0.01925 130.209)",
+          "oklch(49.286% 0.01925 130.209)",
+          "oklch(60.714% 0.01925 130.209)",
+          "oklch(72.143% 0.01925 130.209)",
+          "oklch(83.571% 0.01925 130.209)",
+          "oklch(95.000% 0.01925 130.209)"
+        ]
+      },
+      "dark-outline-variant": {
+        "role": "neutral",
+        "displayName": "分隔线与画布网格 · 暗",
+        "canonical": "#435143",
+        "tonalRamp": [
+          "oklch(15.000% 0.02896 145.035)",
+          "oklch(26.429% 0.02896 145.035)",
+          "oklch(37.857% 0.02896 145.035)",
+          "oklch(49.286% 0.02896 145.035)",
+          "oklch(60.714% 0.02896 145.035)",
+          "oklch(72.143% 0.02896 145.035)",
+          "oklch(83.571% 0.02896 145.035)",
+          "oklch(95.000% 0.02896 145.035)"
+        ]
+      },
+      "error": {
+        "role": "error",
+        "displayName": "错误与避免直吹目标 · 明",
+        "canonical": "#AA3C2E",
+        "tonalRamp": [
+          "oklch(15.000% 0.14718 30.156)",
+          "oklch(26.429% 0.14718 30.156)",
+          "oklch(37.857% 0.14718 30.156)",
+          "oklch(49.286% 0.14718 30.156)",
+          "oklch(60.714% 0.14718 30.156)",
+          "oklch(72.143% 0.14718 30.156)",
+          "oklch(83.571% 0.14718 30.156)",
+          "oklch(95.000% 0.14718 30.156)"
+        ]
+      },
+      "dark-error": {
+        "role": "error",
+        "displayName": "错误与避免直吹目标 · 暗",
+        "canonical": "#FFB4A5",
+        "tonalRamp": [
+          "oklch(15.000% 0.09072 31.647)",
+          "oklch(26.429% 0.09072 31.647)",
+          "oklch(37.857% 0.09072 31.647)",
+          "oklch(49.286% 0.09072 31.647)",
+          "oklch(60.714% 0.09072 31.647)",
+          "oklch(72.143% 0.09072 31.647)",
+          "oklch(83.571% 0.09072 31.647)",
+          "oklch(95.000% 0.09072 31.647)"
+        ]
+      },
+      "on-error": {
+        "role": "error",
+        "displayName": "错误操作文字 · 明",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "oklch(15.000% 0.00000 89.876)",
+          "oklch(26.429% 0.00000 89.876)",
+          "oklch(37.857% 0.00000 89.876)",
+          "oklch(49.286% 0.00000 89.876)",
+          "oklch(60.714% 0.00000 89.876)",
+          "oklch(72.143% 0.00000 89.876)",
+          "oklch(83.571% 0.00000 89.876)",
+          "oklch(95.000% 0.00000 89.876)"
+        ]
+      },
+      "dark-on-error": {
+        "role": "error",
+        "displayName": "错误操作文字 · 暗",
+        "canonical": "#66190E",
+        "tonalRamp": [
+          "oklch(15.000% 0.11161 31.250)",
+          "oklch(26.429% 0.11161 31.250)",
+          "oklch(37.857% 0.11161 31.250)",
+          "oklch(49.286% 0.11161 31.250)",
+          "oklch(60.714% 0.11161 31.250)",
+          "oklch(72.143% 0.11161 31.250)",
+          "oklch(83.571% 0.11161 31.250)",
+          "oklch(95.000% 0.11161 31.250)"
+        ]
+      },
+      "error-container": {
+        "role": "error",
+        "displayName": "错误容器 · 明",
+        "canonical": "#FFDAD2",
+        "tonalRamp": [
+          "oklch(15.000% 0.04288 32.229)",
+          "oklch(26.429% 0.04288 32.229)",
+          "oklch(37.857% 0.04288 32.229)",
+          "oklch(49.286% 0.04288 32.229)",
+          "oklch(60.714% 0.04288 32.229)",
+          "oklch(72.143% 0.04288 32.229)",
+          "oklch(83.571% 0.04288 32.229)",
+          "oklch(95.000% 0.04288 32.229)"
+        ]
+      },
+      "dark-error-container": {
+        "role": "error",
+        "displayName": "错误容器 · 暗",
+        "canonical": "#853022",
+        "tonalRamp": [
+          "oklch(15.000% 0.11995 31.672)",
+          "oklch(26.429% 0.11995 31.672)",
+          "oklch(37.857% 0.11995 31.672)",
+          "oklch(49.286% 0.11995 31.672)",
+          "oklch(60.714% 0.11995 31.672)",
+          "oklch(72.143% 0.11995 31.672)",
+          "oklch(83.571% 0.11995 31.672)",
+          "oklch(95.000% 0.11995 31.672)"
+        ]
+      },
+      "on-error-container": {
+        "role": "error",
+        "displayName": "错误容器文字 · 明",
+        "canonical": "#64190F",
+        "tonalRamp": [
+          "oklch(15.000% 0.10915 30.875)",
+          "oklch(26.429% 0.10915 30.875)",
+          "oklch(37.857% 0.10915 30.875)",
+          "oklch(49.286% 0.10915 30.875)",
+          "oklch(60.714% 0.10915 30.875)",
+          "oklch(72.143% 0.10915 30.875)",
+          "oklch(83.571% 0.10915 30.875)",
+          "oklch(95.000% 0.10915 30.875)"
+        ]
+      },
+      "dark-on-error-container": {
+        "role": "error",
+        "displayName": "错误容器文字 · 暗",
+        "canonical": "#FFDAD2",
+        "tonalRamp": [
+          "oklch(15.000% 0.04288 32.229)",
+          "oklch(26.429% 0.04288 32.229)",
+          "oklch(37.857% 0.04288 32.229)",
+          "oklch(49.286% 0.04288 32.229)",
+          "oklch(60.714% 0.04288 32.229)",
+          "oklch(72.143% 0.04288 32.229)",
+          "oklch(83.571% 0.04288 32.229)",
+          "oklch(95.000% 0.04288 32.229)"
+        ]
+      },
+      "flow-weak": {
+        "role": "visualization",
+        "displayName": "微弱蓝",
+        "canonical": "#588FA8",
+        "tonalRamp": [
+          "oklch(15.000% 0.06929 228.722)",
+          "oklch(26.429% 0.06929 228.722)",
+          "oklch(37.857% 0.06929 228.722)",
+          "oklch(49.286% 0.06929 228.722)",
+          "oklch(60.714% 0.06929 228.722)",
+          "oklch(72.143% 0.06929 228.722)",
+          "oklch(83.571% 0.06929 228.722)",
+          "oklch(95.000% 0.06929 228.722)"
+        ]
+      },
+      "flow-breeze": {
+        "role": "visualization",
+        "displayName": "微风绿",
+        "canonical": "#408B70",
+        "tonalRamp": [
+          "oklch(15.000% 0.08640 167.253)",
+          "oklch(26.429% 0.08640 167.253)",
+          "oklch(37.857% 0.08640 167.253)",
+          "oklch(49.286% 0.08640 167.253)",
+          "oklch(60.714% 0.08640 167.253)",
+          "oklch(72.143% 0.08640 167.253)",
+          "oklch(83.571% 0.08640 167.253)",
+          "oklch(95.000% 0.08640 167.253)"
+        ]
+      },
+      "flow-noticeable": {
+        "role": "visualization",
+        "displayName": "明显金",
+        "canonical": "#B79442",
+        "tonalRamp": [
+          "oklch(15.000% 0.10853 85.954)",
+          "oklch(26.429% 0.10853 85.954)",
+          "oklch(37.857% 0.10853 85.954)",
+          "oklch(49.286% 0.10853 85.954)",
+          "oklch(60.714% 0.10853 85.954)",
+          "oklch(72.143% 0.10853 85.954)",
+          "oklch(83.571% 0.10853 85.954)",
+          "oklch(95.000% 0.10853 85.954)"
+        ]
+      },
+      "flow-strong": {
+        "role": "visualization",
+        "displayName": "强风陶土",
+        "canonical": "#BC6550",
+        "tonalRamp": [
+          "oklch(15.000% 0.11665 34.608)",
+          "oklch(26.429% 0.11665 34.608)",
+          "oklch(37.857% 0.11665 34.608)",
+          "oklch(49.286% 0.11665 34.608)",
+          "oklch(60.714% 0.11665 34.608)",
+          "oklch(72.143% 0.11665 34.608)",
+          "oklch(83.571% 0.11665 34.608)",
+          "oklch(95.000% 0.11665 34.608)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display-large": {
+        "displayName": "display-large",
+        "purpose": "原生 48 sp / 56 sp，字重 400，字距 0 sp。主题预设；当前四屏未直接调用。CSS 仅为 fontScale=1 的文档换算。"
+      },
+      "display-medium": {
+        "displayName": "display-medium",
+        "purpose": "原生 40 sp / 48 sp，字重 400，字距 0 sp。主题预设；当前四屏未直接调用。CSS 仅为 fontScale=1 的文档换算。"
+      },
+      "display-small": {
+        "displayName": "display-small",
+        "purpose": "原生 36 sp / 44 sp，字重 400，字距 0 sp。主题预设；当前四屏未直接调用。CSS 仅为 fontScale=1 的文档换算。"
+      },
+      "headline-large": {
+        "displayName": "headline-large",
+        "purpose": "原生 28 sp / 36 sp，字重 700，字距 0 sp。我家、方案、建议的页面标题。CSS 仅为 fontScale=1 的文档换算。"
+      },
+      "headline-medium": {
+        "displayName": "headline-medium",
+        "purpose": "原生 26 sp / 34 sp，字重 700，字距 0 sp。主题预设；当前四屏未直接调用。CSS 仅为 fontScale=1 的文档换算。"
+      },
+      "headline-small": {
+        "displayName": "headline-small",
+        "purpose": "原生 24 sp / 32 sp，字重 500，字距 0 sp。试摆房间名、创建/属性面板标题、比较标题。CSS 仅为 fontScale=1 的文档换算。"
+      },
+      "title-large": {
+        "displayName": "title-large",
+        "purpose": "原生 21 sp / 30 sp，字重 500，字距 0 sp。房间名称、空状态标题、建议入口标题。CSS 仅为 fontScale=1 的文档换算。"
+      },
+      "title-medium": {
+        "displayName": "title-medium",
+        "purpose": "原生 17 sp / 26 sp，字重 500，字距 0 sp。区块标题、方案名、列表物品名称。CSS 仅为 fontScale=1 的文档换算。"
+      },
+      "title-small": {
+        "displayName": "title-small",
+        "purpose": "原生 15 sp / 23 sp，字重 500，字距 0 sp。选择栏、主要状态、开始试摆标签。CSS 仅为 fontScale=1 的文档换算。"
+      },
+      "body-large": {
+        "displayName": "body-large",
+        "purpose": "原生 16 sp / 25 sp，字重 400，字距 0 sp。主要解释与结果建议。CSS 仅为 fontScale=1 的文档换算。"
+      },
+      "body-medium": {
+        "displayName": "body-medium",
+        "purpose": "原生 14 sp / 22 sp，字重 400，字距 0 sp。简介、表单说明、比较详情。CSS 仅为 fontScale=1 的文档换算。"
+      },
+      "body-small": {
+        "displayName": "body-small",
+        "purpose": "原生 13 sp / 20 sp，字重 400，字距 0 sp。辅助说明、错误说明、试摆提示。CSS 仅为 fontScale=1 的文档换算。"
+      },
+      "label-large": {
+        "displayName": "label-large",
+        "purpose": "原生 14 sp / 21 sp，字重 500，字距 0 sp。普通按钮与原生标签。CSS 仅为 fontScale=1 的文档换算。"
+      },
+      "label-medium": {
+        "displayName": "label-medium",
+        "purpose": "原生 13 sp / 20 sp，字重 500，字距 0 sp。房间预览身份、比较列名。CSS 仅为 fontScale=1 的文档换算。"
+      },
+      "label-small": {
+        "displayName": "label-small",
+        "purpose": "原生 12 sp / 18 sp，字重 500，字距 0 sp。图例、保存状态与次级状态。CSS 仅为 fontScale=1 的文档换算。"
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "native-material-sheets",
+        "value": "Material 3 ModalBottomSheet / SheetState defaults",
+        "purpose": "原生底部面板进出；skipPartiallyExpanded=true。源码未覆盖时长、曲线或弹簧，保持库行为。"
+      },
+      {
+        "name": "continuous-room-drag",
+        "value": "pointer-tracked preview; one commit on release",
+        "purpose": "直接操作：拖动开始锁定视口，移动时即时预览，松手提交一次，取消移除预览；不是补间动画。"
+      },
+      {
+        "name": "native-material-state-feedback",
+        "value": "Material 3 interaction and progress defaults",
+        "purpose": "原生按钮/选择/导航状态和进度反馈；无自定义 GSAP、风线播放或 CSS 动画运行时。"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "native-expanded",
+        "value": "600px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "开始试摆",
+      "kind": "button",
+      "refersTo": "button-home-start",
+      "description": "HomeScreen 的主要入口；显式最小高度 54 dp，titleSmall 与 20 dp 箭头。这是原生实例的静态文档转译：dp/sp 按基准换算为 CSS px，控件默认形状及浏览器焦点/指针样式仅作预览；Android 默认行为仍由 Material 3 依赖提供。",
+      "html": "<button class=\"ds-home-start\" type=\"button\">开始试摆<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 12H20M14 6L20 12L14 18\"/></svg></button>",
+      "css": ".ds-home-start{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:10px 24px;border:none;border-radius:9999px;background:#28513E;color:#FFFFFF;font: 500 15px/23px sans-serif;letter-spacing:0;cursor:pointer}.ds-home-start:hover{outline:1px solid currentColor;outline-offset:1px}.ds-home-start:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-home-start:active{outline:2px solid currentColor;outline-offset:0}.ds-home-start:disabled{opacity:.38;cursor:default}.ds-home-start{width:100%}.ds-home-start svg{width:20px;height:20px}@media(prefers-color-scheme:dark){.ds-home-start{background:#ADD1B7;color:#153A26}}"
+    },
+    {
+      "name": "创建房间",
+      "kind": "button",
+      "refersTo": "button-outlined",
+      "description": "HomeScreen 的次级入口；显式最小高度 48 dp、10 dp 内边距、19 dp 图标与 6 dp 间距。这是原生实例的静态文档转译：dp/sp 按基准换算为 CSS px，控件默认形状及浏览器焦点/指针样式仅作预览；Android 默认行为仍由 Material 3 依赖提供。",
+      "html": "<button class=\"ds-create-room\" type=\"button\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 5V19M5 12H19\"/></svg>创建房间</button>",
+      "css": ".ds-create-room{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:10px;border:1px solid #748074;border-radius:9999px;background:transparent;color:#28513E;font: 500 14px/21px sans-serif;letter-spacing:0;cursor:pointer}.ds-create-room:hover{outline:1px solid currentColor;outline-offset:1px}.ds-create-room:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-create-room:active{outline:2px solid currentColor;outline-offset:0}.ds-create-room:disabled{opacity:.38;cursor:default}.ds-create-room{gap:6px}.ds-create-room svg{width:19px;height:19px}@media(prefers-color-scheme:dark){.ds-create-room{color:#ADD1B7;border-color:#8E9C8C}}"
+    },
+    {
+      "name": "读取区域天气",
+      "kind": "button",
+      "refersTo": "button-tonal",
+      "description": "SuggestScreen 的 FilledTonalButton；显式最小高度 48 dp，业务标签随读取/失败状态变化。这是原生实例的静态文档转译：dp/sp 按基准换算为 CSS px，控件默认形状及浏览器焦点/指针样式仅作预览；Android 默认行为仍由 Material 3 依赖提供。",
+      "html": "<button class=\"ds-weather-read\" type=\"button\">读取在线天气</button>",
+      "css": ".ds-weather-read{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:10px 24px;border:none;border-radius:9999px;background:#E0E8DD;color:#273D2C;font: 500 14px/21px sans-serif;letter-spacing:0;cursor:pointer}.ds-weather-read:hover{outline:1px solid currentColor;outline-offset:1px}.ds-weather-read:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-weather-read:active{outline:2px solid currentColor;outline-offset:0}.ds-weather-read:disabled{opacity:.38;cursor:default}@media(prefers-color-scheme:dark){.ds-weather-read{background:#3C5240;color:#DCE8D8}}"
+    },
+    {
+      "name": "恢复方案",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "PlansScreen 的 TextButton；显式最小高度 48 dp、横向内边距 8 dp。这是原生实例的静态文档转译：dp/sp 按基准换算为 CSS px，控件默认形状及浏览器焦点/指针样式仅作预览；Android 默认行为仍由 Material 3 依赖提供。",
+      "html": "<button class=\"ds-restore-plan\" type=\"button\">恢复</button>",
+      "css": ".ds-restore-plan{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 8px;border:none;border-radius:9999px;background:transparent;color:#28513E;font: 500 14px/21px sans-serif;letter-spacing:0;cursor:pointer}.ds-restore-plan:hover{outline:1px solid currentColor;outline-offset:1px}.ds-restore-plan:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-restore-plan:active{outline:2px solid currentColor;outline-offset:0}.ds-restore-plan:disabled{opacity:.38;cursor:default}@media(prefers-color-scheme:dark){.ds-restore-plan{color:#ADD1B7}}"
+    },
+    {
+      "name": "原生名称字段",
+      "kind": "input",
+      "refersTo": "input-outlined",
+      "description": "OutlinedTextField 的浮动标签与错误说明；bodyLarge 字体。尺寸、默认圆角/边框由 Material 3 管理；以下为静态文档示意。这是原生实例的静态文档转译：dp/sp 按基准换算为 CSS px，控件默认形状及浏览器焦点/指针样式仅作预览；Android 默认行为仍由 Material 3 依赖提供。",
+      "html": "<label class=\"ds-name-field\"><span>房间名称</span><input type=\"text\" value=\"我的客厅\" aria-label=\"房间名称\"></label><p class=\"ds-name-help\">先输入名称，再继续调整房间。</p>",
+      "css": ".ds-name-field{display:block;position:relative;margin-top:10px;border:1px solid #748074;border-radius:6px;padding:14px 16px;background:#FAF8F2;color:#202B23}.ds-name-field span{position:absolute;top:-10px;left:12px;padding:0 4px;background:#FAF8F2;color:#4E5D51;font:400 13px/20px sans-serif}.ds-name-field input{display:block;width:100%;border:none;background:transparent;color:#202B23;font:400 16px/25px sans-serif;letter-spacing:0;outline:none}.ds-name-field:hover{border-color:#202B23}.ds-name-field:focus-within{border:2px solid #28513E;padding:13px 15px}.ds-name-field input:focus-visible{outline:2px solid #28513E;outline-offset:3px}.ds-name-field:active{border-color:#28513E}.ds-name-help{color:#4E5D51;font:400 13px/20px sans-serif;margin:4px 16px}@media(prefers-color-scheme:dark){.ds-name-field,.ds-name-field span{background:#131C16;color:#E3E9DF;border-color:#8E9C8C}.ds-name-field input{color:#E3E9DF}.ds-name-field span,.ds-name-help{color:#C3CFC0}.ds-name-field:focus-within{border-color:#ADD1B7}.ds-name-field input:focus-visible{outline-color:#ADD1B7}}"
+    },
+    {
+      "name": "房间选择芯片",
+      "kind": "chip",
+      "refersTo": "chip-room",
+      "description": "多房间 FilterChip；显式最小高度 48 dp，原生 selected 状态。芯片默认填色和形状是库行为，示意沿用当前主题色与小圆角。这是原生实例的静态文档转译：dp/sp 按基准换算为 CSS px，控件默认形状及浏览器焦点/指针样式仅作预览；Android 默认行为仍由 Material 3 依赖提供。",
+      "html": "<div class=\"ds-room-chips\"><button class=\"ds-room-chip ds-room-chip-selected\" type=\"button\" aria-pressed=\"true\">我的客厅</button><button class=\"ds-room-chip\" type=\"button\" aria-pressed=\"false\">卧室</button></div>",
+      "css": ".ds-room-chips{display:flex;gap:8px;flex-wrap:wrap}.ds-room-chip{min-height:48px;padding:0 16px;border:1px solid #748074;border-radius:10px;background:transparent;color:#4E5D51;font:500 14px/21px sans-serif;cursor:pointer}.ds-room-chip-selected{border-color:transparent;background:#E0E8DD;color:#273D2C}.ds-room-chip:hover{outline:1px solid currentColor;outline-offset:1px}.ds-room-chip:focus-visible{outline:2px solid #28513E;outline-offset:3px}.ds-room-chip:active{outline:2px solid currentColor;outline-offset:0}@media(prefers-color-scheme:dark){.ds-room-chip{border-color:#8E9C8C;color:#C3CFC0}.ds-room-chip-selected{border-color:transparent;background:#3C5240;color:#DCE8D8}.ds-room-chip:focus-visible{outline-color:#ADD1B7}}"
+    },
+    {
+      "name": "四目的地导航",
+      "kind": "nav",
+      "refersTo": "navigation-bar",
+      "description": "MainActivity 紧凑 NavigationBar 的语义背景、目的地和真实 FxjIcons 路径；原生组件高度、选中形状与状态层由库提供。文档不表达导航状态存储或真实页面切换。",
+      "html": "<nav class=\"ds-nav-bar\" aria-label=\"主要目的地\"><button class=\"ds-nav-item ds-nav-selected\" type=\"button\" aria-current=\"page\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 10L12 3L21 10M5 9V21H19V9M9 21V14H15V21\"/></svg><span>我家</span></button><button class=\"ds-nav-item\" type=\"button\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 10C8 5 13 1 17 5C20 8 16 11 14 11M14 12C21 12 22 18 17 20C13 22 11 17 11 14M10 13C7 19 1 17 3 11C4 7 9 8 11 10M12 10C14.7 10 14.7 14 12 14C9.3 14 9.3 10 12 10\"/></svg><span>试摆</span></button><button class=\"ds-nav-item\" type=\"button\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8 3H20V18H8ZM4 6V21H16M11 7H17M11 11H17M11 15H14\"/></svg><span>方案</span></button><button class=\"ds-nav-item\" type=\"button\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8 16C8 13 5 12 5 8C5 0 19 0 19 8C19 12 16 13 16 16H8M8 19H16M10 22H14M12 16V10\"/></svg><span>建议</span></button></nav>",
+      "css": ".ds-nav-bar{display:flex;background:#EEEEE5;padding:12px 0;gap:8px}.ds-nav-item{display:flex;flex:1;align-items:center;flex-direction:column;justify-content:center;gap:4px;min-height:48px;border:none;background:transparent;color:#4E5D51;font:500 13px/20px sans-serif;cursor:pointer}.ds-nav-item svg{padding:4px 16px;border-radius:9999px}.ds-nav-selected{color:#202B23}.ds-nav-selected svg{background:#E0E8DD;color:#273D2C}.ds-nav-item:hover{outline:1px solid currentColor;outline-offset:-1px}.ds-nav-item:focus-visible{outline:2px solid #28513E;outline-offset:-2px}.ds-nav-item:active svg{outline:1px solid currentColor}@media(prefers-color-scheme:dark){.ds-nav-bar{background:#202A22}.ds-nav-item{color:#C3CFC0}.ds-nav-selected{color:#E3E9DF}.ds-nav-selected svg{background:#3C5240;color:#DCE8D8}.ds-nav-item:focus-visible{outline-color:#ADD1B7}}"
+    },
+    {
+      "name": "保存方案容器",
+      "kind": "card",
+      "refersTo": "surface-plan",
+      "description": "PlansScreen 的 Surface：medium 16 dp 圆角、16 dp 内容边距、surfaceContainerLow。静态示例仅说明信息层级。",
+      "html": "<article class=\"ds-plan-card\"><h3>沙发微风</h3><p>本机保存方案 · 1 台风扇</p><div class=\"ds-plan-actions\"><button type=\"button\" class=\"ds-plan-side\" aria-pressed=\"true\">作为 A</button><button type=\"button\" class=\"ds-plan-restore\">恢复</button></div></article>",
+      "css": ".ds-plan-card{padding:16px;border-radius:16px;background:#F3F3EB;color:#202B23}.ds-plan-card h3{margin:0;font:500 17px/26px sans-serif}.ds-plan-card p{margin:4px 0 8px;color:#4E5D51;font:400 13px/20px sans-serif}.ds-plan-actions{display:flex;gap:8px;align-items:center;justify-content:space-between}.ds-plan-side{min-height:48px;padding:0 16px;border:none;border-radius:10px;background:#E0E8DD;color:#273D2C;font:500 14px/21px sans-serif}.ds-plan-restore{min-height:48px;padding:0 8px;border:none;background:transparent;color:#28513E;font:500 14px/21px sans-serif}.ds-plan-actions button:hover{outline:1px solid currentColor}.ds-plan-actions button:focus-visible{outline:2px solid #28513E;outline-offset:3px}.ds-plan-actions button:active{outline:2px solid currentColor}@media(prefers-color-scheme:dark){.ds-plan-card{background:#1B251D;color:#E3E9DF}.ds-plan-card p{color:#C3CFC0}.ds-plan-side{background:#3C5240;color:#DCE8D8}.ds-plan-restore{color:#ADD1B7}.ds-plan-actions button:focus-visible{outline-color:#ADD1B7}}"
+    },
+    {
+      "name": "房间图结构示意",
+      "kind": "custom",
+      "refersTo": "surface-room",
+      "description": "RoomCanvas 原生绘图的静态转译，展示背景、网格、家具、风扇、窗和流线角色。SVG 坐标为文档示例，不是用户数据；没有求解器、真实触控或原生绘图验收。",
+      "html": "<figure class=\"ds-room-figure\"><svg class=\"ds-room-map\" viewBox=\"0 0 320 220\" role=\"img\" aria-label=\"示意房间平面图\"><defs><pattern id=\"ds-room-grid\" width=\"24\" height=\"24\" patternUnits=\"userSpaceOnUse\"><path d=\"M24 0H0V24\" fill=\"none\" stroke=\"#CBD2C5\" stroke-opacity=\".35\" stroke-width=\".5\"/></pattern></defs><path class=\"ds-room-fill\" d=\"M48 40H280V172H48Z\"/><path d=\"M48 40H280V172H48Z\" fill=\"url(#ds-room-grid)\"/><rect class=\"ds-room-furniture\" x=\"186\" y=\"110\" width=\"68\" height=\"34\" rx=\"3\"/><path class=\"ds-room-wall\" d=\"M48 40H280V172H48Z\"/><path class=\"ds-room-window\" d=\"M204 40H254\"/><path d=\"M80 110C128 82 160 87 245 69M80 115C135 125 162 128 245 91\" fill=\"none\" stroke=\"#408B70\" stroke-opacity=\".72\" stroke-width=\"1.2\" stroke-linecap=\"round\"/><circle class=\"ds-room-selected\" cx=\"80\" cy=\"110\" r=\"27\"/><path class=\"ds-room-direction\" d=\"M80 110H114M107 105L114 110L107 115\"/><circle class=\"ds-room-fan\" cx=\"80\" cy=\"110\" r=\"15\"/><path class=\"ds-room-fan-blades\" d=\"M80 110L88 110M80 110L76 103M80 110L76 117\"/><text class=\"ds-room-label\" x=\"80\" y=\"139\" text-anchor=\"middle\">风扇 1</text></svg><figcaption>文档示意 · 生活用途的简化风线</figcaption></figure>",
+      "css": ".ds-room-figure{margin:0;overflow:hidden;border-radius:16px;background:#F3F3EB;color:#28513E}.ds-room-map{display:block;width:100%;height:auto;background:#FAF8F2}.ds-room-fill{fill:#FAF8F2}.ds-room-furniture{fill:#E0E8DD}.ds-room-wall{fill:none;stroke:#202B23;stroke-opacity:.85;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.ds-room-window{fill:none;stroke:#825943;stroke-width:3}.ds-room-selected{fill:#28513E;fill-opacity:.14}.ds-room-direction{fill:none;stroke:#28513E;stroke-width:2.5;stroke-linecap:round}.ds-room-fan{fill:#28513E}.ds-room-fan-blades{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-linecap:round}.ds-room-label{fill:#202B23;font:400 10px sans-serif}.ds-room-figure figcaption{padding:0 16px 14px;font:500 13px/20px sans-serif}@media(prefers-color-scheme:dark){.ds-room-figure{background:#1B251D;color:#ADD1B7}.ds-room-map{background:#131C16}.ds-room-fill{fill:#131C16}.ds-room-furniture{fill:#3C5240}.ds-room-wall{stroke:#E3E9DF}.ds-room-window{stroke:#E7BA9F}.ds-room-selected,.ds-room-fan{fill:#ADD1B7}.ds-room-direction{stroke:#ADD1B7}.ds-room-fan-blades{stroke:#153A26}.ds-room-label{fill:#E3E9DF}}"
+    },
+    {
+      "name": "当前物品选择栏",
+      "kind": "custom",
+      "refersTo": "selection-banner",
+      "description": "TrialScreen 的选择 Surface：secondaryContainer、12 dp 圆角，左 14 dp / 右 4 dp 内容留白，titleSmall 与 bodySmall。调整入口打开原生属性面板；静态预览按钮无业务行为。",
+      "html": "<section class=\"ds-selection\"><div class=\"ds-selection-copy\"><strong>风扇 1</strong><p>可直接拖动，或打开属性精确调整</p></div><button type=\"button\" class=\"ds-selection-adjust\">调整</button></section>",
+      "css": ".ds-selection{display:flex;align-items:center;gap:8px;padding:0 4px 0 14px;border-radius:12px;background:#E0E8DD;color:#273D2C}.ds-selection-copy{flex:1}.ds-selection-copy strong{font:500 15px/23px sans-serif}.ds-selection-copy p{margin:0;font:400 13px/20px sans-serif}.ds-selection-adjust{min-height:48px;padding:0 8px;border:none;border-radius:9999px;background:transparent;color:#28513E;font:500 14px/21px sans-serif;cursor:pointer}.ds-selection-adjust:hover{outline:1px solid currentColor}.ds-selection-adjust:focus-visible{outline:2px solid #28513E;outline-offset:2px}.ds-selection-adjust:active{outline:2px solid currentColor}@media(prefers-color-scheme:dark){.ds-selection{background:#3C5240;color:#DCE8D8}.ds-selection-adjust{color:#ADD1B7}.ds-selection-adjust:focus-visible{outline-color:#ADD1B7}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "看见家里的风",
+    "overview": "风向家的视觉语言来自平静的现代家居杂志：暖白底承托可读的房间图，墨绿负责主要操作，鼠尾草放轻辅助层，陶土用于窗与需要注意的状态。它服务于手持手机在家中试摆风扇的实际任务；品牌表现落在色彩、中文字体层级和留白。\n\n界面是原生 Kotlin / Jetpack Compose 与 Material 3。导航、按钮、输入、选项、菜单、对话框和底部面板沿用原生控制语法；房间图提供直接移动与数值调整两条操作路径。明暗模式跟随系统，字体保留 Android 用户设置。",
+    "keyCharacteristics": [
+      "平静的家居色彩与清楚的中文层级。",
+      "房间平面图是工作的视觉中心。",
+      "语义颜色贯穿明暗模式和操作状态。",
+      "原生控件与可恢复的输入支持连续操作。"
+    ],
+    "rules": [
+      {
+        "name": "语义配对",
+        "body": "新增表面与文字应使用同一主题的语义色配对；亮暗模式分别从原生 colorScheme 读取，不能只替换页面背景。",
+        "section": "colors"
+      },
+      {
+        "name": "系统字体",
+        "body": "使用 FontFamily.SansSerif 与 sp，尊重 Android 字体和字体大小偏好；不要把某台设备的中文字形当作应用固定资产。",
+        "section": "typography"
+      },
+      {
+        "name": "操作先于装饰",
+        "body": "房间预览、名称与状态需要先可读，原生主操作需要先可发现；家居杂志方向只约束颜色、排版与留白。",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do 使用当前主题的语义色及相应 on 色，让选择、错误与辅助说明在明暗模式均有明确角色。",
+      "Do 保留原生 dp 布局和 sp 字号；把 48 dp 作为触控目标基准，并允许标签与表单随系统字体扩展。",
+      "Do 继续使用同一个 RoomCanvas 绘制编辑、保存方案和建议预览，保持图例与计算快照同源。",
+      "Do 在拖动中立即预览、松手提交一次；为位置、朝向和尺寸保留按钮或数值替代。",
+      "Do 用原生底部面板展开属性，用文字和状态解释旧结果、失败、保存与恢复。"
+    ],
+    "donts": [
+      "Don't 将家居杂志构图替换成自绘导航、网页式弹层或隐藏核心操作的装饰布局。",
+      "Don't 用 emoji 或外部图标字体替代已经建立的原生矢量导航图标。",
+      "Don't 捆绑新的中文品牌字体、固定 fontScale，或把浏览器预览的 px 当作 Android 物理像素。",
+      "Don't 把旧风线、过期建议、示例房间或演示天气呈现成当前有效的用户结果。",
+      "Don't 以设计文档、静态组件预览或源码核对代替模拟器、K30 操作与视觉验收。"
+    ]
+  }
+}
+

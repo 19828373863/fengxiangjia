@@ -11,3 +11,43 @@
 
 ## 优先事项
 从 P0 最小 SwiftUI 工程、核心数据实体与一间示例房间开始，再纵向实现编辑、试摆、A/B 对比；不要首先开发云服务、AI 聊天或复杂 CFD。
+
+## Android Issue #70 当前交接（2026-10-13）
+
+此节是本轮 Android 工作的追加记录，不改写上方 iOS 初始化历史。
+
+- 任务：Issue #70，重建可以实际操作的「我家 / 试摆 / 方案 / 建议」原生流程，并以设备运行证据验证核心编辑、试摆、保存与恢复。
+- 基线：`328f22d785e7d5d4b410a3f095d32e12e3765ede`。
+- 工作分支：`fix/70-android-usable-product`。
+- 本轮源码提交 SHA：待实施负责人完成冻结与提交后追加；本节不以基线 SHA 冒充完成提交。
+- 当前候选：Android `0.2.0` / versionCode `2`，debug 完整体验构建；APK SHA-256 为 `5519C4AC3A2B46958BE4FB2D90FFA6509524CF97B61405C077FDD401B8F8CBEE`。
+
+### 已完成内容与所属文件
+
+原生主题、文字/图标、明暗模式与导航由 Theme.kt、UiComponents.kt、MainActivity.kt 统一；HomeScreen.kt、TrialScreen.kt、PlansScreen.kt、SuggestScreen.kt 与 RoomCanvas.kt 实现房间入口、连续拖动/精确调整、方案恢复/A-B 比较和建议采用。AppModel.kt 与 core 的 HomeDocument.kt/LocalFileStorage 维护校验、持久化状态、会话恢复、重试和不可读文件副本；相关 JVM 回归位于 android/app/src/test 与 android/core/src/test。本节列出主要影响面，最终逐文件清单以提交 diff 为准。
+
+PRODUCT.md、docs/ANDROID_USABILITY_BRIEF.md、DESIGN.md、.impeccable/design.json 记录本轮 Android 产品与视觉约束；Android 当前状态、决策及契约分别追加于 docs/ANDROID_STATUS.md、DECISIONS.md、docs/ARCHITECTURE_AND_CONTRACTS.md。跨平台主 JSON schema 仍为 v2，Android 会话放在本机 sidecar，不扩充共享 JSON 契约。
+
+### 已执行验证
+
+本地 `test + assembleDebug` 通过，日志留在会话本地 `work/build-70-corrected.log`。XML 合计为 core 79、app debug 64、app release 64，共 207 次执行，失败/错误/跳过均为 0；独立测试定义为 core 79 + app 64。未将 app 的两个构建变体计为 128 个不同用例。
+
+实施负责人已安装候选到 K30 与 `emulator-5582`，运行检查涵盖拖动、相对坐标输入、新建 4.5 × 3 m 房间与物品、撤销/重做、3 个保存方案、恢复、带实际风线与不同指标的 A/B、两台设备的建议采用、原生 PNG 分享选择器、重启会话及失败保存持续重试后写入最新状态。详细范围见 docs/ANDROID_STATUS.md；截图与私有布局只留在本地。
+
+模拟器已用公开测试位置完成 Open-Meteo 实际读取，返回来向 311°、2 m/s、UTC 10-12 17:00，来源/条款/新鲜度可见；90° 手动风况设置已成功。没有采样用户手机的真实位置；断开模拟器 Wi-Fi 与移动网络后，天气读取进入可重试状态，保留原来来向 311°/2 m/s；随后网络设置恢复。
+
+K30 的原有 room/scenarios 在临时测试后已恢复并核对不变；规范化了 ADB shell 捕获的 CRLF 文本差异。不得将这次捕获描述为原始私有文件的逐字节备份，也不得发布用户住宅或原生截图。
+
+### 未完成、限制与下一个动作
+
+1. 离线检查完成。独立原生审阅发现的唯一 P2 标签重叠已按同名 K30 浅/深色大字体截图评分 resolved，disposition: ship；最终用户体验仍由用户自行评价。
+2. 冻结实际源码、提交，并把最终 SHA 与 review 结论追加到此节及 Issue；当前文档追加不代表已提交、合并或远端 CI 通过。
+3. 真实 Play 购买/恢复、正式签名发布/商店提交、物理 AR 测量、传感器准确度与真实气流模型效果继续保持未验证。debug 完整体验不是购买凭据。
+4. 交接时只转交源码、契约、测试范围与可公开的说明；不上传构建缓存、工具目录、设备数据、恢复副本、私人布局或原生截图。
+
+
+### 最终设备候选冻结
+
+最终 APK SHA-256：`5519C4AC3A2B46958BE4FB2D90FFA6509524CF97B61405C077FDD401B8F8CBEE`。标签修正后 `:app:testDebugUnitTest assembleDebug` 通过（64 个 debug 用例，日志 `work/build-70-label-final.log`）；core/持久化/推荐逻辑未再次修改，复用前一轮完整 207 次执行。最终候选成功安装到 K30 与 emulator-5582；K30 安装路径中的 APK 原始字节再次读取并核对与交付包哈希相同。K30 原有完整 home.json 内容按 JSON 语义核对不变，已恢复 1.0 字体缩放与浅色系统设置，交付停留「我家」。
+
+后段测试模拟器曾被其他开发会话切到另一应用；无效截图已弃用，不作为证据。最终浅色、深色及 1.3 倍字体界面以 K30 重新采集的真实截图为准。模拟器功能操作的有效截图/JSON 保留在本会话本地。物理扫描与真实 Play 交易不属于已验证范围。

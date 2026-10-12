@@ -33,6 +33,24 @@ class FeatureGateTest {
         PaidFeature.entries.forEach { assertNull(m.paywall(it)) }
     }
 
+    @Test fun fullExperiencePermitsTestingWithoutForgingPurchasedEntitlement() {
+        val dir = Files.createTempDirectory("fxj").toFile()
+        val m = AppModel(HomeRepository(dir), fullExperience = true) { t0 }
+        assertFalse(m.entitlement.isUnlocked)
+        PaidFeature.entries.forEach { assertNull(m.paywall(it)) }
+        assertNotNull(m.addRoom(RoomTemplate.DEFAULT_RECTANGLE, "卧室"))
+        repeat(FreeLimits.SCENARIOS + 2) { assertNotNull(m.saveScenario("体验方案 $it")) }
+        assertTrue(m.canRecommend())
+        m.setEntitlement(EntitlementState())
+        PaidFeature.entries.forEach { assertNull(m.paywall(it)) }
+        assertFalse(m.entitlement.isUnlocked)
+        val release = AppModel(HomeRepository(dir)) { t0 }
+        assertFalse(release.entitlement.isUnlocked)
+        assertNotNull(release.paywall(PaidFeature.multiRoom))
+        assertNotNull(release.paywall(PaidFeature.unlimitedScenarios))
+        assertFalse(release.canRecommend())
+    }
+
     @Test fun recommendationAppliesCandidate() {
         val m = model(); m.setEntitlement(EntitlementState(EntitlementCache(true, 0)))
         val c = m.recommend()

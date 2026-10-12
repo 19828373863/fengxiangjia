@@ -18,6 +18,13 @@
         android:theme="@android:style/Theme.Material.Light.NoActionBar">
         <!-- ARCore 为可选：不支持的设备不会被商店过滤 -->
         <meta-data android:name="com.google.ar.core" android:value="optional" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.room-images"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" />
+        </provider>
         <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
