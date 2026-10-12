@@ -19,3 +19,10 @@
 - 未测：真机、签名、TestFlight（无开发者账号/证书）。
 - 阻塞：公共契约缺口见 Issue #26，#3/#4 接口需其确认。
 - 下一步：#26 确认后实现 #3 Domain 模型与 JSON 序列化迁移测试，随后 #4。
+
+## 2026-10-12 · Issue #3 FXJ-02（Grok）
+- 分支：`feat/3-domain-models`（基于 `feat/2-ios-project-ci`，堆叠 PR）
+- 新增：`FXJCore/Domain`（Vec2、Home、Location、Room、Wall、Opening、ConnectionTarget、Obstacle、Fan、Target、Environment、Scenario），`FXJCore/Persistence/HomeDocument.swift`（schemaVersion=1、v0→v1 迁移、未来版本拒绝）
+- 契约：**暂定**，采用 #26 中开发侧提议，待总调度确认。
+- 已测：Linux `swift test` 9 项通过；macOS CI 见 PR。
+- 未做：scenarioHash（留给模拟模块 #8）、SwiftData 方案对比。
