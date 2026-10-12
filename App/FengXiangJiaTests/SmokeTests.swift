@@ -203,4 +203,16 @@ final class SmokeTests: XCTestCase {
             XCTAssertFalse((Bundle.main.object(forInfoDictionaryKey: k) as? String ?? "").isEmpty, k)
         }
     }
+
+    /// #21：iOS 上与 Linux 得到相同 scenarioHash（跨平台确定性）。
+    func testGoldenHashesMatchOnIOS() {
+        for c in GoldenScenarios.cases {
+            XCTAssertEqual(AirflowSolver.solve(GoldenScenarios.input(c)).scenarioHash, c.scenarioHash, c.name)
+        }
+    }
+
+    func testSolvePerformance() {
+        let i = GoldenScenarios.input(GoldenScenarios.cases[1])
+        measure { _ = AirflowSolver.solve(i) }
+    }
 }

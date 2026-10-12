@@ -114,16 +114,15 @@ public final class MockStoreClient: StoreClient, @unchecked Sendable {
     public init(owned: Bool = false, nextOutcome: PurchaseOutcome = .purchased, failNetwork: Bool = false) {
         self.owned = owned; self.nextOutcome = nextOutcome; self.failNetwork = failNetwork
     }
+    private func locked<T>(_ f: () -> T) -> T { lock.lock(); defer { lock.unlock() }; return f() }
     public func displayPrice() async throws -> String { "¥12" }
     public func purchase() async throws -> PurchaseOutcome {
         if failNetwork { throw StoreClientError.network }
-        lock.lock(); defer { lock.unlock() }
-        if nextOutcome == .purchased { owned = true }
-        return nextOutcome
+        return locked { if nextOutcome == .purchased { owned = true }; return nextOutcome }
     }
-    public func currentEntitlement() async -> Bool { lock.lock(); defer { lock.unlock() }; return owned }
+    public func currentEntitlement() async -> Bool { locked { owned } }
     public func restore() async throws -> Bool {
         if failNetwork { throw StoreClientError.network }
-        lock.lock(); defer { lock.unlock() }; return owned
+        return locked { owned }
     }
 }
