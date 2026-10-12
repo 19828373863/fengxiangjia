@@ -12,6 +12,13 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.intOrNull
 import java.io.File
+import java.io.FileOutputStream
+import java.io.FileInputStream
+import java.io.IOException
+import java.nio.file.AtomicMoveNotSupportedException
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+import java.security.MessageDigest
 
 /** 持久化根对象（与 iOS `HomeDocument` 同 schema）。 */
 @Serializable
@@ -99,6 +106,8 @@ sealed interface HomeLoadState {
 /** 本地文件存储（App 私有目录，仅本地，不上传）。 */
 class HomeRepository(directory: File, fileName: String = "home.json") {
     val file = File(directory, fileName)
+    /** Recovery copies are local exact-byte backups, including unsupported future schemas. */
+    var lastRecoveryFile: File? = null; private set
 
     fun load(): HomeLoadState {
         if (!file.exists()) return HomeLoadState.Empty
@@ -109,12 +118,98 @@ class HomeRepository(directory: File, fileName: String = "home.json") {
     }
 
     fun save(doc: HomeDocument) {
-        file.parentFile?.mkdirs()
-        val tmp = File(file.parentFile, file.name + ".tmp")
-        tmp.writeText(DocumentCodec.encode(doc))
-        if (!tmp.renameTo(file)) { file.delete(); tmp.renameTo(file) }
+        // A fallback document must not destroy the only copy of data this version cannot read.
+        preserveUnreadableFile()
+        LocalFileStorage.write(file, DocumentCodec.encode(doc))
     }
 
-    fun delete() { if (file.exists()) file.delete() }
+    fun preserveUnreadableFile(): File? {
+        if (load() !is HomeLoadState.Failed) return null
+        var index = 0
+        while (true) {
+            val suffix = if (index == 0) "" else ".$index"
+            val backup = File(file.parentFile, file.name + ".recovery$suffix.json")
+            if (!backup.exists()) {
+                LocalFileStorage.copy(file, backup)
+                lastRecoveryFile = backup
+                return backup
+            }
+            if (!backup.isFile) throw IOException("恢复副本位置不可写，已保留原文件")
+            if (LocalFileStorage.sameContents(file, backup)) {
+                lastRecoveryFile = backup
+                return backup
+            }
+            index++
+        }
+    }
+
+    fun delete() {
+        val recoveryName = Regex(Regex.escape(file.name) + "\\.recovery(?:\\.[0-9]+)?\\.json(?:\\.tmp)?")
+        file.parentFile?.listFiles()?.filter { it.isFile && recoveryName.matches(it.name) }
+            ?.forEach(LocalFileStorage::delete)
+        LocalFileStorage.delete(file)
+        val temporary = File(file.parentFile, file.name + ".tmp")
+        if (temporary.isFile) LocalFileStorage.delete(temporary)
+        lastRecoveryFile = null
+    }
+}
+
+/** Replace a local file only after its complete contents are written. Failures remain observable. */
+object LocalFileStorage {
+    fun write(file: File, text: String) {
+        file.parentFile?.let { Files.createDirectories(it.toPath()) }
+        val tmp = File(file.parentFile, file.name + ".tmp")
+        try {
+            FileOutputStream(tmp).use { output ->
+                output.write(text.toByteArray(Charsets.UTF_8))
+                output.fd.sync()
+            }
+            try {
+                Files.move(tmp.toPath(), file.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
+            } catch (_: AtomicMoveNotSupportedException) {
+                Files.move(tmp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            }
+        } finally {
+            // The previous destination is never explicitly deleted to make a rename succeed.
+            if (tmp.isFile) tmp.delete()
+        }
+    }
+
+    /** Promote a complete verified backup without replacing any earlier recovery copy. */
+    fun copy(source: File, file: File) {
+        if (!source.isFile) throw IOException("原文件无法读取，已停止覆盖")
+        file.parentFile?.let { Files.createDirectories(it.toPath()) }
+        val tmp = File(file.parentFile, file.name + ".tmp")
+        try {
+            FileInputStream(source).use { input ->
+                FileOutputStream(tmp).use { output -> input.copyTo(output); output.fd.sync() }
+            }
+            if (!sameContents(source, tmp)) throw IOException("恢复副本校验失败，已停止覆盖")
+            Files.move(tmp.toPath(), file.toPath())
+        } finally {
+            if (tmp.isFile) tmp.delete()
+        }
+    }
+
+    fun sameContents(a: File, b: File): Boolean {
+        if (!a.isFile || !b.isFile || a.length() != b.length()) return false
+        fun digest(file: File): ByteArray {
+            val digest = MessageDigest.getInstance("SHA-256")
+            FileInputStream(file).use { input ->
+                val buffer = ByteArray(8192)
+                while (true) {
+                    val count = input.read(buffer)
+                    if (count < 0) break
+                    digest.update(buffer, 0, count)
+                }
+            }
+            return digest.digest()
+        }
+        return digest(a).contentEquals(digest(b))
+    }
+
+    fun delete(file: File) {
+        if (file.exists() && !file.delete()) throw IOException("无法删除本地文件")
+    }
 }
 

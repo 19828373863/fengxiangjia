@@ -10,3 +10,5 @@ xcuserdata/
 *.p12
 *.mobileprovision
 Secrets.xcconfig
+.impeccable/questions/
+.impeccable/review/

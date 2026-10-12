@@ -8,9 +8,17 @@ import android.location.LocationManager
 object CoarseLocation {
     @SuppressLint("MissingPermission")
     fun last(ctx: Context): Pair<Double, Double>? {
-        val lm = ctx.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val lm = ctx.getSystemService(Context.LOCATION_SERVICE) as? LocationManager ?: return null
+        val now = System.currentTimeMillis()
         val l = listOf(LocationManager.NETWORK_PROVIDER, LocationManager.PASSIVE_PROVIDER)
-            .mapNotNull { runCatching { lm.getLastKnownLocation(it) }.getOrNull() }.maxByOrNull { it.time } ?: return null
+            .mapNotNull { runCatching { lm.getLastKnownLocation(it) }.getOrNull() }
+            .filter {
+                it.latitude.isFinite() && it.longitude.isFinite() &&
+                    it.latitude in -90.0..90.0 && it.longitude in -180.0..180.0 &&
+                    now - it.time in 0..MAX_LAST_LOCATION_AGE_MS
+            }.maxByOrNull { it.time } ?: return null
         return l.latitude to l.longitude
     }
+
+    private const val MAX_LAST_LOCATION_AGE_MS = 24 * 60 * 60 * 1000L
 }
