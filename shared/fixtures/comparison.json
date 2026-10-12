@@ -1,0 +1,86 @@
+{
+  "dimensions" : [
+    {
+      "kind" : "targetBreeze",
+      "levelA" : 3,
+      "levelB" : 3,
+      "preferred" : "similar"
+    },
+    {
+      "kind" : "outdoorExchange",
+      "levelA" : 3,
+      "levelB" : 3,
+      "preferred" : "similar"
+    },
+    {
+      "kind" : "circulation",
+      "levelA" : 3,
+      "levelB" : 2,
+      "preferred" : "a"
+    },
+    {
+      "kind" : "adjustmentCost",
+      "levelA" : 0,
+      "levelB" : 3,
+      "preferred" : "a"
+    }
+  ],
+  "environment" : {
+    "observedAt" : "2027-01-15T08:00:00Z",
+    "obstructionByOpening" : [
+
+    ],
+    "source" : "manual",
+    "windFromDegrees" : 180,
+    "windSpeed" : 3
+  },
+  "hashA" : "d8bb83d50ae79f0a132c28302be8fd2567bd775ca9e8810d9a276cc8c25543a0",
+  "hashB" : "c5d0dae162f3be94e5e0dff2e50e7bf267bd9ef2f7e8eef1879ae5ea5436f3ee",
+  "notes" : [
+
+  ],
+  "scenarioB" : {
+    "createdAt" : "2027-01-15T08:00:00Z",
+    "fans" : [
+      {
+        "id" : "00000000-0000-0000-0000-0000000D0001",
+        "kind" : "pedestal",
+        "position" : {
+          "x" : 1,
+          "y" : 1
+        },
+        "power" : 0.6,
+        "yawDegrees" : 60
+      }
+    ],
+    "geometryRevision" : 0,
+    "id" : "00000000-0000-0000-0000-0000000F0002",
+    "name" : "B",
+    "openingStates" : [
+      "00000000-0000-0000-0000-0000000B0002",
+      1,
+      "00000000-0000-0000-0000-0000000B0001",
+      1
+    ],
+    "roomId" : "00000000-0000-0000-0000-00000000F002",
+    "targets" : [
+      {
+        "id" : "00000000-0000-0000-0000-0000000E0001",
+        "name" : "沙发",
+        "objective" : "wantBreeze",
+        "shape" : {
+          "circle" : {
+            "center" : {
+              "x" : 2.5,
+              "y" : 3.4
+            },
+            "radius" : 0.8
+          }
+        }
+      }
+    ]
+  },
+  "suggestions" : [
+
+  ]
+}
