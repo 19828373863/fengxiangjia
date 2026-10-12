@@ -17,7 +17,7 @@ final class SmokeTests: XCTestCase {
     }
 
     func testEmptyThenSample() {
-        let m = AppModel(repository: tempRepo())
+        let m = AppModel(repository: tempRepo(), storeClient: MockStoreClient(), entitlementCache: .init())
         XCTAssertEqual(m.state, .loading)
         m.load()
         XCTAssertEqual(m.state, .empty)
@@ -27,14 +27,14 @@ final class SmokeTests: XCTestCase {
 
     func testSamplePersistsAcrossLaunch() {
         let repo = tempRepo()
-        AppModel(repository: repo).openSample()
-        let m2 = AppModel(repository: repo)
+        AppModel(repository: repo, storeClient: MockStoreClient(), entitlementCache: .init()).openSample()
+        let m2 = AppModel(repository: repo, storeClient: MockStoreClient(), entitlementCache: .init())
         m2.load()
         XCTAssertNotNil(m2.document)
     }
 
     func testFanCannotLeaveRoom() {
-        let m = AppModel(repository: tempRepo())
+        let m = AppModel(repository: tempRepo(), storeClient: MockStoreClient(), entitlementCache: .init())
         m.openSample()
         let fan = m.document!.home.rooms[0].fans[0]
         XCTAssertTrue(m.moveFan(roomId: SampleData.roomId, fanId: fan.id, to: Vec2(1, 1)))
@@ -49,7 +49,7 @@ final class SmokeTests: XCTestCase {
     }
 
     func testCreateBlankAndReplaceRoomBumpsRevision() throws {
-        let m = AppModel(repository: tempRepo())
+        let m = AppModel(repository: tempRepo(), storeClient: MockStoreClient(), entitlementCache: .init())
         m.createBlankRoom()
         var editor = RoomEditor(room: m.document!.home.rooms[0])
         try editor.addOpening(.window, near: Vec2(2, 0))
@@ -59,7 +59,7 @@ final class SmokeTests: XCTestCase {
     }
 
     func testUpdateLayoutKeepsGeometryRevision() throws {
-        let m = AppModel(repository: tempRepo())
+        let m = AppModel(repository: tempRepo(), storeClient: MockStoreClient(), entitlementCache: .init())
         m.openSample()
         var e = RoomEditor(room: m.document!.home.rooms[0])
         try e.setFanPower(e.room.fans[0].id, 1)
@@ -69,7 +69,7 @@ final class SmokeTests: XCTestCase {
     }
 
     func testSaveAndCompareScenarios() throws {
-        let m = AppModel(repository: tempRepo())
+        let m = AppModel(repository: tempRepo(), storeClient: MockStoreClient(), entitlementCache: .init())
         m.openSample()
         var room = m.document!.home.rooms[0]
         m.saveScenario(name: "A", room: room)
@@ -87,7 +87,7 @@ final class SmokeTests: XCTestCase {
 
     func testFeedbackExportAndDelete() throws {
         let repo = tempRepo()
-        let m = AppModel(repository: repo)
+        let m = AppModel(repository: repo, storeClient: MockStoreClient(), entitlementCache: .init())
         m.openSample()
         m.addFeedback(roomId: SampleData.roomId, scenarioHash: nil, rating: .justRight)
         XCTAssertEqual(m.document?.feedback.count, 1)
@@ -101,7 +101,7 @@ final class SmokeTests: XCTestCase {
     }
 
     func testAddAndRemoveAdjacentRoom() {
-        let m = AppModel(repository: tempRepo())
+        let m = AppModel(repository: tempRepo(), storeClient: MockStoreClient(owned: true), entitlementCache: .init(unlocked: true))
         m.openSample()
         XCTAssertNil(m.addAdjacentRoom(to: SampleData.roomId, wallIndex: 1))
         XCTAssertEqual(m.document?.home.rooms.count, 2)
@@ -112,7 +112,7 @@ final class SmokeTests: XCTestCase {
     }
 
     func testUpdateHomeInfoCoarsensLocation() {
-        let m = AppModel(repository: tempRepo())
+        let m = AppModel(repository: tempRepo(), storeClient: MockStoreClient(), entitlementCache: .init())
         m.openSample()
         m.updateHomeInfo(name: "我的家", location: Location(latitude: 1.352083, longitude: 103.819836), orientation: 370)
         XCTAssertEqual(m.document?.home.name, "我的家")
@@ -122,7 +122,7 @@ final class SmokeTests: XCTestCase {
     }
 
     func testEnvironmentModes() async {
-        let m = AppModel(repository: tempRepo(), weatherProvider: MockWeatherProvider())
+        let m = AppModel(repository: tempRepo(), weatherProvider: MockWeatherProvider(), storeClient: MockStoreClient(owned: true), entitlementCache: .init(unlocked: true))
         m.openSample()
         XCTAssertNil(m.currentEnvironment)
         m.environmentMode = .manual
@@ -139,7 +139,7 @@ final class SmokeTests: XCTestCase {
     }
 
     func testWeatherFailureFallsBackToManual() async {
-        let m = AppModel(repository: tempRepo(), weatherProvider: MockWeatherProvider(failure: .offline))
+        let m = AppModel(repository: tempRepo(), weatherProvider: MockWeatherProvider(failure: .offline), storeClient: MockStoreClient(owned: true), entitlementCache: .init(unlocked: true))
         m.openSample()
         m.updateHomeInfo(name: "h", location: Location(latitude: 1.35, longitude: 103.82), orientation: 0)
         m.environmentMode = .auto
@@ -149,7 +149,7 @@ final class SmokeTests: XCTestCase {
     }
 
     func testObstructionMergedIntoEnvironment() {
-        let m = AppModel(repository: tempRepo())
+        let m = AppModel(repository: tempRepo(), storeClient: MockStoreClient(), entitlementCache: .init())
         m.openSample()
         let window = m.document!.home.rooms[0].openings.first { $0.kind == .window }!
         m.setObstruction(openingId: window.id, level: .nearBuilding)
@@ -164,7 +164,7 @@ final class SmokeTests: XCTestCase {
         let walls = [ScannedWall(start: Vec2(0, 0), end: Vec2(3, 0)), ScannedWall(start: Vec2(3, 0), end: Vec2(3, 3)),
                      ScannedWall(start: Vec2(3, 3), end: Vec2(0, 3)), ScannedWall(start: Vec2(0, 3), end: Vec2(0, 0))]
         let r = try XCTUnwrap(ScanImport.convert(walls: walls, openings: []))
-        let m = AppModel(repository: tempRepo())
+        let m = AppModel(repository: tempRepo(), storeClient: MockStoreClient(), entitlementCache: .init())
         m.load()
         m.importScannedRoom(r.room)
         XCTAssertEqual(m.document?.home.rooms.count, 1)
@@ -172,5 +172,26 @@ final class SmokeTests: XCTestCase {
 
     func testStaleReasonNamesCoverAllCases() {
         for r in StaleReason.allCases { XCTAssertFalse(TryoutView.reasonName(r).isEmpty) }
+    }
+
+    func testFreeTierLimitsAndPurchaseUnlocks() async {
+        let m = AppModel(repository: tempRepo(), storeClient: MockStoreClient(), entitlementCache: .init())
+        m.openSample()
+        XCTAssertNotNil(m.addAdjacentRoom(to: SampleData.roomId, wallIndex: 1), "免费版限 1 个房间")
+        let room = m.document!.home.rooms[0]
+        for i in 0..<FreeLimits.scenarios { XCTAssertNotNil(m.saveScenario(name: "\(i)", room: room)) }
+        XCTAssertNil(m.saveScenario(name: "x", room: room))
+        await m.purchaseFullVersion()
+        XCTAssertTrue(m.entitlement.isUnlocked)
+        XCTAssertEqual(m.storeMessage, .unlocked)
+        XCTAssertNil(m.addAdjacentRoom(to: SampleData.roomId, wallIndex: 1))
+        XCTAssertNotNil(m.saveScenario(name: "y", room: room))
+    }
+
+    func testCancelledPurchaseStaysFree() async {
+        let m = AppModel(repository: tempRepo(), storeClient: MockStoreClient(nextOutcome: .cancelled), entitlementCache: .init())
+        await m.purchaseFullVersion()
+        XCTAssertFalse(m.entitlement.isUnlocked)
+        XCTAssertEqual(m.storeMessage, .cancelled)
     }
 }

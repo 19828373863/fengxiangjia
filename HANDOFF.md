@@ -115,3 +115,8 @@
 - 分支：`feat/18-env-regression`（基于 `feat/17-roomplan-scan`）
 - 新增 Staleness/StaleReason；试摆页显示过期原因；比较随环境变化重算
 - 已测：Linux swift test 127（+6）；App +1（CI）。模拟器手动未运行。
+
+## 2026-10-12 · Issue #19（Grok）
+- 分支：`feat/19-storekit`（基于 `feat/18-env-regression`）
+- 新增 StoreKit 2 一次性内购、权益缓存、付费墙与功能门控；.storekit 本地测试配置
+- 已测：Linux swift test 133（+6）；App +2（CI）。**沙盒/真机购买未验证（阻塞：开发者账号）**；商品 ID/价格/免费范围待确认。

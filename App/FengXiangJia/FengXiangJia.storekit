@@ -1,0 +1,21 @@
+{
+  "identifier" : "4F1C2A10-0F00-4000-8000-000000000019",
+  "nonRenewingSubscriptions" : [],
+  "products" : [
+    {
+      "displayPrice" : "12.0",
+      "familyShareable" : true,
+      "internalID" : "6740000019",
+      "localizations" : [
+        { "description" : "一次性购买，解锁多房间、自动推荐、当地天气、房间扫描与不限方案。", "displayName" : "风向家完整版", "locale" : "zh_Hans" },
+        { "description" : "One-time purchase unlocking multi-room, recommendations, live weather, room scan and unlimited plans.", "displayName" : "FengXiangJia Full", "locale" : "en_US" }
+      ],
+      "productID" : "com.example.fengxiangjia.app.full",
+      "referenceName" : "Full Version",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : { "_failTransactionsEnabled" : false, "_locale" : "zh_Hans", "_storefront" : "CHN" },
+  "subscriptionGroups" : [],
+  "version" : { "major" : 3, "minor" : 0 }
+}

@@ -15,6 +15,7 @@ struct TryoutView: View {
     @SwiftUI.Environment(\.scenePhase) private var scenePhase
     let home: Home
     let environment: OutdoorConditions?
+    var recommendationLocked = false
     let onChange: (Room) -> Void
     var onSaveScenario: ((Room) -> Void)? = nil
     var onFeedback: ((ComfortRating, String?) -> Void)? = nil
@@ -23,7 +24,7 @@ struct TryoutView: View {
     @State private var exportImage: Image?
     @State private var showRecommend = false
 
-    init(room: Room, home: Home, environment: OutdoorConditions? = nil,
+    init(room: Room, home: Home, environment: OutdoorConditions? = nil, recommendationLocked: Bool = false,
          onFeedback: ((ComfortRating, String?) -> Void)? = nil,
          onSaveScenario: ((Room) -> Void)? = nil, onChange: @escaping (Room) -> Void) {
         self.onFeedback = onFeedback
@@ -31,6 +32,7 @@ struct TryoutView: View {
         _editor = State(initialValue: RoomEditor(room: room))
         self.home = home
         self.environment = environment
+        self.recommendationLocked = recommendationLocked
         self.onChange = onChange
     }
 
@@ -107,11 +109,16 @@ struct TryoutView: View {
         }
         .padding(.horizontal)
         .sheet(isPresented: $showRecommend) {
+            if recommendationLocked {
+                ContentUnavailableView("自动推荐属于完整版", systemImage: "lock",
+                                       description: Text("可在“我家 › 完整版”一次性购买；手动试摆不受影响。"))
+            } else {
             RecommendationView(home: input.home, roomId: editor.room.id, fanId: selectedFan?.id, environment: environment) { fan in
                 commit {
                     try editor.moveFan(fan.id, to: fan.position)
                     try editor.setFanYaw(fan.id, degrees: fan.yawDegrees)
                 }
+            }
             }
         }
         .task(id: inputHash) { savedToast = false; exportImage = nil; await recompute() }

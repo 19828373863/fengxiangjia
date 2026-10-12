@@ -15,7 +15,10 @@ struct WeatherPanelView: View {
                 }
                 .pickerStyle(.segmented)
                 switch model.environmentMode {
-                case .auto: autoSection
+                case .auto:
+                    if model.entitlement.allows(.liveWeather) { autoSection } else {
+                        Text("住宅天气属于完整版（我家 › 完整版）。可改用“手动”输入风向，功能不受影响。").font(.caption)
+                    }
                 case .manual: manualSection
                 case .none: Text("只模拟风扇带来的室内循环。").font(.caption)
                 }
