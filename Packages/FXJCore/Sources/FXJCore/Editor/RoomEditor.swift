@@ -7,6 +7,8 @@ public enum EditError: Error, Equatable, Sendable {
     case wallTooShort
     case overlapsOpening
     case notFound
+    case tooCloseToWall
+    case onFurniture
 }
 
 /// 二维户型编辑器（纯逻辑）。每个成功的编辑都可撤销/重做；失败的编辑不改变状态、不入栈。
@@ -36,7 +38,7 @@ public struct RoomEditor: Sendable {
         undoStack.append(room); room = next
     }
 
-    private mutating func commit(_ new: Room) {
+    mutating func commit(_ new: Room) {
         undoStack.append(room)
         if undoStack.count > Self.historyLimit { undoStack.removeFirst() }
         redoStack.removeAll()

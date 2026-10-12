@@ -131,6 +131,8 @@ struct FloorplanEditorView: View {
         case .wallTooShort: return "这面墙太短，放不下"
         case .overlapsOpening: return "与已有门窗重叠"
         case .notFound: return "对象不存在"
+        case .tooCloseToWall: return "离墙太近"
+        case .onFurniture: return "不能放在高家具上"
         }
     }
 

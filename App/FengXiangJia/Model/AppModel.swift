@@ -73,6 +73,13 @@ final class AppModel {
         update(doc)
     }
 
+    /// 布局（风扇/目标）变化：不改变几何版本。
+    func updateLayout(_ room: Room) {
+        guard var doc = document, let i = doc.home.rooms.firstIndex(where: { $0.id == room.id }) else { return }
+        doc.home.rooms[i] = room
+        update(doc)
+    }
+
     func persistCurrent() { if let d = document { persist(d) } }
 
     private func persist(_ doc: HomeDocument) {
