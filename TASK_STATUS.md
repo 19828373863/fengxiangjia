@@ -15,3 +15,7 @@
 ## Android Issue #70 — 2026-10-13
 
 原生四页核心流程重建并安装 K30 0.2.0 完整体验版。Android 源码冻结于 9effffb2cca12e8bb141a138b04f727eeab0bc4f；143 个独立 JVM 用例完整执行 207 次通过，标签修正后另执行 debug 64 次通过。K30 核心操作、原有数据保留、最终 APK 原始字节哈希和浅/深色大字体截图已核对；独立视觉审查唯一 P2 修复评分 resolved。详细证据/边界见 docs/ANDROID_STATUS.md 与 HANDOFF.md。物理 AR、真实 Play 交易和上架保持未验证。
+
+## Android Issue #72 — 2026-10-13
+
+原生动效、扫描准备/权限恢复和扫描原点导入可靠性已实现。源码冻结 `063c51aa9b7b300518f931ccc001501dd1c25814`，版本 0.2.1；147 个独立 JVM 用例完整执行 215 次通过，最后节奏微调另执行 debug 68 次通过。K30 早期候选已录屏，最终补丁尚待其他任务交还设备后安装；隔离模拟器 emulator-5584 最终 APK 哈希/录屏/数据不变已核对。独立视觉和功能源码复审发现均 Resolved。K30 实际 AR 状态 UNKNOWN，真实相机测量未验证。普通照片/视频引擎未集成，离线验证路线独立于 #73。详见 docs/ANDROID_MOTION_CAMERA.md 和 HANDOFF.md。

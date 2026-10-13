@@ -240,7 +240,7 @@ components:
 
 **单位约定：** 原生源码是执行依据。颜色前导 `dark-` 表示 NightColors，其余主题颜色表示 DayColors。YAML 中的 CSS `px` 仅供 DESIGN.md 工具和 sidecar 展示：间距/圆角/高度按 1 dp → 1 CSS px，字号/行高按字体缩放为 1 时的 1 sp → 1 CSS px 记录。这不是设备物理像素，也不覆盖 Android density、fontScale 或原生最小触控区域。组件 height 记录选定实例的最小高度，实际使用 `heightIn(min = …)` 可继续增长。
 
-记录范围为 Theme.kt、UiComponents.kt、RoomCanvas.kt、MainActivity.kt、HomeScreen.kt、TrialScreen.kt、PlansScreen.kt、SuggestScreen.kt。未在这里展开 Material 3 库内默认的状态层、阴影数值、控件内部尺寸和动画时间；这些由 android/app/build.gradle.kts 中的 Compose BOM 2024.10.01 依赖管理。本文不构成构建、截图审阅或真机通过的证明。
+记录范围为 Theme.kt、UiComponents.kt、Motion.kt、RoomCanvas.kt、MainActivity.kt、HomeScreen.kt、TrialScreen.kt、PlansScreen.kt、SuggestScreen.kt。Material 3 库内默认的状态层、阴影数值、控件内部尺寸和面板动画仍由 android/app/build.gradle.kts 中的 Compose BOM 2024.10.01 依赖管理；本轮原生自定义动效按 Motion.kt 与实际调用点记录在 Components 和 sidecar extensions.motion。本文不构成构建、截图审阅或真机通过的证明；相机与验证边界见 docs/ANDROID_MOTION_CAMERA.md。
 
 ## Colors
 
@@ -314,6 +314,8 @@ RootTabs 在可用宽度小于 600 dp 时使用底部 NavigationBar，达到 600
 
 试摆图以 `weight(1f)` 接收工具、提示、图例与动作之外的高度；六个模式排成两行三列，属性在原生底部面板内滚动。房间预览为 244 dp，方案比较预览为 230 dp，建议预览为 220 dp；A/B 图纵向排列以便手机和较大字体阅读。图的世界坐标以米为单位，由视口换算；画布拟合边距为 48 dp。
 
+试摆的选择/指标摘要占固定高度 `72 dp × max(fontScale, 1)`，状态在此槽位内淡化切换；选中物体不再改变加权画布的高度或手指下的世界坐标。槽位高度属于该原生布局，未扩展全局间距 token。
+
 **触控基准：** Home/Plans/Suggest 的主要按钮与选择芯片显式使用至少 48 dp，管理/删除/关闭图标为 48 dp。开始试摆为至少 54 dp，创建和生成建议为至少 52 dp；建议页折叠区入口为至少 56 dp。未显式指定的原生控件继续使用 Material 最小交互区域，不能从视觉图标大小推断触控范围。RoomCanvas 对墙角/风扇/目标/门窗使用点击半径 24 dp、拖动开始半径 28 dp；家具按实体足迹命中，另有物品列表和数值面板供选择与调整。
 
 ## Elevation & Depth
@@ -354,7 +356,7 @@ TopAppBar 显示「风向家」、25 dp 风扇图标和保存状态，背景直�
 
 ### Room canvas and selection
 
-RoomCanvas 是编辑与预览共享的原生 Canvas，房间轮廓、家具、门窗、目标、风扇和风线均从同一对象与视口绘制。风扇中心为 15 dp 半径；选中/按住有 27 dp 半径、primary 透明度 0.14 的光圈；方向线为 34 dp。墙角控点外圆半径为 10 dp、内圆为 8 dp。目标区虚线节奏为 5 dp / 4 dp，底色透明度为 0.09，并通过目标名称/面板说明意义。
+RoomCanvas 是编辑与预览共享的原生 Canvas，房间轮廓、家具、门窗、目标、风扇和风线均从同一对象与视口绘制。风扇中心为 15 dp 半径；选中/按住有 27 dp 半径、primary 最大透明度 0.14 的光圈；方向线为 34 dp。选中反馈用 120 ms 将风扇及方向线颜色从 primary 插值到 onPrimaryContainer，光圈透明度随选择进度变化；缩减动效或非交互预览直接使用目标状态。墙角控点外圆半径为 10 dp、内圆为 8 dp。目标区虚线节奏为 5 dp / 4 dp，底色透明度为 0.09，并通过目标名称/面板说明意义。
 
 风扇名称先按 Paint.measureText 与 ascent/descent 测量完整标签矩形，横向内边距为 3 dp、纵向为 2 dp；使用不透明 surface 底色、3 dp 圆角和 onSurface 文字。标签按下、上、左、右依次检查四角是否位于房间内并取第一个可用候选，若均不可用则采用上方候选；位置随实测字号与系统 fontScale 变化，不固定为风扇下方的单一偏移。
 
@@ -362,7 +364,18 @@ RoomCanvas 是编辑与预览共享的原生 Canvas，房间轮廓、家具、�
 
 ### Native sheets and motion
 
-创建、相邻房间、物品、属性和结果使用 ModalBottomSheet，设置 `skipPartiallyExpanded = true`；试摆面板内容最高 600 dp、可滚动、考虑键盘，横向 24 dp、底部 28 dp。SheetState、弹层进出、控件涟漪、进度条与导航状态由 Material 3 实现。源码未声明自定义毫秒时长、缓动曲线或弹簧参数；本系统没有 GSAP、网页滚动动画或自定义风线播放运行时。不要用 sidecar 里的浏览器状态示例反推 Android 动画参数。
+创建、相邻房间、物品、属性和结果使用 ModalBottomSheet，设置 `skipPartiallyExpanded = true`；试摆面板内容最高 600 dp、可滚动、考虑键盘，横向 24 dp、底部 28 dp。SheetState、面板进出、控件涟漪与进度条保留 Material 3 行为。应用自定义动效使用 Compose animation/core，编辑和任务完成不等待动画结束。
+
+Motion.kt 的实际词汇为 Quick 120 ms、Standard 220 ms、Exit 160 ms，以及 `CubicBezierEasing(0.2, 0, 0, 1)`。Settle 280 ms 已定义但没有调用，不能描述为已展示的弹簧或回弹效果。位移、展开、箭头、选中与摘要切换在明确调用处使用该曲线；未显式指定曲线的 fade tween 保留 Compose 默认值。
+
+- 目的地按导航顺序以 24 dp 水平偏移切换；进入淡入/位移为 220 ms，退出淡出为 120 ms、位移为 160 ms。切换期间离场页面只供视觉保留，触控被消费、无障碍语义被清除，且该页的自定义动效被停用。
+- MotionReveal 从顶部展开 220 ms / 收起 160 ms，分别配对 120 ms 淡入/淡出；应用于我家展开区及建议页的读取进度、详情和设置区。建议页的展开箭头在 0°/180° 间展开 220 ms、收起 160 ms，与高度展开/收起配对。我家的文字「展开/收起」保持原样，未臆造箭头动画。
+- 风扇选中反馈和固定摘要槽的 Crossfade 为 120 ms。摘要离场内容清除语义，旧「调整/取消选择」按钮禁用，不能留下第二组可操作目标。
+- 当前有效可视化可在交互试摆图上播放一次 2400 ms、LinearEasing 的有限风向提示；从同一可视化抽取至多 12 条既有流线，提示点沿线移动。它说明方向，不代表真实空气速度或位移，不生成新的气流几何，也不无限循环。RoomCanvas 将静态房间/完整风线放在独立 graphicsLayer，逐帧相位只在小提示 overlay 的绘制阶段读取。
+- 风向提示需当前结果有效、没有拖动、没有属性面板/保存对话框/导出、前台且允许动效；条件失效立即取消，完成后消失，相同当前 hash 不重复启动。房间与方案/建议的非交互预览保持静态。
+- 系统 `ANIMATOR_DURATION_SCALE = 0` 会停用这些自定义过渡；ContentObserver 监听实时变化，LifecycleObserver 以至少 STARTED 作为前台门槛。关闭时切页/展开不加过渡，选中/摘要直接到目标状态；缩减动效、后台和离场页面不运行风向提示。
+
+本系统没有 GSAP 或网页滚动动画。sidecar 记录原生时长和门槛，HTML/CSS 组件仍为静态文档转译，不是 Android 运行时，也不用于证明帧率或设备视觉验收。
 
 ## Do's and Don'ts
 

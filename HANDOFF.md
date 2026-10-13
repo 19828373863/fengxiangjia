@@ -51,3 +51,13 @@ K30 的原有 room/scenarios 在临时测试后已恢复并核对不变；规范
 最终 APK SHA-256：`5519C4AC3A2B46958BE4FB2D90FFA6509524CF97B61405C077FDD401B8F8CBEE`。标签修正后 `:app:testDebugUnitTest assembleDebug` 通过（64 个 debug 用例，日志 `work/build-70-label-final.log`）；core/持久化/推荐逻辑未再次修改，复用前一轮完整 207 次执行。最终候选成功安装到 K30 与 emulator-5582；K30 安装路径中的 APK 原始字节再次读取并核对与交付包哈希相同。K30 原有完整 home.json 内容按 JSON 语义核对不变，已恢复 1.0 字体缩放与浅色系统设置，交付停留「我家」。
 
 后段测试模拟器曾被其他开发会话切到另一应用；无效截图已弃用，不作为证据。最终浅色、深色及 1.3 倍字体界面以 K30 重新采集的真实截图为准。模拟器功能操作的有效截图/JSON 保留在本会话本地。物理扫描与真实 Play 交易不属于已验证范围。
+
+## Android Issue #72 交接（2026-10-13）
+
+任务与分支：原生动效和相机准备可靠性，`feat/72-native-motion-and-camera`，以 #70 分支为基线。源码冻结 `063c51aa9b7b300518f931ccc001501dd1c25814`；0.2.1 / code 3 debug APK SHA-256 `1FBF549728CD6263B36D3DAF9CAE19AB7BAE42590ECFE2E425978DCD4B815195`，设计/证据文档在后续提交追加。
+
+主要文件：新增 Motion.kt；MainActivity、HomeScreen、SuggestScreen、RoomCanvas、TrialScreen 为原生 motion；ScanSupport/ScanActivity 为能力、安装、权限与失败恢复；AppModel.importRoom 与 AppModelReliabilityTest 为局部扫描原点导入修正。设计与当前能力见 DESIGN.md、.impeccable/design.json、docs/ANDROID_MOTION_CAMERA.md；没有共享 schema/求解器变更。
+
+实际检查：完整 JVM core 79 + app debug 68 + release 68（147 个独立定义/215 次执行）通过；最后箭头配对微调后 debug 68 与 assembleDebug 通过，core/release 复用上一轮。独立视觉/功能复审发现均 Resolved，Approve。K30 早期候选实际动效、40 次快速导航已记录并恢复系统倍率 1；最终补丁还未再次安装 K30。FXJ_Motion_72 / emulator-5584 最终候选安装哈希、正常倍率录屏、主住宅字节保留与 crash buffer 已核对；关闭动画、深色大字体、拖动撤销、画布固定边界和静态 PNG 内容也已检查。所有真实设备媒体/住宅文件只保留本地。
+
+限制与下一步：K30 当前被另一任务独占，不得抢占或操作；收到明确交还后才更新最终包并保留当天最新住宅，禁止恢复过夜旧备份。该手机本轮 AR 服务缺失且 SDK UNKNOWN；实际扫描、Depth/量测准确度未通过。照片/视频重建另有 #73，先做离线算法验证，Android 端当前未集成。远端 CI、正式 Play 交易/发布及真实风场证据不可由本地测试替代。
