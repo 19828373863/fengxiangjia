@@ -1,9 +1,15 @@
 package app.fengxiangjia.android
 
 import android.graphics.Paint
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -42,7 +48,8 @@ private fun lerp(a:Color,b:Color,t:Float)=Color(a.red+(b.red-a.red)*t,a.green+(b
 @Composable
 fun RoomCanvas(room:Room,vis:FlowVisualization?,stale:Boolean,mode:EditMode,selected:EntityID?,
     onTap:(Vec2,Hit?)->Unit,onDrag:(Hit,Vec2)->Unit,onDragEnd:(Hit,Vec2)->Unit,
-    modifier:Modifier=Modifier,interactive:Boolean=true,onDragCancel:()->Unit={},captureLayer:GraphicsLayer?=null) {
+    modifier:Modifier=Modifier,interactive:Boolean=true,onDragCancel:()->Unit={},captureLayer:GraphicsLayer?=null,
+    animateFlow:Boolean=false) {
     val density=LocalDensity.current.density
     val textDensity=density*LocalDensity.current.fontScale
     val colors=MaterialTheme.colorScheme
@@ -56,6 +63,35 @@ fun RoomCanvas(room:Room,vis:FlowVisualization?,stale:Boolean,mode:EditMode,sele
     val viewport=locked?:fitCanvas(room.polygon,size,48f*density)
     val vpNow by rememberUpdatedState(viewport)
     var pressed by remember(room.id) { mutableStateOf<EntityID?>(null) }
+    val motionEnabled=LocalFxjMotionEnabled.current
+    val fanSelection=mutableMapOf<EntityID,State<Float>>()
+    for(fan in room.fans) key(fan.id) {
+        fanSelection[fan.id]=animateFloatAsState(
+            targetValue=if(fan.id==selected || fan.id==pressed) 1f else 0f,
+            animationSpec=if(motionEnabled && interactive) tween(FxjMotion.Quick,easing=FxjMotion.Easing) else snap(),
+            label="fan-selection-${fan.id}",
+        )
+    }
+    val flowPhase=remember(room.id) { Animatable(0f) }
+    var activeFlowHash by remember(room.id) { mutableStateOf<String?>(null) }
+    var playedFlowHash by remember(room.id) { mutableStateOf<String?>(null) }
+    val cuePaths=remember(vis,animateFlow,interactive) {
+        if(animateFlow && interactive) limitedFlowCuePaths(vis?.streamlines.orEmpty()) else emptyList()
+    }
+    val canCue=animateFlow && interactive && motionEnabled && !stale && locked==null && cuePaths.isNotEmpty()
+    LaunchedEffect(vis?.scenarioHash,canCue) {
+        activeFlowHash=null
+        flowPhase.snapTo(0f)
+        val hash=vis?.scenarioHash
+        if(!canCue || hash==null || hash==playedFlowHash) return@LaunchedEffect
+        playedFlowHash=hash
+        activeFlowHash=hash
+        try {
+            // A brief direction cue, not a clock for air speed or displacement.
+            // Reading the phase only while drawing avoids recomposing the editor per frame.
+            flowPhase.animateTo(1f,tween(durationMillis=2400,easing=LinearEasing))
+        } finally { if(activeFlowHash==hash) activeFlowHash=null }
+    }
     val paint=remember { Paint(Paint.ANTI_ALIAS_FLAG).apply { textAlign=Paint.Align.CENTER } }
     val gestures=if(!interactive) Modifier else Modifier
         .pointerInput(room.id,mode) { detectTapGestures { o->val vp=vpNow; tapNow(vp.toWorld(Vec2(o.x.toDouble(),o.y.toDouble())),canvasHit(roomNow,vp,o,mode,24f*density)) } }
@@ -82,12 +118,15 @@ fun RoomCanvas(room:Room,vis:FlowVisualization?,stale:Boolean,mode:EditMode,sele
                 onDragCancel={ hit=null; locked=null; pressed=null; cancelNow() }
             )
         }
-    Canvas(modifier.onSizeChanged { size=it }.then(gestures).drawWithContent {
+    Box(modifier.onSizeChanged { size=it }.then(gestures).drawWithContent {
         if(captureLayer==null) drawContent() else {
             captureLayer.record { this@drawWithContent.drawContent() }
             drawLayer(captureLayer)
         }
     }.semantics { contentDescription="${room.name}平面图，${room.fans.size}台风扇，${room.openings.size}个门窗，${room.targets.size}个目标区域" }) {
+      // Cache the static room and its full streamlines separately from the small
+      // cue overlay, so phase ticks do not repaint every line in the flow field.
+      Canvas(Modifier.matchParentSize().graphicsLayer()) {
         if(room.polygon.size<3 || size.width<=1 || size.height<=1) return@Canvas
         drawRect(colors.background)
         fun screen(p:Vec2)=viewport.toScreen(p).let { Offset(it.x.toFloat(),it.y.toFloat()) }
@@ -133,16 +172,18 @@ fun RoomCanvas(room:Room,vis:FlowVisualization?,stale:Boolean,mode:EditMode,sele
         }
         for((index,f) in room.fans.withIndex()) {
             val c=screen(f.position); val sel=f.id==selected || f.id==pressed
-            if(sel) drawCircle(colors.primary.copy(alpha=.14f),27f*density,c)
+            val selection=if(!motionEnabled || !interactive) { if(sel) 1f else 0f } else fanSelection[f.id]?.value?:0f
+            val fanColor=lerp(colors.primary,colors.onPrimaryContainer,selection)
+            if(selection>.001f) drawCircle(colors.primary.copy(alpha=.14f*selection),27f*density,c)
             val yaw=Math.toRadians(f.yawDegrees); val d=Offset(cos(yaw).toFloat(),-sin(yaw).toFloat()); val end=c+d*34f*density
             if(f.kind!=FanKind.ceiling) {
-                drawLine(colors.primary,c,end,2.5f*density,cap=StrokeCap.Round)
-                drawLine(colors.primary,end,end-d*7f*density+Offset(-d.y,d.x)*5f*density,2.5f*density,cap=StrokeCap.Round)
-                drawLine(colors.primary,end,end-d*7f*density-Offset(-d.y,d.x)*5f*density,2.5f*density,cap=StrokeCap.Round)
+                drawLine(fanColor,c,end,2.5f*density,cap=StrokeCap.Round)
+                drawLine(fanColor,end,end-d*7f*density+Offset(-d.y,d.x)*5f*density,2.5f*density,cap=StrokeCap.Round)
+                drawLine(fanColor,end,end-d*7f*density-Offset(-d.y,d.x)*5f*density,2.5f*density,cap=StrokeCap.Round)
             }
-            drawCircle(colors.primary,15f*density,c); drawCircle(colors.onPrimary.copy(alpha=.8f),11f*density,c,style=Stroke(density))
+            drawCircle(fanColor,15f*density,c); drawCircle(colors.onPrimary.copy(alpha=.8f),11f*density,c,style=Stroke(density))
             for(angle in listOf(0.0,120.0,240.0)) { val r=Math.toRadians(angle+f.yawDegrees); drawLine(colors.onPrimary,c,c+Offset(cos(r).toFloat(),sin(r).toFloat())*7f*density,4f*density,cap=StrokeCap.Round) }
-            drawCircle(colors.primary,2f*density,c)
+            drawCircle(fanColor,2f*density,c)
             val name="风扇 ${index+1}"
             val labelSize=10f*textDensity
             paint.textSize=labelSize
@@ -166,7 +207,46 @@ fun RoomCanvas(room:Room,vis:FlowVisualization?,stale:Boolean,mode:EditMode,sele
             label("%.1f m".format(maxX-minX),screen(Vec2((minX+maxX)/2,minY))+Offset(0f,22f*density),colors.onSurfaceVariant,11f*textDensity,paint)
             label("%.1f m".format(maxY-minY),screen(Vec2(minX,(minY+maxY)/2))+Offset(-22f*density,0f),colors.onSurfaceVariant,11f*textDensity,paint)
         }
+      }
+      if(canCue && activeFlowHash==vis?.scenarioHash) Canvas(Modifier.matchParentSize()) {
+          if(room.polygon.size<3 || size.width<=1 || size.height<=1) return@Canvas
+          val path=Path().apply {
+              room.polygon.forEachIndexed { index,point->
+                  val screen=viewport.toScreen(point)
+                  if(index==0) moveTo(screen.x.toFloat(),screen.y.toFloat()) else lineTo(screen.x.toFloat(),screen.y.toFloat())
+              }
+              close()
+          }
+          val phase=flowPhase.value
+          val envelope=min(phase/.06f,(1f-phase)/.16f).coerceIn(0f,1f)
+          clipPath(path) {
+              for((index,line) in cuePaths.withIndex()) {
+                  val along=(phase*1.6f+index*.13f)%1f
+                  val alpha=envelope*min(along/.09f,(1f-along)/.09f).coerceIn(0f,1f)
+                  if(alpha>.01f) flowCuePoint(line.points,along)?.let { point->
+                      val speedIndex=(along*(line.speeds.size-1)).toInt().coerceIn(0,line.speeds.lastIndex)
+                      val center=viewport.toScreen(point).let { Offset(it.x.toFloat(),it.y.toFloat()) }
+                      drawCircle(speedColor(line.speeds[speedIndex]).copy(alpha=alpha),3.2f*density,center)
+                      drawCircle(colors.surface.copy(alpha=alpha),1.2f*density,center)
+                  }
+              }
+          }
+      }
     }
+}
+/** Bounded, spatially spread samples from the existing visualization, never new flow geometry. */
+internal fun limitedFlowCuePaths(paths:List<FlowVisualization.Streamline>,limit:Int=12):List<FlowVisualization.Streamline> {
+    if(limit<=0) return emptyList()
+    val usable=paths.filter { it.points.size>=4 && it.points.size==it.speeds.size }
+    val count=min(limit,usable.size)
+    if(count<=1) return usable.take(count)
+    return List(count) { index->usable[index*usable.lastIndex/(count-1)] }
+}
+internal fun flowCuePoint(points:List<Vec2>,phase:Float):Vec2? {
+    if(points.size<2 || !phase.isFinite()) return null
+    val position=phase.coerceIn(0f,1f)*(points.size-1)
+    val index=floor(position).toInt().coerceIn(0,points.size-2)
+    return points[index]+(points[index+1]-points[index])*(position-index).toDouble()
 }
 internal fun fitCanvas(polygon:List<Vec2>,size:IntSize,padding:Float):Viewport {
     val minX=polygon.minOfOrNull { it.x }?:0.0; val maxX=polygon.maxOfOrNull { it.x }?:1.0; val minY=polygon.minOfOrNull { it.y }?:0.0; val maxY=polygon.maxOfOrNull { it.y }?:1.0

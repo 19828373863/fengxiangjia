@@ -1,6 +1,9 @@
 package app.fengxiangjia.android
 
 import android.graphics.Bitmap
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.tween
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -18,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -75,6 +80,8 @@ fun TrialScreen(model:AppModel,rev:Int,onShareImage:(Bitmap)->Unit={}) {
     val selectedName=selected?.let { itemName(room,it) }?:vertex?.let { "墙角 ${it+1}" }
     val state=rememberModalBottomSheetState(skipPartiallyExpanded=true)
     val colors=MaterialTheme.colorScheme
+    val motionEnabled=LocalFxjMotionEnabled.current
+    val summaryHeight=72.dp*LocalDensity.current.fontScale.coerceAtLeast(1f)
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth().padding(start=20.dp,end=8.dp,top=8.dp),verticalAlignment=Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
@@ -134,19 +141,31 @@ fun TrialScreen(model:AppModel,rev:Int,onShareImage:(Bitmap)->Unit={}) {
                         }
                     }
                 }
-            },modifier=Modifier.fillMaxWidth().weight(1f),onDragCancel={ preview=null },captureLayer=captureLayer)
+            },modifier=Modifier.fillMaxWidth().weight(1f),onDragCancel={ preview=null },captureLayer=captureLayer,
+            animateFlow=sheet==null && !saveDialog && !exporting)
         Legend(stale || preview!=null)
-        if(selectedName!=null) Surface(color=colors.secondaryContainer,shape=RoundedCornerShape(12.dp),modifier=Modifier.fillMaxWidth().padding(horizontal=16.dp,vertical=4.dp)) {
-            Row(Modifier.padding(start=14.dp,end=4.dp),verticalAlignment=Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) { Text(selectedName,style=MaterialTheme.typography.titleSmall); Text("可直接拖动，或打开属性精确调整",style=MaterialTheme.typography.bodySmall) }
-                TextButton(onClick={ sheet=TrialSheet.PROPERTIES }) { Text("调整") }
-                IconButton(onClick={ selected=null; vertex=null }) { Icon(Icons.Outlined.Close,"取消选择") }
-            }
-        } else {
-            val metrics=if(!stale) computed?.result?.metrics else null
-            Row(Modifier.fillMaxWidth().padding(horizontal=20.dp,vertical=8.dp),horizontalArrangement=Arrangement.SpaceBetween) {
-                Text(if(metrics==null) "正在更新气流" else "循环覆盖 ${(metrics.circulationCoverage*100).roundToInt()}%",style=MaterialTheme.typography.titleSmall)
-                Text(if(metrics==null) "请稍候" else "对外换气 ${Labels.level(metrics.outdoorExchange)}",style=MaterialTheme.typography.bodyMedium,color=colors.onSurfaceVariant)
+        // A fixed summary slot prevents selection changes from resizing the weighted
+        // canvas or moving the world beneath the user's finger.
+        Box(Modifier.fillMaxWidth().height(summaryHeight).padding(horizontal=16.dp,vertical=4.dp),contentAlignment=Alignment.Center) {
+            Crossfade(targetState=selectedName,
+                animationSpec=if(motionEnabled) tween(FxjMotion.Quick,easing=FxjMotion.Easing) else snap(),label="trial-selection-summary") { summaryName->
+                val summarySemantics=if(summaryName==selectedName) Modifier else Modifier.clearAndSetSemantics { }
+                if(summaryName!=null) Surface(color=colors.secondaryContainer,shape=RoundedCornerShape(12.dp),modifier=Modifier.fillMaxWidth().then(summarySemantics)) {
+                    Row(Modifier.padding(start=14.dp,end=4.dp),verticalAlignment=Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(summaryName,style=MaterialTheme.typography.titleSmall,maxLines=1,overflow=TextOverflow.Ellipsis)
+                            Text("拖动，或打开属性调整",style=MaterialTheme.typography.bodySmall,maxLines=1,overflow=TextOverflow.Ellipsis)
+                        }
+                        TextButton(onClick={ sheet=TrialSheet.PROPERTIES },enabled=selectedName==summaryName) { Text("调整") }
+                        IconButton(onClick={ selected=null; vertex=null },enabled=selectedName==summaryName) { Icon(Icons.Outlined.Close,"取消选择") }
+                    }
+                } else {
+                    val metrics=if(!stale && preview==null) computed?.result?.metrics else null
+                    Row(Modifier.fillMaxWidth().then(summarySemantics).padding(horizontal=4.dp,vertical=8.dp),horizontalArrangement=Arrangement.spacedBy(12.dp),verticalAlignment=Alignment.CenterVertically) {
+                        Text(if(metrics==null) "正在更新气流" else "循环覆盖 ${(metrics.circulationCoverage*100).roundToInt()}%",style=MaterialTheme.typography.titleSmall,modifier=Modifier.weight(1f),maxLines=2)
+                        Text(if(metrics==null) "请稍候" else "对外换气 ${Labels.level(metrics.outdoorExchange)}",style=MaterialTheme.typography.bodyMedium,color=colors.onSurfaceVariant,maxLines=2)
+                    }
+                }
             }
         }
         Row(Modifier.fillMaxWidth().padding(horizontal=16.dp,vertical=8.dp),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
@@ -345,7 +364,7 @@ private fun roomOrigin(room:Room)=Vec2(room.polygon.minOf { it.x },room.polygon.
             Text("表示房间内形成空气流动的范围，不代表降温百分比。",style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
             SectionTitle("对外换气 ${Labels.level(metrics.outdoorExchange)}"+(if(metrics.crossVentilation) " · 有穿堂风" else ""))
             for(e in result.explanations) Text(Labels.explanation(e,room),style=MaterialTheme.typography.bodyMedium,modifier=Modifier.padding(vertical=6.dp))
-            Spacer(Modifier.height(12.dp)); Text("风线是简化模拟，用于比较摆法。实际风感还会受到风扇性能、房间高度与现场环境影响。",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+            Spacer(Modifier.height(12.dp)); Text("风线是简化模拟，用于比较摆法。短暂流动只提示方向，不代表实际风速。实际风感还会受到风扇性能、房间高度与现场环境影响。",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

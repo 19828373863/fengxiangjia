@@ -11,6 +11,9 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.ui.draw.rotate
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -145,7 +148,7 @@ private fun RecommendationSection(model: AppModel, onApplied: () -> Unit) {
                         }
                     },
                 ) { Text(if (busy) "正在比较摆法…" else if (error != null || stale) "重新生成建议" else if (candidates != null) "再算一次" else "生成三种摆法") }
-                if (busy) {
+                MotionReveal(busy) {
                     LinearProgressIndicator(Modifier.fillMaxWidth().semantics { contentDescription = "正在比较风扇摆法" })
                     Text("正在比较位置与出风方向，完成后会列出建议。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
@@ -178,7 +181,7 @@ private fun RecommendationSection(model: AppModel, onApplied: () -> Unit) {
                                 CandidateMeasure("目标直吹", candidate.draft, Modifier.weight(1f))
                             }
                             TextButton(onClick = { showPlacement = !showPlacement }, modifier = Modifier.heightIn(min = 48.dp), contentPadding = PaddingValues(0.dp)) { Text(if (showPlacement) "收起摆位详情" else "查看摆位详情") }
-                            if (showPlacement) {
+                            MotionReveal(showPlacement) {
                                 val minX = candidate.room.polygon.minOf { it.x }
                                 val minY = candidate.room.polygon.minOf { it.y }
                                 Text("平面位置：横向 ${number(candidate.fan.position.x - minX)} m，纵向 ${number(candidate.fan.position.y - minY)} m\n出风朝平面图 ${number(candidate.fan.yawDegrees, 0)}°\n位置从平面图左下角起算；0°向右、90°向上。", style = MaterialTheme.typography.bodySmall)
@@ -271,7 +274,7 @@ private fun WeatherSection(model: AppModel, actions: SuggestActions) {
             }
         }
         (error ?: weather?.error?.userMessage)?.let { ErrorText("$it。当前风况会保留，也可以改用手动输入。") }
-        if (expanded) {
+        MotionReveal(expanded) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text("考虑室外风", style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
                 Switch(checked = env != null, onCheckedChange = { checked ->
@@ -372,7 +375,7 @@ private fun OrientationSection(model: AppModel) {
     var error by remember { mutableStateOf<String?>(null) }
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         ExpandableHeading("住宅朝向", "平面图上方朝 ${Bearing.name(model.home.orientationDegrees)} · ${number(model.home.orientationDegrees, 0)}°", expanded) { expanded = !expanded; if (!expanded) calibrating = false }
-        if (expanded) {
+        MotionReveal(expanded) {
             Text("朝向把平面图与真实东南西北对应起来，门窗与室外风会按这个方向计算。", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             OutlinedTextField(manual, { manual = it; error = null }, label = { Text("平面图上方的朝向（°）") }, supportingText = { Text("北 0° · 东 90° · 南 180° · 西 270°") }, singleLine = true, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), isError = error != null, modifier = Modifier.fillMaxWidth())
             error?.let { ErrorText(it) }
@@ -470,7 +473,7 @@ private fun PurchaseSection(model: AppModel, services: Services?) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         ExpandableHeading("功能与购买", status, expanded) { expanded = !expanded }
         if (model.fullExperience && !model.entitlement.isUnlocked) Text("多房间、保存方案、自动建议都可以直接体验。测试体验与正式购买状态分开记录。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        if (expanded) {
+        MotionReveal(expanded) {
             Text("完整版支持多房间、不限数量的方案、自动建议与在线天气；摄像头扫描需设备与服务支持。", style = MaterialTheme.typography.bodyMedium)
             if (!model.fullExperience && !model.entitlement.isUnlocked) Text("免费版可编辑 ${FreeLimits.ROOMS} 个房间，保存 ${FreeLimits.SCENARIOS} 个方案；手动试摆、风线和 A/B 比较可用。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             if (storeLoading || busy) {
@@ -490,7 +493,7 @@ private fun PrivacySection() {
     var expanded by rememberSaveable { mutableStateOf(false) }
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         ExpandableHeading("隐私与权限", "户型与方案保存在本机", expanded) { expanded = !expanded }
-        if (expanded) {
+        MotionReveal(expanded) {
             Text("无需登录，户型与方案默认不上网传输。相机只在扫描时使用，画面不保存、不上传。", style = MaterialTheme.typography.bodyMedium)
             Text("点击「使用手机的大致位置」时，只读取一次系统最近的可用位置，不持续定位。位置会粗化到约 1 km 后保存；在线天气会发送这份粗略坐标。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Text("购买由 Google Play 处理，本应用不接触支付信息。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -500,13 +503,14 @@ private fun PrivacySection() {
 
 @Composable
 private fun ExpandableHeading(title: String, summary: String, expanded: Boolean, onClick: () -> Unit) {
+    val angle by animateFloatAsState(if(expanded) 180f else 0f, tween(if(LocalFxjMotionEnabled.current) { if(expanded) FxjMotion.Standard else FxjMotion.Exit } else 0, easing = FxjMotion.Easing), label = "disclosure arrow")
     TextButton(onClick = onClick, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).semantics { stateDescription = if (expanded) "已展开" else "已收起" }, contentPadding = PaddingValues(0.dp)) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
                 Text(summary, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            Icon(if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown, contentDescription = if (expanded) "收起$title" else "展开$title")
+            Icon(Icons.Default.KeyboardArrowDown, contentDescription = if (expanded) "收起$title" else "展开$title", modifier = Modifier.rotate(angle))
         }
     }
 }

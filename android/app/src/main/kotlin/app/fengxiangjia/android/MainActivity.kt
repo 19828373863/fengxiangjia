@@ -8,6 +8,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.compose.BackHandler
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.*
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -15,6 +17,7 @@ import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalDensity
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import app.fengxiangjia.android.scan.ScanActivity
@@ -30,12 +33,17 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Lifecycle
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Job
 
 class MainActivity : ComponentActivity() {
     private lateinit var model: AppModel
     private lateinit var services: Services
+    private var scanStatus by mutableStateOf<ScanAvailability?>(null)
+    private var scanFailure by mutableStateOf<String?>(null)
+    private var scanCheckJob: Job? = null
     private val locationPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { ok ->
         if (ok) readLocation() else toast("未授予位置权限，可手动输入经纬度")
     }
@@ -52,7 +60,7 @@ class MainActivity : ComponentActivity() {
                     if (w.isNotEmpty()) toast("扫描记录有 ${w.size} 条提示，请在「试摆」中核对尺寸")
                 }
             }.onFailure { model.reportMessage("扫描房间导入失败，原有房间已保留。请重试或手动创建。") }
-        } else data?.getStringExtra(ScanActivity.EXTRA_MESSAGE)?.let(::toast)
+        } else data?.getStringExtra(ScanActivity.EXTRA_MESSAGE)?.let { scanFailure = it; scanStatus = ScanAvailability.UNKNOWN }
     }
 
     private fun toast(m: String) = Toast.makeText(this, m, Toast.LENGTH_LONG).show()
@@ -64,12 +72,36 @@ class MainActivity : ComponentActivity() {
         services = Services(this, PlayStoreClient(this) { this })
         model.setEntitlement(services.entitlements.state)
         val actions = SuggestActions(requestLocation = ::requestLocation, services = services)
-        setContent { FengXiangTheme { RootTabs(model, onShare = ::share, onScan = ::openScan, actions = actions, onShareImage = ::shareImage) } }
+        setContent { FengXiangTheme {
+            val motionEnabled = rememberSystemMotionEnabled()
+            CompositionLocalProvider(LocalFxjMotionEnabled provides motionEnabled) {
+                RootTabs(model, onShare = ::share, onScan = ::openScan, actions = actions, onShareImage = ::shareImage)
+                scanStatus?.let { status ->
+                    AlertDialog(onDismissRequest = ::dismissScanPreparation,
+                        title = { Text(if(status == ScanAvailability.CHECKING) "正在检查扫描能力" else "摄像头扫描") },
+                        text = { Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                            if(status == ScanAvailability.CHECKING) LinearProgressIndicator(Modifier.fillMaxWidth())
+                            Text(scanFailure ?: ScanSupport.message(status).orEmpty())
+                            Text("实时扫描会连续读取画面，请缓慢走动并标记地面墙角，完成后核对尺寸。普通照片或视频暂不能直接生成房间。", style = MaterialTheme.typography.bodySmall)
+                        } },
+                        confirmButton = {
+                            if(status == ScanAvailability.NEEDS_INSTALL) TextButton(onClick = { dismissScanPreparation(); scan.launch(Intent(this@MainActivity, ScanActivity::class.java)) }) { Text("安装服务并继续") }
+                            else if(status != ScanAvailability.CHECKING) TextButton(onClick = { dismissScanPreparation(); openScan() }) { Text("重新检查") }
+                        },
+                        dismissButton = { TextButton(onClick = ::dismissScanPreparation) { Text(if(status == ScanAvailability.CHECKING) "取消" else "返回手动创建") } })
+                }
+            }
+        } }
     }
 
     override fun onDestroy() {
         if (::services.isInitialized) services.close()
         super.onDestroy()
+    }
+
+    override fun onStop() {
+        if(scanStatus == ScanAvailability.CHECKING) dismissScanPreparation()
+        super.onStop()
     }
 
     /** 位置按需申请（仅粗略）；已授权则直接读取一次。 */
@@ -98,12 +130,24 @@ class MainActivity : ComponentActivity() {
     }
 
     /** #60：先检查 ARCore 可用性，不支持则提示改用手绘。 */
+    private fun dismissScanPreparation() { scanCheckJob?.cancel(); scanCheckJob = null; scanStatus = null }
+
     private fun openScan() {
         model.paywall(PaidFeature.roomScan)?.let { model.reportMessage(it); return }
         model.paywall(PaidFeature.multiRoom)?.let { model.reportMessage(it); return }
-        val a = ScanSupport.check(this)
-        if (a == ScanAvailability.SUPPORTED || a == ScanAvailability.NEEDS_INSTALL) scan.launch(Intent(this, ScanActivity::class.java))
-        else ScanSupport.message(a)?.let(::toast)
+        if(scanStatus == ScanAvailability.CHECKING) return
+        scanFailure = null
+        scanStatus = ScanAvailability.CHECKING
+        scanCheckJob = lifecycleScope.launch {
+            val availability = ScanSupport.awaitAvailability(this@MainActivity)
+            // Closing the preparation dialog cancels this launch, even if the platform returns later.
+            if(scanStatus != ScanAvailability.CHECKING) return@launch
+            if(!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) { scanStatus = null; return@launch }
+            if(availability == ScanAvailability.SUPPORTED) {
+                scanStatus = null
+                scan.launch(Intent(this@MainActivity, ScanActivity::class.java))
+            } else scanStatus = availability
+        }
     }
 }
 
@@ -128,6 +172,8 @@ fun RootTabs(model: AppModel, onShare: (String, String) -> Unit = { _, _ -> }, o
     val snack = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val screenState = rememberSaveableStateHolder()
+    val motionEnabled = LocalFxjMotionEnabled.current
+    val distance = with(LocalDensity.current) { 24.dp.roundToPx() }
     BackHandler(enabled = tab != 0) { tab = 0 }
     LaunchedEffect(rev) {
         model.lastError?.let { message ->
@@ -177,14 +223,27 @@ fun RootTabs(model: AppModel, onShare: (String, String) -> Unit = { _, _ -> }, o
                         Spacer(Modifier.height(12.dp))
                     }
                 }
-                Box(Modifier.weight(1f).fillMaxHeight()) {
-                    screenState.SaveableStateProvider(AppTab.entries[tab].name) {
-                        when (AppTab.entries[tab]) {
+                AnimatedContent(targetState = tab, modifier = Modifier.weight(1f).fillMaxHeight(),
+                    transitionSpec = {
+                        if(!motionEnabled) EnterTransition.None togetherWith ExitTransition.None
+                        else {
+                            val direction = if(targetState > initialState) 1 else -1
+                            (fadeIn(tween(FxjMotion.Standard)) + slideInHorizontally(tween(FxjMotion.Standard, easing = FxjMotion.Easing)) { direction * distance }) togetherWith
+                                (fadeOut(tween(FxjMotion.Quick)) + slideOutHorizontally(tween(FxjMotion.Exit, easing = FxjMotion.Easing)) { -direction * distance })
+                        }
+                    }, label = "destination transition") { screenTab ->
+                    val active = screenTab == tab
+                    CompositionLocalProvider(LocalFxjMotionEnabled provides (motionEnabled && active)) {
+                    Box(Modifier.fillMaxSize().inactiveMotionContent(!active)) {
+                    screenState.SaveableStateProvider(AppTab.entries[screenTab].name) {
+                        when (AppTab.entries[screenTab]) {
                             AppTab.HOME -> HomeScreen(model, rev, onShare, onScan, onOpenRoom = { tab = 1 })
                             AppTab.TRIAL -> key(model.selectedRoomId) { TrialScreen(model, rev, onShareImage = onShareImage) }
                             AppTab.PLANS -> PlansScreen(model, rev, onApplied = { tab = 1 })
                             AppTab.SUGGEST -> key(model.selectedRoomId) { SuggestScreen(model, rev, actions, onApplied = { tab = 1 }) }
                         }
+                    }
+                    }
                     }
                 }
             }
