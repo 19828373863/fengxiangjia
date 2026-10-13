@@ -1,0 +1,66 @@
+{
+  "source_sha256": "2d319fca41bba80ee4fc9fb0b3f121ebdad4932c65fcecb0212be511b595c787",
+  "checks": [
+    {
+      "name": "positive-area crossing polygon",
+      "passed": true,
+      "rejection": "polygon has intersecting nonadjacent edges"
+    },
+    {
+      "name": "repeated vertex",
+      "passed": true,
+      "rejection": "polygon vertices must be unique"
+    },
+    {
+      "name": "edge shorter than 10 cm",
+      "passed": true,
+      "rejection": "polygon edge shorter than 10 cm"
+    },
+    {
+      "name": "nonfinite polygon",
+      "passed": true,
+      "rejection": "polygon needs at least three finite 2D vertices"
+    },
+    {
+      "name": "omitted corner from order",
+      "passed": true,
+      "rejection": "corner order must uniquely include every annotated corner"
+    },
+    {
+      "name": "nonfinite metric reference",
+      "passed": true,
+      "rejection": "reference length must be finite and positive"
+    },
+    {
+      "name": "A/A/B is not three distinct registered views",
+      "passed": true,
+      "rejection": "duplicate image annotation for a corner"
+    },
+    {
+      "name": "two distinct registered views below required three",
+      "passed": true,
+      "rejection": "corner has 2 registered views; need at least 3"
+    },
+    {
+      "name": "existing accepted run refuses overwrite",
+      "passed": true,
+      "exit_code": 2,
+      "all_old_output_bytes_preserved": true
+    },
+    {
+      "name": "runs\\no-texture-rejected",
+      "passed": true,
+      "rejection": "ValueError: insufficient texture: median feature count below 100",
+      "no_room_draft": true
+    },
+    {
+      "name": "runs\\rotation-rejected",
+      "passed": true,
+      "rejection": "ValueError: SfM registration coverage below 80%",
+      "no_room_draft": true
+    }
+  ],
+  "passed": 11,
+  "failed": 0,
+  "evidence": "synthetic/model-input gates only"
+}

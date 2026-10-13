@@ -1,0 +1,578 @@
+{
+  "scope": "CPU offline synthetic prototype only; no Android or real-room acceptance",
+  "pilot_sha256": "2d319fca41bba80ee4fc9fb0b3f121ebdad4932c65fcecb0212be511b595c787",
+  "review": {
+    "disposition": "Approve",
+    "scope": "offline synthetic prototype",
+    "all_listed_findings": "Resolved"
+  },
+  "sources": {
+    "pilot.py": "2d319fca41bba80ee4fc9fb0b3f121ebdad4932c65fcecb0212be511b595c787",
+    "validate_gates.py": "2cbfe84b9673004f6b493e8222c4385ed104ea24459c31575713136c83630abd",
+    "prepare_synthetic_video_case.py": "3625204b9ca41e97ab7870bff6d9b74568e70040a2942da923101b66299a40b2",
+    "record_dependencies.py": "e0738709b034565ccf5554f6d6324f9ebece59f0b9738d39c68d1cc0b871164a",
+    "make_evidence.py": "4e293481fd724397c734d0b5a168a6dc53d4cfa6e2d5e6a1322ee7b50448f5e0",
+    "requirements.txt": "7b706542ab941ac930da4a79cf34acd64f605a3dff41987f25b12c6214c0138f",
+    "requirements-report.txt": "767f028050a23ca157bb14e58e7d441df1428bf3fce3f8837eca9d8bddf87a76",
+    "README.md": "c104ee75c8a66830ed1317f6b1516961d4bdcc59c287675566af031dd98e0915",
+    "THIRD_PARTY_NOTICES.md": "a8b5ffec35ff2cb30d1567b8b43d6aabd9e9317df3448613fa2474e12a59f8b3"
+  },
+  "dependencies": {
+    "python": "3.13.7",
+    "platform": "Windows",
+    "architecture": "AMD64",
+    "dependencies": [
+      {
+        "name": "pycolmap",
+        "version": "4.2.1",
+        "license_files": [
+          "pycolmap-COPYING.txt"
+        ]
+      },
+      {
+        "name": "numpy",
+        "version": "2.3.2",
+        "license_files": [
+          "numpy-LICENSE.txt"
+        ]
+      },
+      {
+        "name": "opencv-python",
+        "version": "5.0.0.93",
+        "license_files": [
+          "opencv-python-LICENSE-3RD-PARTY.txt",
+          "opencv-python-LICENSE.txt"
+        ]
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.10.6",
+        "license_files": [
+          "matplotlib-LICENSE"
+        ]
+      }
+    ],
+    "cuda": false,
+    "install_scope": "task .deps only for pycolmap; existing other packages reused",
+    "wheels": [
+      {
+        "file": "pycolmap-4.2.1-cp313-cp313-win_amd64.whl",
+        "bytes": 23974670,
+        "sha256": "2aa586acd21154ed92c1d674d5da9b1b05e1dd9e2156627caf0ae42278423f02"
+      }
+    ]
+  },
+  "gates": {
+    "source_sha256": "2d319fca41bba80ee4fc9fb0b3f121ebdad4932c65fcecb0212be511b595c787",
+    "checks": [
+      {
+        "name": "positive-area crossing polygon",
+        "passed": true,
+        "rejection": "polygon has intersecting nonadjacent edges"
+      },
+      {
+        "name": "repeated vertex",
+        "passed": true,
+        "rejection": "polygon vertices must be unique"
+      },
+      {
+        "name": "edge shorter than 10 cm",
+        "passed": true,
+        "rejection": "polygon edge shorter than 10 cm"
+      },
+      {
+        "name": "nonfinite polygon",
+        "passed": true,
+        "rejection": "polygon needs at least three finite 2D vertices"
+      },
+      {
+        "name": "omitted corner from order",
+        "passed": true,
+        "rejection": "corner order must uniquely include every annotated corner"
+      },
+      {
+        "name": "nonfinite metric reference",
+        "passed": true,
+        "rejection": "reference length must be finite and positive"
+      },
+      {
+        "name": "A/A/B is not three distinct registered views",
+        "passed": true,
+        "rejection": "duplicate image annotation for a corner"
+      },
+      {
+        "name": "two distinct registered views below required three",
+        "passed": true,
+        "rejection": "corner has 2 registered views; need at least 3"
+      },
+      {
+        "name": "existing accepted run refuses overwrite",
+        "passed": true,
+        "exit_code": 2,
+        "all_old_output_bytes_preserved": true
+      },
+      {
+        "name": "runs\\no-texture-rejected",
+        "passed": true,
+        "rejection": "ValueError: insufficient texture: median feature count below 100",
+        "no_room_draft": true
+      },
+      {
+        "name": "runs\\rotation-rejected",
+        "passed": true,
+        "rejection": "ValueError: SfM registration coverage below 80%",
+        "no_room_draft": true
+      }
+    ],
+    "passed": 11,
+    "failed": 0,
+    "evidence": "synthetic/model-input gates only"
+  },
+  "cases": {
+    "photos-accepted": {
+      "run": "runs\\photos-accepted",
+      "python_exit_code": 0,
+      "report": {
+        "evidence": "synthetic_ray_render_only",
+        "source_sha256": "2d319fca41bba80ee4fc9fb0b3f121ebdad4932c65fcecb0212be511b595c787",
+        "status": "accepted_synthetic_draft",
+        "failureReason": null,
+        "registered_images": 32,
+        "input_images": 32,
+        "registration_ratio": 1.0,
+        "points3D": 13046,
+        "mean_reprojection_error_px": 0.23163261260216078,
+        "duration_seconds": 30.433,
+        "corner_quality": {
+          "corner_0": {
+            "registered_views": 6,
+            "median_reprojection_px": 0.038444605766937257,
+            "max_reprojection_px": 0.05041932369911333,
+            "max_parallax_degrees": 16.489903413128523,
+            "design_singular_values": [
+              6.30841786760614,
+              2.631320942837216,
+              1.6105254972603589,
+              0.0001607883493015777
+            ]
+          },
+          "corner_1": {
+            "registered_views": 6,
+            "median_reprojection_px": 0.04094731340883053,
+            "max_reprojection_px": 0.04849316855478516,
+            "max_parallax_degrees": 16.35061548805427,
+            "design_singular_values": [
+              6.319479896690318,
+              2.6322567602998843,
+              1.5998536033833857,
+              0.0001658418618617211
+            ]
+          },
+          "corner_2": {
+            "registered_views": 6,
+            "median_reprojection_px": 0.021855912539902093,
+            "max_reprojection_px": 0.02664217602732073,
+            "max_parallax_degrees": 16.4228925879216,
+            "design_singular_values": [
+              6.296294211151306,
+              2.631549234970596,
+              1.6123695307563046,
+              9.539278526257535e-05
+            ]
+          },
+          "corner_3": {
+            "registered_views": 6,
+            "median_reprojection_px": 0.015336721043342893,
+            "max_reprojection_px": 0.019691954180965733,
+            "max_parallax_degrees": 16.368899334843842,
+            "design_singular_values": [
+              6.31537013003691,
+              2.6323675095568135,
+              1.601257551457992,
+              6.374772653109487e-05
+            ]
+          }
+        },
+        "floor_max_residual_meters": 0.005643050422555808
+      },
+      "report_sha256": "234966d6d9891055cd9217c940d12444d80f6ed6cce717599680e415bc716f2f",
+      "room_draft_exists": true,
+      "evaluation": {
+        "evaluated": true,
+        "synthetic_only": true,
+        "ground_truth_used_for": "post-run validation only",
+        "side_lengths_meters": [
+          5.999999999999998,
+          4.008035264020478,
+          6.009738579621083,
+          3.999594441329345
+        ],
+        "truth_side_lengths_meters": [
+          6.0,
+          4.0,
+          6.0,
+          4.0
+        ],
+        "absolute_side_errors_meters": [
+          1.7763568394002505e-15,
+          0.008035264020477939,
+          0.009738579621083154,
+          0.00040555867065483753
+        ],
+        "calibration_side_index": 0,
+        "holdout_side_indexes": [
+          1,
+          2,
+          3
+        ],
+        "holdout_sides_pass": true,
+        "holdout_tolerance_meters": [
+          0.2,
+          0.30000000000000004,
+          0.2
+        ],
+        "camera_center_similarity_alignment": "evaluation only; never feeds room draft or engine",
+        "camera_center_median_error_meters": 0.0022535817782304377,
+        "camera_center_max_error_meters": 0.003989792583193881,
+        "camera_orientation_median_error_degrees": 0.08190477550153857,
+        "camera_orientation_max_error_degrees": 0.12978794114700307,
+        "source_sha256": "2d319fca41bba80ee4fc9fb0b3f121ebdad4932c65fcecb0212be511b595c787",
+        "real_room_claim": false,
+        "mobile_camera_claim": false
+      },
+      "draft": {
+        "version": 1,
+        "units": "meters",
+        "status": "draft_requires_dimension_confirmation",
+        "source": "synthetic_ray_render_only",
+        "closed": true,
+        "polygon": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            5.999999999999998,
+            -3.971922427781388e-17
+          ],
+          [
+            5.997005333088305,
+            4.0080341452639585
+          ],
+          [
+            -0.012727291959483097,
+            3.999574191229858
+          ]
+        ],
+        "corner_order": [
+          "corner_0",
+          "corner_1",
+          "corner_2",
+          "corner_3"
+        ],
+        "source_sha256": "2d319fca41bba80ee4fc9fb0b3f121ebdad4932c65fcecb0212be511b595c787",
+        "failureReason": null,
+        "registration_ratio": 1.0,
+        "coordinate_axes": "local floor plane; not compass or true north",
+        "known_length": {
+          "start": "corner_0",
+          "end": "corner_1",
+          "meters": 6.0
+        },
+        "scale_meters_per_sfm_unit": 0.2652713159271328,
+        "floor_max_residual_meters": 0.005643050422555808,
+        "corner_quality": {
+          "corner_0": {
+            "registered_views": 6,
+            "median_reprojection_px": 0.038444605766937257,
+            "max_reprojection_px": 0.05041932369911333,
+            "max_parallax_degrees": 16.489903413128523,
+            "design_singular_values": [
+              6.30841786760614,
+              2.631320942837216,
+              1.6105254972603589,
+              0.0001607883493015777
+            ]
+          },
+          "corner_1": {
+            "registered_views": 6,
+            "median_reprojection_px": 0.04094731340883053,
+            "max_reprojection_px": 0.04849316855478516,
+            "max_parallax_degrees": 16.35061548805427,
+            "design_singular_values": [
+              6.319479896690318,
+              2.6322567602998843,
+              1.5998536033833857,
+              0.0001658418618617211
+            ]
+          },
+          "corner_2": {
+            "registered_views": 6,
+            "median_reprojection_px": 0.021855912539902093,
+            "max_reprojection_px": 0.02664217602732073,
+            "max_parallax_degrees": 16.4228925879216,
+            "design_singular_values": [
+              6.296294211151306,
+              2.631549234970596,
+              1.6123695307563046,
+              9.539278526257535e-05
+            ]
+          },
+          "corner_3": {
+            "registered_views": 6,
+            "median_reprojection_px": 0.015336721043342893,
+            "max_reprojection_px": 0.019691954180965733,
+            "max_parallax_degrees": 16.368899334843842,
+            "design_singular_values": [
+              6.31537013003691,
+              2.6323675095568135,
+              1.601257551457992,
+              6.374772653109487e-05
+            ]
+          }
+        },
+        "height": null,
+        "openings": [],
+        "automatic_semantics": false
+      }
+    },
+    "video-accepted": {
+      "run": "runs\\video-accepted",
+      "python_exit_code": 0,
+      "report": {
+        "evidence": "synthetic_compressed_video_only",
+        "source_sha256": "2d319fca41bba80ee4fc9fb0b3f121ebdad4932c65fcecb0212be511b595c787",
+        "status": "accepted_synthetic_draft",
+        "failureReason": null,
+        "registered_images": 32,
+        "input_images": 32,
+        "registration_ratio": 1.0,
+        "points3D": 13687,
+        "mean_reprojection_error_px": 0.26138573972898904,
+        "duration_seconds": 26.108,
+        "corner_quality": {
+          "corner_0": {
+            "registered_views": 6,
+            "median_reprojection_px": 0.020603755212257664,
+            "max_reprojection_px": 0.053554224677350624,
+            "max_parallax_degrees": 16.43295393799955,
+            "design_singular_values": [
+              6.431206172242315,
+              2.631894854298145,
+              1.613739964489523,
+              0.0001381441139699469
+            ]
+          },
+          "corner_1": {
+            "registered_views": 6,
+            "median_reprojection_px": 0.033434193012754035,
+            "max_reprojection_px": 0.040009134720382804,
+            "max_parallax_degrees": 16.408767346996328,
+            "design_singular_values": [
+              6.443910242012816,
+              2.6319717931757602,
+              1.6096678534294255,
+              0.00012649740638347764
+            ]
+          },
+          "corner_2": {
+            "registered_views": 6,
+            "median_reprojection_px": 0.022445879255838783,
+            "max_reprojection_px": 0.033871123595511206,
+            "max_parallax_degrees": 16.4287475524826,
+            "design_singular_values": [
+              6.44649517767789,
+              2.631841488972707,
+              1.6109269913491775,
+              0.00010048707322985328
+            ]
+          },
+          "corner_3": {
+            "registered_views": 6,
+            "median_reprojection_px": 0.041622073041036746,
+            "max_reprojection_px": 0.05349744009798726,
+            "max_parallax_degrees": 16.43351241779127,
+            "design_singular_values": [
+              6.4579976063222375,
+              2.63199368583758,
+              1.6070033043646563,
+              0.00016495181673809216
+            ]
+          }
+        },
+        "floor_max_residual_meters": 0.0006112881850586717
+      },
+      "report_sha256": "85c33720795d61b49ef86702a12bdacedad8645df042f52968c0f0e4eaac1f2a",
+      "room_draft_exists": true,
+      "evaluation": {
+        "evaluated": true,
+        "synthetic_only": true,
+        "ground_truth_used_for": "post-run validation only",
+        "side_lengths_meters": [
+          5.999999999999998,
+          4.00242638755765,
+          5.999645556454045,
+          3.998624052601335
+        ],
+        "truth_side_lengths_meters": [
+          6.0,
+          4.0,
+          6.0,
+          4.0
+        ],
+        "absolute_side_errors_meters": [
+          1.7763568394002505e-15,
+          0.0024263875576497895,
+          0.00035444354595526306,
+          0.0013759473986652004
+        ],
+        "calibration_side_index": 0,
+        "holdout_side_indexes": [
+          1,
+          2,
+          3
+        ],
+        "holdout_sides_pass": true,
+        "holdout_tolerance_meters": [
+          0.2,
+          0.30000000000000004,
+          0.2
+        ],
+        "camera_center_similarity_alignment": "evaluation only; never feeds room draft or engine",
+        "camera_center_median_error_meters": 0.0011408372719465473,
+        "camera_center_max_error_meters": 0.0020916147449638956,
+        "camera_orientation_median_error_degrees": 0.09225525718415847,
+        "camera_orientation_max_error_degrees": 0.14889524254985823,
+        "source_sha256": "2d319fca41bba80ee4fc9fb0b3f121ebdad4932c65fcecb0212be511b595c787",
+        "real_room_claim": false,
+        "mobile_camera_claim": false
+      },
+      "draft": {
+        "version": 1,
+        "units": "meters",
+        "status": "draft_requires_dimension_confirmation",
+        "source": "synthetic_compressed_video_only",
+        "closed": true,
+        "polygon": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            5.999999999999998,
+            7.708767498668429e-19
+          ],
+          [
+            6.000006541429401,
+            4.002426387552305
+          ],
+          [
+            0.0003621898696397948,
+            3.9986240361980045
+          ]
+        ],
+        "corner_order": [
+          "corner_0",
+          "corner_1",
+          "corner_2",
+          "corner_3"
+        ],
+        "source_sha256": "2d319fca41bba80ee4fc9fb0b3f121ebdad4932c65fcecb0212be511b595c787",
+        "failureReason": null,
+        "registration_ratio": 1.0,
+        "coordinate_axes": "local floor plane; not compass or true north",
+        "known_length": {
+          "start": "corner_0",
+          "end": "corner_1",
+          "meters": 6.0
+        },
+        "scale_meters_per_sfm_unit": 0.2590596219688709,
+        "floor_max_residual_meters": 0.0006112881850586717,
+        "corner_quality": {
+          "corner_0": {
+            "registered_views": 6,
+            "median_reprojection_px": 0.020603755212257664,
+            "max_reprojection_px": 0.053554224677350624,
+            "max_parallax_degrees": 16.43295393799955,
+            "design_singular_values": [
+              6.431206172242315,
+              2.631894854298145,
+              1.613739964489523,
+              0.0001381441139699469
+            ]
+          },
+          "corner_1": {
+            "registered_views": 6,
+            "median_reprojection_px": 0.033434193012754035,
+            "max_reprojection_px": 0.040009134720382804,
+            "max_parallax_degrees": 16.408767346996328,
+            "design_singular_values": [
+              6.443910242012816,
+              2.6319717931757602,
+              1.6096678534294255,
+              0.00012649740638347764
+            ]
+          },
+          "corner_2": {
+            "registered_views": 6,
+            "median_reprojection_px": 0.022445879255838783,
+            "max_reprojection_px": 0.033871123595511206,
+            "max_parallax_degrees": 16.4287475524826,
+            "design_singular_values": [
+              6.44649517767789,
+              2.631841488972707,
+              1.6109269913491775,
+              0.00010048707322985328
+            ]
+          },
+          "corner_3": {
+            "registered_views": 6,
+            "median_reprojection_px": 0.041622073041036746,
+            "max_reprojection_px": 0.05349744009798726,
+            "max_parallax_degrees": 16.43351241779127,
+            "design_singular_values": [
+              6.4579976063222375,
+              2.63199368583758,
+              1.6070033043646563,
+              0.00016495181673809216
+            ]
+          }
+        },
+        "height": null,
+        "openings": [],
+        "automatic_semantics": false
+      }
+    },
+    "rotation-rejected": {
+      "run": "runs\\rotation-rejected",
+      "python_exit_code": 2,
+      "report": {
+        "evidence": "synthetic_ray_render_only",
+        "source_sha256": "2d319fca41bba80ee4fc9fb0b3f121ebdad4932c65fcecb0212be511b595c787",
+        "status": "rejected",
+        "failureReason": "ValueError: SfM registration coverage below 80%",
+        "registered_images": 3,
+        "input_images": 32,
+        "registration_ratio": 0.09375,
+        "points3D": 0,
+        "mean_reprojection_error_px": 0.0,
+        "duration_seconds": 36.323
+      },
+      "report_sha256": "f6cdbfeef4a2ef403089a2b33206c345fc565e739c49ef6af927708b652f1ade",
+      "room_draft_exists": false
+    },
+    "no-texture-rejected": {
+      "run": "runs\\no-texture-rejected",
+      "python_exit_code": 2,
+      "report": {
+        "evidence": "synthetic_ray_render_only",
+        "source_sha256": "2d319fca41bba80ee4fc9fb0b3f121ebdad4932c65fcecb0212be511b595c787",
+        "status": "rejected",
+        "failureReason": "ValueError: insufficient texture: median feature count below 100",
+        "duration_seconds": 0.88
+      },
+      "report_sha256": "aa5ed5be95cf15c2aa8b03eed07f509913afeb0f6afc11d72ab484a6a996932d",
+      "room_draft_exists": false
+    }
+  }
+}
