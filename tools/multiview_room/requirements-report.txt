@@ -1,0 +1,2 @@
+# Optional static evidence chart only. Already present; not downloaded in this task.
+matplotlib==3.10.6

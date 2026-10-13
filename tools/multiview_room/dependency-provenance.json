@@ -1,0 +1,45 @@
+{
+  "python": "3.13.7",
+  "platform": "Windows",
+  "architecture": "AMD64",
+  "dependencies": [
+    {
+      "name": "pycolmap",
+      "version": "4.2.1",
+      "license_files": [
+        "pycolmap-COPYING.txt"
+      ]
+    },
+    {
+      "name": "numpy",
+      "version": "2.3.2",
+      "license_files": [
+        "numpy-LICENSE.txt"
+      ]
+    },
+    {
+      "name": "opencv-python",
+      "version": "5.0.0.93",
+      "license_files": [
+        "opencv-python-LICENSE-3RD-PARTY.txt",
+        "opencv-python-LICENSE.txt"
+      ]
+    },
+    {
+      "name": "matplotlib",
+      "version": "3.10.6",
+      "license_files": [
+        "matplotlib-LICENSE"
+      ]
+    }
+  ],
+  "cuda": false,
+  "install_scope": "task .deps only for pycolmap; existing other packages reused",
+  "wheels": [
+    {
+      "file": "pycolmap-4.2.1-cp313-cp313-win_amd64.whl",
+      "bytes": 23974670,
+      "sha256": "2aa586acd21154ed92c1d674d5da9b1b05e1dd9e2156627caf0ae42278423f02"
+    }
+  ]
+}
