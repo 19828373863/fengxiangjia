@@ -34,6 +34,9 @@ import app.fengxiangjia.core.scan.ScannedOpening
 import app.fengxiangjia.core.scan.ScannedWall
 import com.google.ar.core.*
 import com.google.ar.core.exceptions.UnavailableException
+import com.google.ar.core.exceptions.UnavailableUserDeclinedInstallationException
+import com.google.ar.core.exceptions.UnavailableDeviceNotCompatibleException
+import app.fengxiangjia.android.FengXiangTheme
 import java.util.concurrent.ConcurrentLinkedQueue
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -47,6 +50,7 @@ import javax.microedition.khronos.opengles.GL10
 class ScanActivity : ComponentActivity(), GLSurfaceView.Renderer {
     private var session: Session? = null
     private var installRequested = false
+    private var cameraRequestPending = false
     private lateinit var surface: GLSurfaceView
     private val bg = BackgroundRenderer()
     private val taps = ConcurrentLinkedQueue<MotionEvent>()
@@ -62,7 +66,9 @@ class ScanActivity : ComponentActivity(), GLSurfaceView.Renderer {
     enum class TapMode(val title: String) { CORNER("标墙角"), WINDOW("标窗"), DOOR("标门") }
 
     private val permission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { ok ->
-        if (!ok) finishWithMessage("未授予相机权限，可改用手绘房间")
+        cameraRequestPending = false
+        if (!ok) finishWithMessage("未授予相机权限，可从扫描入口重试，或手动创建房间")
+        else resumeCapture()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,22 +78,29 @@ class ScanActivity : ComponentActivity(), GLSurfaceView.Renderer {
             setRenderer(this@ScanActivity); renderMode = GLSurfaceView.RENDERMODE_CONTINUOUSLY
             setOnTouchListener { v, e -> if (e.action == MotionEvent.ACTION_UP) { taps.offer(MotionEvent.obtain(e)); v.performClick() }; true }
         }
-        val overlay = ComposeView(this).apply { setContent { MaterialTheme { Overlay() } } }
+        val overlay = ComposeView(this).apply { setContent { FengXiangTheme { Overlay() } } }
         setContentView(FrameLayout(this).apply {
             addView(surface, ViewGroup.LayoutParams(-1, -1)); addView(overlay, ViewGroup.LayoutParams(-1, -1))
         })
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-            permission.launch(Manifest.permission.CAMERA)
     }
 
     override fun onResume() {
         super.onResume()
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) return
+        resumeCapture()
+    }
+
+    /** Install/verify AR first; granting camera permission resumes the same pending capture. */
+    private fun resumeCapture() {
+        if (isFinishing) return
         if (session == null) {
             try {
                 when (ArCoreApk.getInstance().requestInstall(this, !installRequested)) {
                     ArCoreApk.InstallStatus.INSTALL_REQUESTED -> { installRequested = true; return }
                     else -> Unit
+                }
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    if (!cameraRequestPending) { cameraRequestPending = true; permission.launch(Manifest.permission.CAMERA) }
+                    return
                 }
                 val s = Session(this)
                 val cfg = Config(s).apply {
@@ -99,7 +112,9 @@ class ScanActivity : ComponentActivity(), GLSurfaceView.Renderer {
                 s.configure(cfg)
                 capture = capture.copy(usedDepth = cfg.depthMode == Config.DepthMode.AUTOMATIC)
                 session = s
-            } catch (e: UnavailableException) { finishWithMessage("此设备无法使用 ARCore：${e.javaClass.simpleName}，请改用手绘"); return }
+            } catch (_: UnavailableUserDeclinedInstallationException) { finishWithMessage("AR 服务安装已取消，可以从扫描入口重试，或手动创建房间"); return }
+            catch (_: UnavailableDeviceNotCompatibleException) { finishWithMessage("当前手机系统未通过 AR 扫描兼容检查，请手动创建房间"); return }
+            catch (_: UnavailableException) { finishWithMessage("AR 服务暂时不可用，请检查是否安装并更新 Google Play 服务（AR）后重试"); return }
             catch (e: Exception) { finishWithMessage("启动扫描失败：${e.message}"); return }
         }
         try { session?.resume() } catch (e: Exception) { finishWithMessage("相机不可用：${e.message}"); return }

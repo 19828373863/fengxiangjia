@@ -108,10 +108,10 @@ fun HomeScreen(model: AppModel, @Suppress("UNUSED_PARAMETER") rev: Int, onShare:
         if (model.fullExperience) SupportingText("完整体验版 · 房间、方案和自动建议均可使用", Modifier.padding(top = 10.dp))
         Spacer(Modifier.height(24.dp)); HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
         ExpandableHeading("环境设置", "住宅朝向、楼层与室外风况", environmentExpanded) { environmentExpanded = !environmentExpanded }
-        if (environmentExpanded) { HomeEnvironment(model); Spacer(Modifier.height(16.dp)) }
+        MotionReveal(environmentExpanded) { HomeEnvironment(model); Spacer(Modifier.height(16.dp)) }
         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
         ExpandableHeading("数据与隐私", "仅保存在本机，无需登录", dataExpanded) { dataExpanded = !dataExpanded }
-        if (dataExpanded) {
+        MotionReveal(dataExpanded) {
             OutlinedButton(onClick = { onShare(model.exportFileName(), model.exportJson()) }, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) { Text("导出户型与方案") }
             SupportingText("导出为 JSON，默认不包含位置与体感备注。", Modifier.padding(top = 8.dp, bottom = 8.dp))
             TextButton(onClick = { reset = true }, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) { Text("恢复示例住宅") }

@@ -1,6 +1,7 @@
 package app.fengxiangjia.android
 
 import app.fengxiangjia.core.domain.*
+import app.fengxiangjia.core.domain.Target
 import app.fengxiangjia.core.editor.RoomTemplate
 import app.fengxiangjia.core.library.SampleData
 import app.fengxiangjia.core.persistence.DocumentCodec
@@ -520,5 +521,93 @@ class AppModelReliabilityTest {
         assertFalse(File(dir, "home.json").exists())
         assertFalse(session(dir).exists())
         assertTrue(dir.listFiles()!!.none { it.name.contains(".recovery") })
+    }
+
+    @Test fun normalizedScanImportPreservesRelativeGeometryAndExistingHomePlans() {
+        val m = model()
+        val originalRoom = m.room!!
+        val originalPlan = m.saveScenario("原客厅方案")!!
+        val polygon = RoomTemplate.Rectangle(4.0, 3.0).polygon
+        val scan = Room(name = "扫描卧室", polygon = polygon, height = 2.9, purpose = RoomPurpose.bedroom).let { room ->
+            room.copy(
+                fans = listOf(Fan(position = Vec2(0.8, 0.8), yawDegrees = 45.0, power = 0.7)),
+                obstacles = listOf(Obstacle(kind = ObstacleKind.wardrobe, center = Vec2(3.0, 2.0), size = Vec2(1.0, 0.8), rotationDegrees = 15.0, heightClass = HeightClass.tall)),
+                targets = listOf(
+                    Target(name = "床边", shape = TargetShape.Circle(Vec2(1.5, 1.5), 0.4), objective = TargetObjective.wantBreeze),
+                    Target(name = "书桌", shape = TargetShape.Polygon(listOf(Vec2(2.4, 0.6), Vec2(3.2, 0.6), Vec2(3.2, 1.2), Vec2(2.4, 1.2))), objective = TargetObjective.avoidDirectDraft),
+                ),
+                openings = listOf(Opening(wallId = room.wallIds[0], kind = OpeningKind.window, offset = 0.5, width = 1.0, openFraction = 0.6,
+                    locked = true, connects = listOf(ConnectionTarget.RoomRef(originalRoom.id)), exteriorObstruction = ObstructionLevel.partial)),
+            )
+        }
+        val offset = Vec2(0.0, 5.0)
+        m.importRoom(scan)
+        val imported = m.room!!
+        assertEquals(2, m.home.rooms.size)
+        assertEquals(scan.id, m.selectedRoomId)
+        assertEquals(originalRoom, m.home.rooms.first { it.id == originalRoom.id })
+        assertEquals(scan.id, imported.id); assertEquals(scan.wallIds, imported.wallIds)
+        assertEquals(scan.name, imported.name); assertEquals(scan.height, imported.height); assertEquals(scan.purpose, imported.purpose)
+        assertEquals(scan.polygon.map { it + offset }, imported.polygon)
+        assertEquals(scan.fans.map { it.copy(position = it.position + offset) }, imported.fans)
+        assertEquals(scan.obstacles.map { it.copy(center = it.center + offset) }, imported.obstacles)
+        assertEquals(scan.targets[0].copy(shape = TargetShape.Circle(Vec2(1.5, 6.5), 0.4)), imported.targets[0])
+        assertEquals(scan.targets[1].copy(shape = TargetShape.Polygon(listOf(Vec2(2.4, 5.6), Vec2(3.2, 5.6), Vec2(3.2, 6.2), Vec2(2.4, 6.2)))), imported.targets[1])
+        assertEquals(scan.openings.map { it.copy(connects = listOf(ConnectionTarget.RoomRef(scan.id), ConnectionTarget.Outdoor)) }, imported.openings)
+        val retainedPlan = m.document.scenarios.single()
+        assertEquals(originalPlan.copy(geometryRevision = m.document.geometryRevision), retainedPlan)
+        assertTrue(m.canApplyScenario(retainedPlan)); assertTrue(m.lastSaveSucceeded)
+    }
+
+    @Test fun externalImportFromArbitraryOriginUsesFreeSpaceBeyondAllExistingRooms() {
+        val m = model()
+        m.createRoom(RoomTemplate.DEFAULT_RECTANGLE, "第二个房间", 4.0, 3.0, replaceCurrent = false)
+        val existingRooms = m.home.rooms
+        val localOrigin = Vec2(12.0, -8.0)
+        val scan = Room(name = "外部房间", polygon = RoomTemplate.Rectangle(4.0, 3.0).polygon.map { it + localOrigin },
+            fans = listOf(Fan(position = Vec2(13.0, -7.0), yawDegrees = 180.0)),
+            targets = listOf(Target(name = "床边", shape = TargetShape.Circle(Vec2(14.0, -6.0), 0.5), objective = TargetObjective.wantBreeze)))
+        m.importRoom(scan)
+        val imported = m.room!!
+        assertEquals(existingRooms, m.home.rooms.filter { it.id != scan.id })
+        assertEquals(0.0, imported.polygon.minOf { it.x })
+        assertEquals(9.0, imported.polygon.minOf { it.y })
+        assertEquals(scan.fans.single().copy(position = Vec2(1.0, 10.0)), imported.fans.single())
+        assertEquals(scan.targets.single().copy(shape = TargetShape.Circle(Vec2(2.0, 11.0), 0.5)), imported.targets.single())
+        assertTrue(m.lastSaveSucceeded)
+    }
+
+    @Test fun rejectedInvalidImportsLeaveHomeSelectionAndPlansUnchanged() {
+        val m = model()
+        m.saveScenario("保留的方案")
+        val before = m.document
+        val selected = m.selectedRoomId
+        val invalidTarget = Room(name = "目标在房间外", polygon = RoomTemplate.Rectangle(4.0, 3.0).polygon,
+            targets = listOf(Target(name = "无效", shape = TargetShape.Circle(Vec2(99.0, 99.0), 0.5), objective = TargetObjective.wantBreeze)))
+        val invalidRooms = listOf(invalidTarget, Room(name = "空房间", polygon = emptyList()),
+            Room(name = "非有限坐标", polygon = RoomTemplate.Rectangle(4.0, 3.0).polygon.toMutableList().also { it[0] = Vec2(Double.NaN, 0.0) }),
+            m.room!!)
+        for (invalid in invalidRooms) {
+            m.importRoom(invalid)
+            assertEquals(before, m.document)
+            assertEquals(selected, m.selectedRoomId)
+            assertTrue(m.lastError!!.contains("房间数据无效"))
+        }
+    }
+
+    @Test fun importedRoomDoesNotHidePersistenceFailure() {
+        val dir = directory(); val m = model(dir)
+        m.saveScenario("原方案")
+        val originalDisk = File(dir, "home.json").readText()
+        val blocked = File(dir, "home.json.tmp"); assertTrue(blocked.mkdir())
+        val scan = Room(name = "扫描房间", polygon = RoomTemplate.Rectangle(4.0, 3.0).polygon)
+        m.importRoom(scan)
+        assertEquals(scan.id, m.selectedRoomId)
+        assertEquals(2, m.home.rooms.size)
+        assertFalse(m.lastSaveSucceeded)
+        assertTrue(m.lastError!!.contains("保存失败"))
+        assertEquals(originalDisk, File(dir, "home.json").readText())
+        assertTrue(blocked.delete()); assertTrue(m.retrySave())
+        assertEquals(m.document, model(dir).document)
     }
 }

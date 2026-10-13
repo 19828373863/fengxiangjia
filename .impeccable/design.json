@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-12T17:09:45Z",
+  "generatedAt": "2026-10-13T00:38:41Z",
   "title": "Design System: 风向家 Android",
   "extensions": {
     "colorMeta": {
@@ -1000,19 +1000,79 @@
     "shadows": [],
     "motion": [
       {
-        "name": "native-material-sheets",
-        "value": "Material 3 ModalBottomSheet / SheetState defaults",
-        "purpose": "原生底部面板进出；skipPartiallyExpanded=true。源码未覆盖时长、曲线或弹簧，保持库行为。"
+        "name": "quick",
+        "value": "120ms",
+        "purpose": "FxjMotion.Quick：退出页面淡出、MotionReveal 淡入/淡出、选中风扇反馈及 Trial 摘要 Crossfade。"
+      },
+      {
+        "name": "standard",
+        "value": "220ms",
+        "purpose": "FxjMotion.Standard：目的地进入淡入/位移、MotionReveal 展开及建议箭头展开。"
+      },
+      {
+        "name": "exit",
+        "value": "160ms",
+        "purpose": "FxjMotion.Exit：目的地退出位移、MotionReveal 收起及建议箭头收起。"
+      },
+      {
+        "name": "settle-defined-unused",
+        "value": "280ms",
+        "purpose": "FxjMotion.Settle 仅定义，当前源码没有调用；不宣称已实现回弹/弹簧。"
+      },
+      {
+        "name": "material-easing",
+        "value": "cubic-bezier(0.2, 0, 0, 1)",
+        "purpose": "FxjMotion.Easing 的显式 Compose tween 曲线；没有显式 easing 的 fade tween 仍是 Compose 默认值。"
+      },
+      {
+        "name": "destination-offset",
+        "value": "24dp",
+        "purpose": "MainActivity 按目的地索引方向进入/退出；原生 dp，不是物理像素。离场内容消费触控并清除无障碍语义。"
+      },
+      {
+        "name": "disclosure-pair",
+        "value": "expand 220ms + fade 120ms; shrink 160ms + fade 120ms",
+        "purpose": "MotionReveal 从顶部展开/收起；我家和建议的真实调用区块，离场内容禁用交互语义。"
+      },
+      {
+        "name": "suggest-disclosure-arrow",
+        "value": "0deg ↔ 180deg / open 220ms / close 160ms",
+        "purpose": "SuggestScreen 展开箭头；HomeScreen 保留文字展开/收起，没有此箭头实现。"
+      },
+      {
+        "name": "fan-selection",
+        "value": "120ms / primary → onPrimaryContainer",
+        "purpose": "交互风扇及方向线颜色插值，27 dp 光圈以 0.14 × selection 变化透明度；关闭动效时 snap。"
+      },
+      {
+        "name": "trial-summary",
+        "value": "120ms Crossfade / 72dp × max(fontScale, 1)",
+        "purpose": "固定摘要槽保持画布尺寸稳定；离场摘要清除语义且按钮禁用。"
+      },
+      {
+        "name": "flow-direction-cue",
+        "value": "2400ms / linear / max 12 existing streamlines",
+        "purpose": "当前同一可视化的有限方向提示，phase 只在独立 overlay 绘制时读取；不是物理速度或新流线。"
+      },
+      {
+        "name": "flow-cue-gates",
+        "value": "valid hash + interactive + motion enabled + not stale + no drag/sheet/save/export",
+        "purpose": "完成后消失，条件失效取消，相同当前 hash 不重播；非交互预览静态。"
+      },
+      {
+        "name": "system-motion-gate",
+        "value": "ANIMATOR_DURATION_SCALE > 0 && Lifecycle >= STARTED",
+        "purpose": "ContentObserver 实时监听系统动画倍率 0，LifecycleObserver 监听前后台；离场页也强制关闭自定义动效。"
       },
       {
         "name": "continuous-room-drag",
         "value": "pointer-tracked preview; one commit on release",
-        "purpose": "直接操作：拖动开始锁定视口，移动时即时预览，松手提交一次，取消移除预览；不是补间动画。"
+        "purpose": "手势直接预览，松手提交一次，取消移除预览；不等待补间动画。"
       },
       {
-        "name": "native-material-state-feedback",
-        "value": "Material 3 interaction and progress defaults",
-        "purpose": "原生按钮/选择/导航状态和进度反馈；无自定义 GSAP、风线播放或 CSS 动画运行时。"
+        "name": "native-material-sheets",
+        "value": "Material 3 ModalBottomSheet / SheetState defaults",
+        "purpose": "skipPartiallyExpanded=true；面板、涟漪、进度反馈未重写库参数。"
       }
     ],
     "breakpoints": [
@@ -1091,17 +1151,17 @@
       "name": "房间图结构示意",
       "kind": "custom",
       "refersTo": "surface-room",
-      "description": "RoomCanvas 原生绘图的静态转译，展示背景、网格、家具、风扇、窗和流线角色；风扇名称使用不透明 surface 衬底。SVG 坐标为文档示例，不是用户数据；没有求解器、真实触控或原生绘图验收。",
+      "description": "RoomCanvas 原生绘图的静态转译，展示背景、网格、家具、风扇、窗和流线角色；风扇名称使用不透明 surface 衬底，选中风扇使用 onPrimaryContainer 目标色。静态 SVG 不播放新增的有限原生风向提示。SVG 坐标为文档示例，不是用户数据；没有求解器、真实触控或原生绘图验收。",
       "html": "<figure class=\"ds-room-figure\"><svg class=\"ds-room-map\" viewBox=\"0 0 320 220\" role=\"img\" aria-label=\"示意房间平面图\"><defs><pattern id=\"ds-room-grid\" width=\"24\" height=\"24\" patternUnits=\"userSpaceOnUse\"><path d=\"M24 0H0V24\" fill=\"none\" stroke=\"#CBD2C5\" stroke-opacity=\".35\" stroke-width=\".5\"/></pattern></defs><path class=\"ds-room-fill\" d=\"M48 40H280V172H48Z\"/><path d=\"M48 40H280V172H48Z\" fill=\"url(#ds-room-grid)\"/><rect class=\"ds-room-furniture\" x=\"186\" y=\"110\" width=\"68\" height=\"34\" rx=\"3\"/><path class=\"ds-room-wall\" d=\"M48 40H280V172H48Z\"/><path class=\"ds-room-window\" d=\"M204 40H254\"/><path d=\"M80 110C128 82 160 87 245 69M80 115C135 125 162 128 245 91\" fill=\"none\" stroke=\"#408B70\" stroke-opacity=\".72\" stroke-width=\"1.2\" stroke-linecap=\"round\"/><circle class=\"ds-room-selected\" cx=\"80\" cy=\"110\" r=\"27\"/><path class=\"ds-room-direction\" d=\"M80 110H114M107 105L114 110L107 115\"/><circle class=\"ds-room-fan\" cx=\"80\" cy=\"110\" r=\"15\"/><path class=\"ds-room-fan-blades\" d=\"M80 110L88 110M80 110L76 103M80 110L76 117\"/><rect class=\"ds-room-label-backing\" x=\"61\" y=\"126\" width=\"38\" height=\"18\" rx=\"3\"/><text class=\"ds-room-label\" x=\"80\" y=\"139\" text-anchor=\"middle\">风扇 1</text></svg><figcaption>文档示意 · 生活用途的简化风线</figcaption></figure>",
-      "css": ".ds-room-figure{margin:0;overflow:hidden;border-radius:16px;background:#F3F3EB;color:#28513E}.ds-room-map{display:block;width:100%;height:auto;background:#FAF8F2}.ds-room-fill{fill:#FAF8F2}.ds-room-furniture{fill:#E0E8DD}.ds-room-wall{fill:none;stroke:#202B23;stroke-opacity:.85;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.ds-room-window{fill:none;stroke:#825943;stroke-width:3}.ds-room-selected{fill:#28513E;fill-opacity:.14}.ds-room-direction{fill:none;stroke:#28513E;stroke-width:2.5;stroke-linecap:round}.ds-room-fan{fill:#28513E}.ds-room-fan-blades{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-linecap:round}.ds-room-label-backing{fill:#FAF8F2}.ds-room-label{fill:#202B23;font:400 10px sans-serif}.ds-room-figure figcaption{padding:0 16px 14px;font:500 13px/20px sans-serif}@media(prefers-color-scheme:dark){.ds-room-figure{background:#1B251D;color:#ADD1B7}.ds-room-map{background:#131C16}.ds-room-fill{fill:#131C16}.ds-room-furniture{fill:#3C5240}.ds-room-wall{stroke:#E3E9DF}.ds-room-window{stroke:#E7BA9F}.ds-room-selected,.ds-room-fan{fill:#ADD1B7}.ds-room-direction{stroke:#ADD1B7}.ds-room-fan-blades{stroke:#153A26}.ds-room-label-backing{fill:#131C16}.ds-room-label{fill:#E3E9DF}}"
+      "css": ".ds-room-figure{margin:0;overflow:hidden;border-radius:16px;background:#F3F3EB;color:#28513E}.ds-room-map{display:block;width:100%;height:auto;background:#FAF8F2}.ds-room-fill{fill:#FAF8F2}.ds-room-furniture{fill:#E0E8DD}.ds-room-wall{fill:none;stroke:#202B23;stroke-opacity:.85;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.ds-room-window{fill:none;stroke:#825943;stroke-width:3}.ds-room-selected{fill:#28513E;fill-opacity:.14}.ds-room-direction{fill:none;stroke:#173725;stroke-width:2.5;stroke-linecap:round}.ds-room-fan{fill:#173725}.ds-room-fan-blades{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-linecap:round}.ds-room-label-backing{fill:#FAF8F2}.ds-room-label{fill:#202B23;font:400 10px sans-serif}.ds-room-figure figcaption{padding:0 16px 14px;font:500 13px/20px sans-serif}@media(prefers-color-scheme:dark){.ds-room-figure{background:#1B251D;color:#ADD1B7}.ds-room-map{background:#131C16}.ds-room-fill{fill:#131C16}.ds-room-furniture{fill:#3C5240}.ds-room-wall{stroke:#E3E9DF}.ds-room-window{stroke:#E7BA9F}.ds-room-selected{fill:#ADD1B7}.ds-room-fan{fill:#D4EAD7}.ds-room-direction{stroke:#D4EAD7}.ds-room-fan-blades{stroke:#153A26}.ds-room-label-backing{fill:#131C16}.ds-room-label{fill:#E3E9DF}}"
     },
     {
       "name": "当前物品选择栏",
       "kind": "custom",
       "refersTo": "selection-banner",
-      "description": "TrialScreen 的选择 Surface：secondaryContainer、12 dp 圆角，左 14 dp / 右 4 dp 内容留白，titleSmall 与 bodySmall。调整入口打开原生属性面板；静态预览按钮无业务行为。",
-      "html": "<section class=\"ds-selection\"><div class=\"ds-selection-copy\"><strong>风扇 1</strong><p>可直接拖动，或打开属性精确调整</p></div><button type=\"button\" class=\"ds-selection-adjust\">调整</button></section>",
-      "css": ".ds-selection{display:flex;align-items:center;gap:8px;padding:0 4px 0 14px;border-radius:12px;background:#E0E8DD;color:#273D2C}.ds-selection-copy{flex:1}.ds-selection-copy strong{font:500 15px/23px sans-serif}.ds-selection-copy p{margin:0;font:400 13px/20px sans-serif}.ds-selection-adjust{min-height:48px;padding:0 8px;border:none;border-radius:9999px;background:transparent;color:#28513E;font:500 14px/21px sans-serif;cursor:pointer}.ds-selection-adjust:hover{outline:1px solid currentColor}.ds-selection-adjust:focus-visible{outline:2px solid #28513E;outline-offset:2px}.ds-selection-adjust:active{outline:2px solid currentColor}@media(prefers-color-scheme:dark){.ds-selection{background:#3C5240;color:#DCE8D8}.ds-selection-adjust{color:#ADD1B7}.ds-selection-adjust:focus-visible{outline-color:#ADD1B7}}"
+      "description": "TrialScreen 的选择 Surface：secondaryContainer、12 dp 圆角，左 14 dp / 右 4 dp 内容留白，titleSmall 与 bodySmall；置于 72 dp × max(fontScale,1) 固定摘要槽内进行原生 120 ms Crossfade。静态 HTML 按 fontScale=1 换算，不实现业务或原生动画。",
+      "html": "<div class=\"ds-selection-slot\"><section class=\"ds-selection\"><div class=\"ds-selection-copy\"><strong>风扇 1</strong><p>拖动，或打开属性调整</p></div><button type=\"button\" class=\"ds-selection-adjust\">调整</button></section></div>",
+      "css": ".ds-selection-slot{min-height:72px;display:flex;align-items:center}.ds-selection{width:100%;display:flex;align-items:center;gap:8px;padding:0 4px 0 14px;border-radius:12px;background:#E0E8DD;color:#273D2C}.ds-selection-copy{flex:1}.ds-selection-copy strong{font:500 15px/23px sans-serif}.ds-selection-copy p{margin:0;font:400 13px/20px sans-serif}.ds-selection-adjust{min-height:48px;padding:0 8px;border:none;border-radius:9999px;background:transparent;color:#28513E;font:500 14px/21px sans-serif;cursor:pointer}.ds-selection-adjust:hover{outline:1px solid currentColor}.ds-selection-adjust:focus-visible{outline:2px solid #28513E;outline-offset:2px}.ds-selection-adjust:active{outline:2px solid currentColor}@media(prefers-color-scheme:dark){.ds-selection{background:#3C5240;color:#DCE8D8}.ds-selection-adjust{color:#ADD1B7}.ds-selection-adjust:focus-visible{outline-color:#ADD1B7}}"
     }
   ],
   "narrative": {

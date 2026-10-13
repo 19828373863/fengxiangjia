@@ -385,10 +385,26 @@ class AppModel(
         revision++; reportMessage("本机住宅、方案与反馈已删除，正在展示内置示例")
     }
 
-    /** 外部导入（扫描结果等）：作为新房间加入并选中。 */
+    /** External captures use their own local origin, so place them above existing rooms as a new room. */
     fun importRoom(r: Room) {
         if (!gate(PaidFeature.multiRoom)) return
-        appendRoom(r)
+        val positioned = try {
+            require(r.polygon.isNotEmpty() && r.polygon.all { it.x.isFinite() && it.y.isFinite() })
+            val nextY = (home.rooms.maxOfOrNull { existing -> existing.polygon.maxOf { it.y } } ?: 0.0) + 1.0
+            val offset = Vec2(-r.polygon.minOf { it.x }, nextY - r.polygon.minOf { it.y })
+            r.copy(
+                polygon = r.polygon.map { it + offset },
+                fans = r.fans.map { it.copy(position = it.position + offset) },
+                obstacles = r.obstacles.map { it.copy(center = it.center + offset) },
+                targets = r.targets.map { target -> target.copy(shape = when (val shape = target.shape) {
+                    is TargetShape.Circle -> shape.copy(center = shape.center + offset)
+                    is TargetShape.Polygon -> shape.copy(points = shape.points.map { it + offset })
+                }) },
+            )
+        } catch (_: Exception) {
+            reportMessage("房间数据无效或与已有房间重叠，请检查户型"); return
+        }
+        appendRoom(positioned)
     }
 
     private fun appendRoom(r: Room): EntityID? {
