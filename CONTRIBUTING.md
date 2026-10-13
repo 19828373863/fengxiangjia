@@ -1,20 +1,13 @@
-# 开发与合并规范
+# Development and review
 
-工作流：Issue → 认领评论 → 分支 → 小步提交 → 自动测试 → PR → 审阅 → Squash merge → 更新 HANDOFF.md 和 TASK_STATUS.md。
+Workflow: issue → ownership comment → branch → focused commits → tests → PR → review → squash merge → update HANDOFF/TASK_STATUS. Use English throughout.
 
-## 分支
-- feat/12-room-editor；fix/13-openings；docs/14-contracts 等。
-- 任何 Agent 不得修改其他任务负责人正在维护的文件，除非在 Issue 明确协调。
-- main 仅接受已审阅 PR；管理员应在 GitHub Settings 配置分支保护与必需检查。本文档本身不等于已启用保护。
+Use branches such as feat/12-room-editor, fix/13-openings or docs/14-contracts. Coordinate before editing another owner's files. Main accepts reviewed PRs; administrators should configure protection and required checks. This document does not prove those settings are enabled.
 
-## PR 必填
-关联 Issue；需求和验收条款；改动范围；测试命令及原样输出摘要；模拟器/真机类型；已知限制；界面前后截图；Schema 和权限影响；回滚方法。
+PRs include issue, acceptance criteria, scope, commands and accurate output summaries, simulator/device types, limitations, relevant before/after screenshots, schema/permission impact and rollback.
 
-## 最低质量门槛
-单元测试覆盖编辑撤销、开口拓扑、方案 A/B 同条件比较、封闭房间不能提升室外换气、保存与恢复、天气失效和拒绝权限分支。测试未运行要写“未运行”及原因。未验证的实验功能不得包装为已交付。
+Cover undo, opening topology, same-condition A/B, no outdoor exchange in sealed rooms, save/restore, weather expiry and denied permissions. Label unexecuted tests "not run" with reasons. Experiments require evidence before delivery claims. Run `python scripts/check_english.py` on maintained text.
 
-## 安全与隐私
-严禁提交密钥、Apple 账户资料、凭据、用户精确地址、用户户型、原始录音。定位和麦克风按需授权，允许拒绝。第三方库检查许可，保留 notices。
+Never commit keys, Apple account data, credentials, precise addresses, private floor plans or original recordings. Request location/microphone on demand and allow refusal. Check licenses and retain notices.
 
-## 冲突处理
-修改公共 API 先 RFC/decision Issue；接口升级同步迁移测试，不允许静默破坏已有模型。
+Discuss public API changes in an RFC/decision issue. Update migration tests with interfaces; do not silently break models.

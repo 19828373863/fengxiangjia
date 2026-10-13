@@ -1,14 +1,9 @@
-# 任务状态（事实记录）
+# Task status
 
-2026-10-12：GitHub 远端项目初始化进行中。下列阶段为规划，**均未宣称已实现或测试通过**。
+## Original snapshot:2026-10-12
+Initialization in progress. P0 scaffold/contracts/CI/sample,P1 editor/openings/fan/flow/A-B/save,P2 recommendations/regression/multi-room,P3 RoomPlan/location/weather/obstruction,P4 StoreKit/privacy/stability,P5 TestFlight/device/store were planned,not implemented/passing claims.
 
-| 阶段 | 核心交付 | 状态 |
-|---|---|---|
-| P0 | SwiftUI 工程、契约、CI、示例房间 | 待开发 |
-| P1 | 房间编辑、门窗、风扇、流线、A/B、保存 | 待开发 |
-| P2 | 推荐、回归测试、多房间 | 待开发 |
-| P3 | RoomPlan、位置、天气、遮挡 | 待开发 |
-| P4 | StoreKit、隐私、稳定性 | 待开发 |
-| P5 | TestFlight、真机测试、上架 | 待开发 |
+Claim issues and record SHA,test evidence and blockers after completion. Later native work resides in feature branches/PRs and is not merged by this migration.
 
-任务负责人在 GitHub Issue 认领。完成后补上提交 SHA、测试记录和阻塞。
+## #77
+Owner: current Codex root. Branch feat/77-english-web from main b7579eb. Translate maintained main-branch documents and GitHub discussions,enforce English,implement guided local web experience. Execution evidence follows in HANDOFF.md.

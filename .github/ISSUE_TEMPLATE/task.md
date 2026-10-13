@@ -1,14 +1,14 @@
 ---
-name: 开发任务
-about: 认领新开发任务
+name: Development task
+about: Claim a task (English only)
 ---
 
-## 背景与目标
+## Background and goal
 
-## 验收标准
+## Acceptance criteria
 
-## 依赖与涉及文件
+## Dependencies and affected files
 
-## 执行负责人及分支
+## Owner and branch
 
-## 测试与交接
+## Validation and handoff
