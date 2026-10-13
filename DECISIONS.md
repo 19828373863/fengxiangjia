@@ -1,11 +1,13 @@
-# 项目决策日志
+# Decision log
 
-- D001：iOS App Store 独立生活工具，非专业暖通工程仿真产品。
-- D002：SwiftUI + 原生平台能力，优先本地计算和免登录。
-- D003：手绘必备，RoomPlan 为兼容 LiDAR 设备入口，扫描后可手动修正。
-- D004：住宅位置独立于手机实时位置；天气按住宅查询；窗外遮挡与楼层允许手工修正。
-- D005：风线和建议共用计算快照，A/B 只能在相同天气条件下比较。
-- D006：麦克风感知弱风、自动周边地形三维重建是实验性后续模块。
-- D007：免费试用+一次性非消耗型内购是初步商业方案，价格需测试。
+- D001: Standalone iOS App Store household tool, not professional HVAC simulation.
+- D002: SwiftUI/native capabilities; prioritize local computation and no-login use.
+- D003: Manual drawing essential; RoomPlan optional on compatible LiDAR devices; scans editable.
+- D004: Home location independent of live phone location; query weather for the home; editable floor/obstruction.
+- D005: Flow and recommendations share a snapshot; A/B uses identical weather.
+- D006: Microphone weak-airflow sensing and automatic terrain reconstruction are future experiments.
+- D007: Free trial + non-consumable unlock provisional; pricing requires testing.
+- W001 (#77,2026-10-13): User requires English for maintained project content/UI. Preserve identities and immutable history. Earlier Chinese-localization choices are superseded.
+- W002 (#77,2026-10-13): Prioritize browser goals, manual dimensions, one fan, recommendation and feedback. Browser persistence is separate from native HomeDocument. Web suggestions are explicit placement heuristics, not the native solver. RoomPlan and computer reconstruction remain separate.
 
-新增或修改决策需关联 Issue 和具体原因。
+D001–D007 are historical translations; W002 changes the immediate delivery priority. Every new/revised decision needs an issue and reason.

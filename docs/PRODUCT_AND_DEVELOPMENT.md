@@ -1,34 +1,26 @@
-# 产品需求与系统开发计划 v0.3
+# Product and development plan
 
-## 目标
-为普通家庭提供无需专业知识的室内通风和风扇布局比较工具，并作为 iOS App Store 买断型生活 App 售卖。核心价值是低门槛、有解释、能实际照做，而不是数值高度精确。
+## Current direction (#77)
+Help users try a useful fan arrangement within roughly three minutes: an acceptance target, not a measured result.
 
-## 用户流程
-1. 首次打开示例房间，无注册即可拖动风扇。
-2. 自建长方形/L 形房间；兼容 LiDAR iPhone 可选使用 RoomPlan 扫描，导入后必须可手工修正；不兼容设备保留手绘。
-3. 房间绑定住宅的大致经纬度或手选地点；用指南针辅助、手动确认户型和每扇窗朝向；填写楼层与窗外遮挡（开阔/部分遮挡/近楼/天井/未知）。
-4. 获取按住宅位置查询的当前/逐小时天气（风速风向、温度、降雨等可用字段），允许离线假设风况；明确来源和时间，不能把区域天气冒充窗边实测。
-5. 标注门窗、障碍物、风扇及“希望有风/减少直吹”的目标区域，模拟并展示流线。
-6. A/B 比较保持同一外部条件、显示送风覆盖、直吹风险、通风路径与调整成本；输出至多三条操作建议。
-7. 保存方案、导出图片、反馈体感；非消耗型内购解锁扩展能力。
+1. Choose stuffiness, uncomfortable direct draft, or breeze at a chosen spot.
+2. Enter approximate dimensions, openings and where the person sits/sleeps.
+3. Show one practical arrangement and reasons; deeper analysis stays optional.
+4. Save the trial and report better/no change/worse after trying it.
 
-## 首版（MVP）
-- SwiftUI 二维房间编辑器；门窗附着墙体；家具简化；一个房间、一台风扇；目标点；动画与静态箭头；A/B 比较；本地存储；示例房间。
-- 稳定后拓展少量相连房间、1-2 台风扇、天气模块、RoomPlan 兼容设备扫描、方案导出、StoreKit 购买与恢复。
-- 麦克风气流估算、自动周边三维地形、复杂温度场、空调射流和智能家居不阻塞首发。
+Navigation: Home, Improve, History. Room diagrams explain placement. Manual setup works without scanning. Native LiDAR may later reduce effort; computer photo/video reconstruction stays experimental. English only.
 
-## 技术栈
-Swift + SwiftUI；本地 JSON/SwiftData（择一并做好迁移）；RoomPlan/ARKit（条件可用）；CoreLocation + WeatherKit（可失败降级）；Canvas/Metal（先低成本渲染）；StoreKit 2；XCTest 与真机验证。
+First web slice: one rectangular room,one fan,editable target/openings,placement heuristics,local trials/feedback,export/import and recoverable persistence. Do not call heuristic arrows simulated streamlines. Real comfort improvements need separate validation.
 
-## 计算路线
-建立拓扑化房间图和开口关系，评估不同通路；局部使用简化二维向量场（风扇驱动 + 边界/障碍影响）生成流线与可解释对比。它只是生活示意，不能宣称符合工程级 CFD 标准。所有结论同源于版本化计算快照；适用条件变化后必须重算；封闭房间内风扇仅贡献室内循环。
+## Original native plan (historical scope)
+Buy-once iOS household ventilation/fan comparison tool requiring no expertise. Ease,explanations and practical actions matter more than numerical precision.
 
-## 研发阶段与门槛
-- P0 工程规范、数据结构和可运行示例；
-- P1 单房间编辑—试摆—比较—保存纵向闭环；
-- P2 计算回归、推荐解释、手工环境输入、多房间；
-- P3 RoomPlan 导入、住宅定位、天气、窗外遮挡；
-- P4 购买恢复、隐私、容错与无障碍；
-- P5 TestFlight 真机、用户验证、商店合规及上架。
+Original flow: sample without sign-in → manual rectangle/L or compatible editable RoomPlan scan → approximate home location/orientation/floor/window obstruction → current/hourly weather or manual conditions with source/time → openings/obstacles/fan/breeze or avoid-draft targets → same-condition A/B coverage,draft,paths,cost with ≤3 suggestions → save/export/feedback and non-consumable expansion unlock.
 
-每阶段都需产出源码、测试、截图与交接记录；不得因下一阶段没完成否认前阶段价值。
+Original MVP: SwiftUI2D editor,wall-attached openings,simplified furniture,one room/fan/target,animated/static arrows,A/B,local storage,sample. Later: connected rooms,1–2 fans,weather,RoomPlan,export,StoreKit purchase/restore. Microphone sensing,automatic terrain,complex thermal fields,AC jets and smart-home integrations do not block v1.
+
+Original stack: Swift/SwiftUI,JSON or SwiftData with migration,optional RoomPlan/ARKit,CoreLocation/WeatherKit with fallback,Canvas/Metal,StoreKit2,XCTest/device validation.
+
+Model: room/opening topology and simplified2D fan-driven field with boundaries/obstacles; household illustration,not engineering CFD. Versioned snapshots bind explanations/visualization; recompute after changes. Sealed-room fans supply circulation only.
+
+Phases: P0 scaffold/contracts/sample; P1 editing/tryout/comparison/save; P2 regressions/explanations/manual environment/multi-room; P3 RoomPlan/location/weather/obstruction; P4 purchases/privacy/recovery/accessibility; P5 TestFlight/device/user acceptance/store release. Each needs source,tests,screenshots,handoff; later incomplete phases do not negate earlier scoped evidence.

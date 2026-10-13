@@ -1,16 +1,18 @@
-## 关联 Issue
+## Related issue
 Closes #
 
-## 变更内容与范围
+## Problem and resulting behavior
 
-## 可复现验证
-- 构建命令、运行环境：
-- 已运行测试与结果：
-- 未运行项与原因：
+## Scope
 
-## 风险、权限与数据
+## Reproducible validation
+- Commands/environment:
+- Executed tests/results:
+- Unexecuted tests/reasons:
 
-## 界面截图或录屏（如适用）
+## Risks, permissions and data
 
-## 交接
-分支、提交 SHA、待办、回滚办法。
+## Screenshots or recordings
+
+## Handoff
+Branch, SHA, remaining work and rollback.
